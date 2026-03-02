@@ -2,13 +2,9 @@ import React, { createContext, useMemo } from "react";
 import { useColorScheme as useRNColorScheme } from "react-native";
 import {
   type Theme,
-  type ThemeTokens,
   type ColorTokens,
   lightColors,
   darkColors,
-  spacing,
-  radius,
-  typography,
 } from "@popapp/theme/tokens";
 
 // ---------------------------------------------------------------------------
@@ -58,9 +54,6 @@ export function ThemeProvider({
     if (activeTheme && customThemes?.[activeTheme]) {
       return {
         colors: customThemes[activeTheme],
-        spacing,
-        radius,
-        typography,
         colorScheme: activeTheme,
       };
     }
@@ -72,9 +65,6 @@ export function ThemeProvider({
 
     return {
       colors: overrides ? { ...base, ...overrides } : base,
-      spacing,
-      radius,
-      typography,
       colorScheme: resolved,
     };
   }, [

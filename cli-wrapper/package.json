@@ -1,0 +1,14 @@
+{
+  "name": "popapp",
+  "version": "0.1.0",
+  "description": "CLI for adding PopApp UI components to your React Native project",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "popapp": "./bin.js"
+  },
+  "files": ["bin.js"],
+  "dependencies": {
+    "@popapp-ai/cli": "^0.1.0"
+  }
+}

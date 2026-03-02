@@ -124,6 +124,26 @@
       }
     },
     {
+      "name": "text-area",
+      "type": "registry:ui",
+      "title": "Text Area",
+      "description": "Multiline text input with label, error state, and configurable height.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/text-area.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/text-area.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "animationTier": 1,
+        "tags": ["form", "input"]
+      }
+    },
+    {
       "name": "touchable-scale",
       "type": "registry:ui",
       "title": "Touchable Scale",
@@ -202,6 +222,110 @@
         "platforms": ["ios", "android", "web"],
         "animationTier": 1,
         "tags": ["display", "status"]
+      }
+    },
+    {
+      "name": "otp-input",
+      "type": "registry:ui",
+      "title": "OTP Input",
+      "description": "One-time password input with individual digit boxes.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/otp-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/otp-input.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "animationTier": 1,
+        "tags": ["form", "input", "auth"]
+      }
+    },
+    {
+      "name": "choice-card",
+      "type": "registry:ui",
+      "title": "Choice Card",
+      "description": "Selectable card for picking one option from a set. Supports icon and subtitle.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["theme", "haptics", "touchable-scale"],
+      "files": [
+        {
+          "path": "registry/components/choice-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/choice-card.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "optionalDeps": ["expo-haptics"],
+        "animationTier": 2,
+        "tags": ["form", "selection"]
+      }
+    },
+    {
+      "name": "binary-choice",
+      "type": "registry:ui",
+      "title": "Binary Choice",
+      "description": "Two-option selector using side-by-side ChoiceCards.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["choice-card"],
+      "files": [
+        {
+          "path": "registry/components/binary-choice.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/binary-choice.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "optionalDeps": ["expo-haptics"],
+        "animationTier": 2,
+        "tags": ["form", "selection"]
+      }
+    },
+    {
+      "name": "option-card",
+      "type": "registry:ui",
+      "title": "Option Card",
+      "description": "Selectable list option with optional checkbox, icon, and description.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["theme", "haptics", "touchable-scale"],
+      "files": [
+        {
+          "path": "registry/components/option-card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/option-card.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "optionalDeps": ["expo-haptics"],
+        "animationTier": 2,
+        "tags": ["form", "selection"]
+      }
+    },
+    {
+      "name": "option-group",
+      "type": "registry:ui",
+      "title": "Option Group",
+      "description": "Single or multi-select option list using OptionCards.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["option-card"],
+      "files": [
+        {
+          "path": "registry/components/option-group.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/option-group.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "optionalDeps": ["expo-haptics"],
+        "animationTier": 2,
+        "tags": ["form", "selection"]
       }
     }
   ]

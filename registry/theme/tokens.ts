@@ -47,72 +47,11 @@ export interface ColorTokens {
 }
 
 // ---------------------------------------------------------------------------
-// Spacing tokens (4px base scale)
-// ---------------------------------------------------------------------------
-
-export interface SpacingTokens {
-  xs: number;
-  sm: number;
-  md: number;
-  lg: number;
-  xl: number;
-  "2xl": number;
-  "3xl": number;
-}
-
-// ---------------------------------------------------------------------------
-// Radius tokens
-// ---------------------------------------------------------------------------
-
-export interface RadiusTokens {
-  sm: number;
-  md: number;
-  lg: number;
-  xl: number;
-  "2xl": number;
-  full: number;
-}
-
-// ---------------------------------------------------------------------------
-// Typography tokens
-// ---------------------------------------------------------------------------
-
-export interface TypographyTokens {
-  sizes: {
-    xs: number;
-    sm: number;
-    md: number;
-    lg: number;
-    xl: number;
-    "2xl": number;
-    "3xl": number;
-    "4xl": number;
-  };
-  lineHeights: {
-    tight: number;
-    normal: number;
-    relaxed: number;
-  };
-  weights: {
-    regular: "400";
-    medium: "500";
-    semibold: "600";
-    bold: "700";
-  };
-}
-
-// ---------------------------------------------------------------------------
 // Combined theme
 // ---------------------------------------------------------------------------
 
-export interface ThemeTokens {
+export interface Theme {
   colors: ColorTokens;
-  spacing: SpacingTokens;
-  radius: RadiusTokens;
-  typography: TypographyTokens;
-}
-
-export interface Theme extends ThemeTokens {
   colorScheme: "light" | "dark" | string;
 }
 
@@ -180,54 +119,4 @@ export const darkColors: ColorTokens = {
   warningForeground: "#000000",
   info: "#64D2FF",
   infoForeground: "#000000",
-};
-
-export const spacing: SpacingTokens = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  "2xl": 48,
-  "3xl": 64,
-};
-
-export const radius: RadiusTokens = {
-  sm: 6,
-  md: 10,
-  lg: 14,
-  xl: 20,
-  "2xl": 28,
-  full: 9999,
-};
-
-export const typography: TypographyTokens = {
-  sizes: {
-    xs: 11,
-    sm: 13,
-    md: 15,
-    lg: 17,
-    xl: 20,
-    "2xl": 24,
-    "3xl": 30,
-    "4xl": 36,
-  },
-  lineHeights: {
-    tight: 1.2,
-    normal: 1.5,
-    relaxed: 1.75,
-  },
-  weights: {
-    regular: "400",
-    medium: "500",
-    semibold: "600",
-    bold: "700",
-  },
-};
-
-export const defaultTokens: ThemeTokens = {
-  colors: lightColors,
-  spacing,
-  radius,
-  typography,
 };

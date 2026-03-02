@@ -8,7 +8,7 @@ import type { Theme } from "@popapp/theme/tokens";
  * Must be used inside a `<ThemeProvider>`.
  *
  * ```tsx
- * const { colors, spacing, radius, typography, colorScheme } = useTheme();
+ * const { colors, colorScheme } = useTheme();
  * ```
  */
 export function useTheme(): Theme {

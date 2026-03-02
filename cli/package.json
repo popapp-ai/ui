@@ -1,5 +1,5 @@
 {
-  "name": "@popapp/cli",
+  "name": "@popapp-ai/cli",
   "version": "0.1.0",
   "description": "CLI for adding PopApp UI components to your React Native project",
   "license": "MIT",
