@@ -1,0 +1,15 @@
+{
+  "name": "popapp-ui",
+  "private": true,
+  "workspaces": ["cli", "example"],
+  "scripts": {
+    "build": "pnpm --filter @popapp/cli build",
+    "build:registry": "npx tsx scripts/build-registry.ts",
+    "build:all": "pnpm build && pnpm build:registry",
+    "dev": "pnpm --filter @popapp/cli dev",
+    "lint": "pnpm --filter @popapp/cli lint"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

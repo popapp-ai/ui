@@ -1,0 +1,27 @@
+{
+  "name": "@popapp/cli",
+  "version": "0.1.0",
+  "description": "CLI for adding PopApp UI components to your React Native project",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "popapp": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^13.0.0",
+    "picocolors": "^1.1.0",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.4.0",
+    "typescript": "^5.7.0"
+  }
+}

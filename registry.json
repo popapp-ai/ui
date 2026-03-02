@@ -1,0 +1,208 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "popapp",
+  "homepage": "https://popapp.dev",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:lib",
+      "title": "Theme",
+      "description": "Token-based theme system with light/dark mode and custom schemes.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/theme/tokens.ts",
+          "type": "registry:lib",
+          "target": "lib/theme/tokens.ts"
+        },
+        {
+          "path": "registry/theme/provider.tsx",
+          "type": "registry:lib",
+          "target": "lib/theme/provider.tsx"
+        },
+        {
+          "path": "registry/theme/use-theme.ts",
+          "type": "registry:hook",
+          "target": "lib/theme/use-theme.ts"
+        }
+      ],
+      "docs": "Wrap your root layout in <ThemeProvider> after installation."
+    },
+    {
+      "name": "haptics",
+      "type": "registry:lib",
+      "title": "Haptics",
+      "description": "Safe haptics wrapper that never crashes if expo-haptics is not installed.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/utils/haptics.ts",
+          "type": "registry:lib",
+          "target": "lib/haptics.ts"
+        }
+      ],
+      "meta": {
+        "optionalDeps": ["expo-haptics"]
+      }
+    },
+    {
+      "name": "use-color-scheme",
+      "type": "registry:hook",
+      "title": "useColorScheme",
+      "description": "Color scheme hook with safe default.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/hooks/use-color-scheme.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-color-scheme.ts"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Pressable button with variants, sizes, loading state, and haptic feedback.",
+      "dependencies": [],
+      "registryDependencies": ["theme", "haptics"],
+      "files": [
+        {
+          "path": "registry/components/button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/button.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "optionalDeps": ["expo-haptics"],
+        "animationTier": 1,
+        "tags": ["form", "action"]
+      }
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Composable card container with header, content, and footer sections.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/card.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "animationTier": 1,
+        "tags": ["layout"]
+      }
+    },
+    {
+      "name": "text-input",
+      "type": "registry:ui",
+      "title": "Text Input",
+      "description": "Themed text input with label, error state, and icon slots.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/text-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/text-input.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "animationTier": 1,
+        "tags": ["form", "input"]
+      }
+    },
+    {
+      "name": "touchable-scale",
+      "type": "registry:ui",
+      "title": "Touchable Scale",
+      "description": "Animated pressable with spring scale, opacity animations, and haptics.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["haptics"],
+      "files": [
+        {
+          "path": "registry/components/touchable-scale.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/touchable-scale.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "optionalDeps": ["expo-haptics"],
+        "animationTier": 2,
+        "tags": ["interaction", "animation"]
+      }
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Pulsing loading placeholder with configurable dimensions.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/skeleton.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/skeleton.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "animationTier": 2,
+        "tags": ["feedback", "loading"]
+      }
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Horizontal or vertical divider line.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/separator.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/separator.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "animationTier": 1,
+        "tags": ["layout"]
+      }
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Status badge with color variants.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/badge.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/badge.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "animationTier": 1,
+        "tags": ["display", "status"]
+      }
+    }
+  ]
+}

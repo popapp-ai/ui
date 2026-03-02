@@ -1,0 +1,50 @@
+# PopApp UI
+
+> A shadcn-style component registry for React Native and Expo using pure StyleSheet (no NativeWind/Tailwind).
+
+## What is this?
+
+PopApp UI is an open-source React Native component registry. Developers use a CLI (`npx popapp add button`) to copy production-ready, customizable components into their projects. Components use React Native StyleSheet for styling and a typed theme token system for colors, spacing, and typography.
+
+## Key Concepts
+
+- **Registry**: Components are defined in `registry.json` with metadata (dependencies, files, platforms). The CLI fetches components from GitHub and writes them into the user's project.
+- **Theme System**: A React Context-based provider (`ThemeProvider`) with typed tokens for colors, spacing, radius, and typography. Components consume tokens via `useTheme()` hook.
+- **Copy-paste philosophy**: Components are copied into the user's project (not installed as npm packages). Users own and can freely modify the code.
+- **Import rewriting**: Registry files use canonical `@popapp/` imports that the CLI rewrites to the user's configured path aliases.
+
+## Theme Token Interface
+
+```typescript
+interface ColorTokens {
+  primary, primaryForeground, accent, accentForeground,
+  background, backgroundSecondary, backgroundTertiary,
+  card, cardForeground, cardSecondary,
+  foreground, foregroundSecondary, muted, mutedForeground,
+  border, icon,
+  destructive, destructiveForeground,
+  success, successForeground,
+  warning, warningForeground,
+  info, infoForeground
+}
+```
+
+## Component Pattern
+
+Every component follows this structure:
+1. Import from `@popapp/theme/use-theme` for theming
+2. Import from `@popapp/utils/haptics` for haptic feedback
+3. Define size/variant token maps as const objects
+4. Export Props interface extending RN props
+5. Named export functional component
+6. StyleSheet.create() for static styles, theme colors inline
+
+## CLI Commands
+
+- `npx popapp init` — Set up theme + config in project
+- `npx popapp add <components>` — Add components with dependency resolution
+- `npx popapp list` — Show available components
+
+## Available Components
+
+button, card, text-input, touchable-scale, skeleton, separator, badge
