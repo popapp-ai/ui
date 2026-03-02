@@ -5,7 +5,7 @@
  * All functions are no-ops when haptics are unavailable.
  */
 
-let Haptics: typeof import("expo-haptics") | null = null;
+let Haptics: any = null;
 
 try {
   Haptics = require("expo-haptics");

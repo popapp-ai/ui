@@ -47,7 +47,8 @@ export function ThemeProvider({
   themes: customThemes,
   activeTheme,
 }: ThemeProviderProps) {
-  const systemScheme = useRNColorScheme() ?? "light";
+  const rawScheme = useRNColorScheme();
+  const systemScheme = rawScheme === "dark" ? "dark" : "light";
 
   const theme = useMemo<Theme>(() => {
     // Custom named theme takes priority
@@ -64,7 +65,7 @@ export function ThemeProvider({
     const overrides = resolved === "dark" ? darkOverrides : lightOverrides;
 
     return {
-      colors: overrides ? { ...base, ...overrides } : base,
+      colors: overrides ? ({ ...base, ...overrides } as ColorTokens) : base,
       colorScheme: resolved,
     };
   }, [
