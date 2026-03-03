@@ -12,7 +12,7 @@ export interface BinaryOption {
   icon?: React.ReactNode;
 }
 
-export interface BinaryChoiceProps {
+export interface ChoiceBinaryProps {
   /** Exactly two options to choose between. */
   options: [BinaryOption, BinaryOption];
   /** Currently selected value, or null if none. */
@@ -28,13 +28,13 @@ export interface BinaryChoiceProps {
 // Component
 // ---------------------------------------------------------------------------
 
-export function BinaryChoice({
+export function ChoiceBinary({
   options,
   value,
   onChange,
   haptic = true,
   style,
-}: BinaryChoiceProps) {
+}: ChoiceBinaryProps) {
   return (
     <View style={[styles.container, style]}>
       {options.map((option) => (

@@ -1,7 +1,10 @@
 {
   "name": "popapp-ui",
   "private": true,
-  "workspaces": ["cli", "example"],
+  "workspaces": [
+    "cli",
+    "example"
+  ],
   "scripts": {
     "build": "pnpm --filter @popapp/cli build",
     "build:registry": "npx tsx scripts/build-registry.ts",
@@ -11,5 +14,26 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@expo/vector-icons": "^15.1.1",
+    "@react-native-masked-view/masked-view": "^0.3.2",
+    "@react-native-picker/picker": "^2.11.4",
+    "@shopify/react-native-skia": "^2.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-native": "^0.73.0",
+    "expo-glass-effect": "^55.0.7",
+    "expo-haptics": "^55.0.8",
+    "expo-linear-gradient": "^55.0.8",
+    "expo-symbols": "^55.0.4",
+    "moti": "^0.30.0",
+    "react": "^19.2.4",
+    "react-native": "^0.84.1",
+    "react-native-gesture-handler": "^2.30.0",
+    "react-native-markdown-display": "^7.0.2",
+    "react-native-reanimated": "^4.2.2",
+    "react-native-safe-area-context": "^5.7.0",
+    "react-native-svg": "^15.15.3",
+    "typescript": "^5.9.3"
   }
 }

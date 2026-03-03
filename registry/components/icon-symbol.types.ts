@@ -1,15 +1,8 @@
-import type { SVGIconName } from "@popapp/components/svg-icons";
-
-export type SVGPrefixedIconName = `svg-${SVGIconName}`;
-
 /**
- * Icon name — can be an SF Symbol name (string) or a prefixed SVG icon (`svg-myIcon`).
+ * Icon name — a string representing an SF Symbol name (iOS)
+ * or mapped to Material Icons (Android/web).
  *
- * On iOS, SF Symbol names are rendered natively via `expo-symbols`.
- * On Android/Web, they're mapped to Material Icons via MAPPING.
- * SVG icons (prefixed with `svg-`) always render the custom SVG component.
- *
- * To add custom SVG icons, add them to the svg-icons directory
- * and register them in the ICON_COMPONENTS map.
+ * If you install the `svg-icons` extension, you can also use
+ * `svg-` prefixed names to render custom SVG icons (e.g. `svg-myLogo`).
  */
-export type IconSymbolName = string | SVGPrefixedIconName;
+export type IconSymbolName = string;

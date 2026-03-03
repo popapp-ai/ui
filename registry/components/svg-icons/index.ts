@@ -36,3 +36,4 @@ export const ICON_COMPONENTS = {
 export type SVGIconName = keyof typeof ICON_COMPONENTS;
 
 export { BaseIcon, type IconProps } from "./base-icon";
+export { SVGIcon, getSVGIconName } from "./icon-svg";

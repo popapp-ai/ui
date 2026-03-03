@@ -1,11 +1,12 @@
 import { SymbolView, type SymbolViewProps, type SymbolWeight } from "expo-symbols";
 import { type StyleProp, type ViewStyle } from "react-native";
-import { getSVGIconName, SVGIcon } from "@popapp/components/icon-svg";
 import type { IconSymbolName } from "@popapp/components/icon-symbol.types";
 
 /**
- * iOS implementation — renders native SF Symbols via expo-symbols,
- * with fallback to custom SVG icons when prefixed with `svg-`.
+ * iOS implementation — renders native SF Symbols via expo-symbols.
+ *
+ * To add custom SVG icons, install the `svg-icons` extension
+ * and wrap this component with SVG icon support.
  */
 export function IconSymbol({
   name,
@@ -20,11 +21,6 @@ export function IconSymbol({
   style?: StyleProp<ViewStyle>;
   weight?: SymbolWeight;
 }) {
-  const svgIconName = getSVGIconName(name);
-  if (svgIconName) {
-    return <SVGIcon name={svgIconName} size={size} color={color} style={style} />;
-  }
-
   return (
     <SymbolView
       weight={weight}

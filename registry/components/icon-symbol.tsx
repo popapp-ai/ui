@@ -3,8 +3,7 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import type { SymbolWeight } from "expo-symbols";
 import { type ComponentProps } from "react";
-import { type OpaqueColorValue, type StyleProp, type TextStyle, type ViewStyle } from "react-native";
-import { getSVGIconName, SVGIcon } from "@popapp/components/icon-svg";
+import { type OpaqueColorValue, type StyleProp, type TextStyle } from "react-native";
 import type { IconSymbolName } from "@popapp/components/icon-symbol.types";
 
 type MaterialIconName = ComponentProps<typeof MaterialIcons>["name"];
@@ -36,6 +35,7 @@ const MAPPING: Record<string, MaterialIconName> = {
   "magnifyingglass": "search",
   "camera.fill": "camera-alt",
   "photo.on.rectangle": "photo-library",
+  "document.on.document": "content-copy",
 
   // Info
   "info.circle.fill": "info",
@@ -54,11 +54,13 @@ const MAPPING: Record<string, MaterialIconName> = {
 const DEFAULT_ICON: MaterialIconName = "help-outline";
 
 /**
- * Android/Web implementation — renders Material Icons via @expo/vector-icons,
- * with fallback to custom SVG icons when prefixed with `svg-`.
+ * Android/Web implementation — renders Material Icons via @expo/vector-icons.
  *
  * Icon names are SF Symbol names. They are mapped to Material Icons
  * via the MAPPING table. Extend MAPPING to add more icons.
+ *
+ * To add custom SVG icons, install the `svg-icons` extension
+ * and wrap this component with SVG icon support.
  */
 export function IconSymbol({
   name,
@@ -72,19 +74,6 @@ export function IconSymbol({
   style?: StyleProp<TextStyle>;
   weight?: SymbolWeight;
 }) {
-  // Check if this is an SVG icon
-  const svgIconName = getSVGIconName(name);
-  if (svgIconName) {
-    return (
-      <SVGIcon
-        name={svgIconName}
-        size={size}
-        color={typeof color === "string" ? color : undefined}
-        style={style as StyleProp<ViewStyle>}
-      />
-    );
-  }
-
   const materialName = (name in MAPPING ? MAPPING[name] : null) ?? DEFAULT_ICON;
   return <MaterialIcons color={color} size={size} name={materialName} style={style} />;
 }

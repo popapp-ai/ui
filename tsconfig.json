@@ -11,6 +11,16 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "jsx": "react-jsx"
-  }
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@popapp/theme/*": ["registry/theme/*"],
+      "@popapp/components/*": ["registry/components/*"],
+      "@popapp/hooks/*": ["registry/hooks/*"],
+      "@popapp/utils/*": ["registry/utils/*"]
+    },
+    "noEmit": true
+  },
+  "include": ["registry/**/*.ts", "registry/**/*.tsx"],
+  "exclude": ["node_modules", "cli", "public", "dist", "example"]
 }

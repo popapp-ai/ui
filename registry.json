@@ -11,21 +11,9 @@
       "dependencies": [],
       "registryDependencies": [],
       "files": [
-        {
-          "path": "registry/theme/tokens.ts",
-          "type": "registry:lib",
-          "target": "lib/theme/tokens.ts"
-        },
-        {
-          "path": "registry/theme/provider.tsx",
-          "type": "registry:lib",
-          "target": "lib/theme/provider.tsx"
-        },
-        {
-          "path": "registry/theme/use-theme.ts",
-          "type": "registry:hook",
-          "target": "lib/theme/use-theme.ts"
-        }
+        { "path": "registry/theme/tokens.ts", "type": "registry:lib", "target": "lib/theme/tokens.ts" },
+        { "path": "registry/theme/provider.tsx", "type": "registry:lib", "target": "lib/theme/provider.tsx" },
+        { "path": "registry/theme/use-theme.ts", "type": "registry:hook", "target": "lib/theme/use-theme.ts" }
       ],
       "docs": "Wrap your root layout in <ThemeProvider> after installation."
     },
@@ -37,15 +25,9 @@
       "dependencies": [],
       "registryDependencies": [],
       "files": [
-        {
-          "path": "registry/utils/haptics.ts",
-          "type": "registry:lib",
-          "target": "lib/haptics.ts"
-        }
+        { "path": "registry/utils/haptics.ts", "type": "registry:lib", "target": "lib/haptics.ts" }
       ],
-      "meta": {
-        "optionalDeps": ["expo-haptics"]
-      }
+      "meta": { "optionalDeps": ["expo-haptics"] }
     },
     {
       "name": "use-color-scheme",
@@ -55,278 +37,8 @@
       "dependencies": [],
       "registryDependencies": [],
       "files": [
-        {
-          "path": "registry/hooks/use-color-scheme.ts",
-          "type": "registry:hook",
-          "target": "hooks/use-color-scheme.ts"
-        }
+        { "path": "registry/hooks/use-color-scheme.ts", "type": "registry:hook", "target": "hooks/use-color-scheme.ts" }
       ]
-    },
-    {
-      "name": "button",
-      "type": "registry:ui",
-      "title": "Button",
-      "description": "Pressable button with variants, sizes, loading state, and haptic feedback.",
-      "dependencies": [],
-      "registryDependencies": ["theme", "haptics", "glass"],
-      "files": [
-        {
-          "path": "registry/components/button.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/button.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-haptics", "expo-glass-effect"],
-        "animationTier": 1,
-        "tags": ["form", "action"]
-      }
-    },
-    {
-      "name": "card",
-      "type": "registry:ui",
-      "title": "Card",
-      "description": "Composable card container with header, content, and footer sections.",
-      "dependencies": [],
-      "registryDependencies": ["theme"],
-      "files": [
-        {
-          "path": "registry/components/card.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/card.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "animationTier": 1,
-        "tags": ["layout"]
-      }
-    },
-    {
-      "name": "text-input",
-      "type": "registry:ui",
-      "title": "Text Input",
-      "description": "Themed text input with label, error state, and icon slots.",
-      "dependencies": [],
-      "registryDependencies": ["theme"],
-      "files": [
-        {
-          "path": "registry/components/text-input.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/text-input.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "animationTier": 1,
-        "tags": ["form", "input"]
-      }
-    },
-    {
-      "name": "text-area",
-      "type": "registry:ui",
-      "title": "Text Area",
-      "description": "Multiline text input with label, error state, and configurable height.",
-      "dependencies": [],
-      "registryDependencies": ["theme"],
-      "files": [
-        {
-          "path": "registry/components/text-area.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/text-area.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "animationTier": 1,
-        "tags": ["form", "input"]
-      }
-    },
-    {
-      "name": "touchable-scale",
-      "type": "registry:ui",
-      "title": "Touchable Scale",
-      "description": "Animated pressable with spring scale, opacity animations, and haptics.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["haptics"],
-      "files": [
-        {
-          "path": "registry/components/touchable-scale.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/touchable-scale.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-haptics"],
-        "animationTier": 2,
-        "tags": ["interaction", "animation"]
-      }
-    },
-    {
-      "name": "skeleton",
-      "type": "registry:ui",
-      "title": "Skeleton",
-      "description": "Pulsing loading placeholder with configurable dimensions.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["theme"],
-      "files": [
-        {
-          "path": "registry/components/skeleton.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/skeleton.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "animationTier": 2,
-        "tags": ["feedback", "loading"]
-      }
-    },
-    {
-      "name": "separator",
-      "type": "registry:ui",
-      "title": "Separator",
-      "description": "Horizontal or vertical divider line.",
-      "dependencies": [],
-      "registryDependencies": ["theme"],
-      "files": [
-        {
-          "path": "registry/components/separator.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/separator.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "animationTier": 1,
-        "tags": ["layout"]
-      }
-    },
-    {
-      "name": "badge",
-      "type": "registry:ui",
-      "title": "Badge",
-      "description": "Status badge with color variants.",
-      "dependencies": [],
-      "registryDependencies": ["theme"],
-      "files": [
-        {
-          "path": "registry/components/badge.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/badge.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "animationTier": 1,
-        "tags": ["display", "status"]
-      }
-    },
-    {
-      "name": "otp-input",
-      "type": "registry:ui",
-      "title": "OTP Input",
-      "description": "One-time password input with individual digit boxes.",
-      "dependencies": [],
-      "registryDependencies": ["theme"],
-      "files": [
-        {
-          "path": "registry/components/otp-input.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/otp-input.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "animationTier": 1,
-        "tags": ["form", "input", "auth"]
-      }
-    },
-    {
-      "name": "choice-card",
-      "type": "registry:ui",
-      "title": "Choice Card",
-      "description": "Selectable card for picking one option from a set. Supports icon and subtitle.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["theme", "haptics", "touchable-scale"],
-      "files": [
-        {
-          "path": "registry/components/choice-card.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/choice-card.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-haptics"],
-        "animationTier": 2,
-        "tags": ["form", "selection"]
-      }
-    },
-    {
-      "name": "binary-choice",
-      "type": "registry:ui",
-      "title": "Binary Choice",
-      "description": "Two-option selector using side-by-side ChoiceCards.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["choice-card"],
-      "files": [
-        {
-          "path": "registry/components/binary-choice.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/binary-choice.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-haptics"],
-        "animationTier": 2,
-        "tags": ["form", "selection"]
-      }
-    },
-    {
-      "name": "option-card",
-      "type": "registry:ui",
-      "title": "Option Card",
-      "description": "Selectable list option with optional checkbox, icon, and description.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["theme", "haptics", "touchable-scale"],
-      "files": [
-        {
-          "path": "registry/components/option-card.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/option-card.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-haptics"],
-        "animationTier": 2,
-        "tags": ["form", "selection"]
-      }
-    },
-    {
-      "name": "option-group",
-      "type": "registry:ui",
-      "title": "Option Group",
-      "description": "Single or multi-select option list using OptionCards.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["option-card"],
-      "files": [
-        {
-          "path": "registry/components/option-group.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/option-group.tsx"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-haptics"],
-        "animationTier": 2,
-        "tags": ["form", "selection"]
-      }
     },
     {
       "name": "glass",
@@ -336,73 +48,193 @@
       "dependencies": [],
       "registryDependencies": [],
       "files": [
-        {
-          "path": "registry/utils/glass.tsx",
-          "type": "registry:lib",
-          "target": "lib/glass.tsx"
-        }
+        { "path": "registry/utils/glass.tsx", "type": "registry:lib", "target": "lib/glass.tsx" }
       ],
-      "meta": {
-        "optionalDeps": ["expo-glass-effect"]
-      }
-    },
-    {
-      "name": "svg-icons",
-      "type": "registry:ui",
-      "title": "SVG Icons",
-      "description": "Extensible custom SVG icon system with BaseIcon wrapper and registry pattern.",
-      "dependencies": ["react-native-svg"],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "registry/components/svg-icons/base-icon.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/svg-icons/base-icon.tsx"
-        },
-        {
-          "path": "registry/components/svg-icons/index.ts",
-          "type": "registry:ui",
-          "target": "components/ui/svg-icons/index.ts"
-        }
-      ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "tags": ["icon", "svg"]
-      }
+      "meta": { "optionalDeps": ["expo-glass-effect"] }
     },
     {
       "name": "icon-symbol",
       "type": "registry:ui",
       "title": "Icon Symbol",
-      "description": "Cross-platform icon component: SF Symbols on iOS, Material Icons on Android/web, with custom SVG support.",
+      "description": "Cross-platform icon component: SF Symbols on iOS, Material Icons on Android/web.",
       "dependencies": ["expo-symbols", "@expo/vector-icons"],
-      "registryDependencies": ["svg-icons"],
+      "registryDependencies": [],
       "files": [
-        {
-          "path": "registry/components/icon-symbol.types.ts",
-          "type": "registry:ui",
-          "target": "components/ui/icon-symbol.types.ts"
-        },
-        {
-          "path": "registry/components/icon-svg.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/icon-svg.tsx"
-        },
-        {
-          "path": "registry/components/icon-symbol.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/icon-symbol.tsx"
-        },
-        {
-          "path": "registry/components/icon-symbol.ios.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/icon-symbol.ios.tsx"
-        }
+        { "path": "registry/components/icon-symbol.types.ts", "type": "registry:ui", "target": "components/ui/icon-symbol.types.ts" },
+        { "path": "registry/components/icon-symbol.tsx", "type": "registry:ui", "target": "components/ui/icon-symbol.tsx" },
+        { "path": "registry/components/icon-symbol.ios.tsx", "type": "registry:ui", "target": "components/ui/icon-symbol.ios.tsx" }
       ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "tags": ["icon", "cross-platform"]
-      }
+      "meta": { "platforms": ["ios", "android", "web"], "tags": ["icon", "cross-platform"] }
+    },
+    {
+      "name": "svg-icons",
+      "type": "registry:ui",
+      "title": "SVG Icons (Icon Extension)",
+      "description": "Optional extension for icon-symbol: adds custom SVG icon support with BaseIcon wrapper and registry pattern.",
+      "dependencies": ["react-native-svg"],
+      "registryDependencies": ["icon-symbol"],
+      "files": [
+        { "path": "registry/components/svg-icons/base-icon.tsx", "type": "registry:ui", "target": "components/ui/svg-icons/base-icon.tsx" },
+        { "path": "registry/components/svg-icons/index.ts", "type": "registry:ui", "target": "components/ui/svg-icons/index.ts" },
+        { "path": "registry/components/svg-icons/icon-svg.tsx", "type": "registry:ui", "target": "components/ui/svg-icons/icon-svg.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "tags": ["icon", "svg", "extension"] }
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Pressable button with variants, sizes, loading state, and haptic feedback.",
+      "dependencies": [],
+      "registryDependencies": ["theme", "haptics", "glass"],
+      "files": [
+        { "path": "registry/components/button.tsx", "type": "registry:ui", "target": "components/ui/button.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics", "expo-glass-effect"], "animationTier": 1, "tags": ["form", "action"] }
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Composable card container with header, content, and footer sections.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/card.tsx", "type": "registry:ui", "target": "components/ui/card.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["layout"] }
+    },
+    {
+      "name": "text-input",
+      "type": "registry:ui",
+      "title": "Text Input",
+      "description": "Themed text input with label, error state, and icon slots.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/text-input.tsx", "type": "registry:ui", "target": "components/ui/text-input.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["form", "input"] }
+    },
+    {
+      "name": "text-area",
+      "type": "registry:ui",
+      "title": "Text Area",
+      "description": "Multiline text input with label, error state, and configurable height.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/text-area.tsx", "type": "registry:ui", "target": "components/ui/text-area.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["form", "input"] }
+    },
+    {
+      "name": "touchable-scale",
+      "type": "registry:ui",
+      "title": "Touchable Scale",
+      "description": "Animated pressable with spring scale, opacity animations, and haptics.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["haptics"],
+      "files": [
+        { "path": "registry/components/touchable-scale.tsx", "type": "registry:ui", "target": "components/ui/touchable-scale.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["interaction", "animation"] }
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Pulsing loading placeholder with configurable dimensions.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/skeleton.tsx", "type": "registry:ui", "target": "components/ui/skeleton.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 2, "tags": ["feedback", "loading"] }
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Horizontal or vertical divider line.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/separator.tsx", "type": "registry:ui", "target": "components/ui/separator.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["layout"] }
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Status badge with color variants.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/badge.tsx", "type": "registry:ui", "target": "components/ui/badge.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["display", "status"] }
+    },
+    {
+      "name": "otp-input",
+      "type": "registry:ui",
+      "title": "OTP Input",
+      "description": "One-time password input with individual digit boxes.",
+      "dependencies": [],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/otp-input.tsx", "type": "registry:ui", "target": "components/ui/otp-input.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["form", "input", "auth"] }
+    },
+    {
+      "name": "choice-card",
+      "type": "registry:ui",
+      "title": "Choice Card",
+      "description": "Selectable card for picking one option from a set. Supports icon and subtitle.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["theme", "haptics", "touchable-scale"],
+      "files": [
+        { "path": "registry/components/choice-card.tsx", "type": "registry:ui", "target": "components/ui/choice-card.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["form", "selection"] }
+    },
+    {
+      "name": "choice-binary",
+      "type": "registry:ui",
+      "title": "Binary Choice",
+      "description": "Two-option selector using side-by-side ChoiceCards.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["choice-card"],
+      "files": [
+        { "path": "registry/components/choice-binary.tsx", "type": "registry:ui", "target": "components/ui/choice-binary.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["form", "selection"] }
+    },
+    {
+      "name": "option-card",
+      "type": "registry:ui",
+      "title": "Option Card",
+      "description": "Selectable list option with optional checkbox, icon, and description.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["theme", "haptics", "touchable-scale"],
+      "files": [
+        { "path": "registry/components/option-card.tsx", "type": "registry:ui", "target": "components/ui/option-card.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["form", "selection"] }
+    },
+    {
+      "name": "option-group",
+      "type": "registry:ui",
+      "title": "Option Group",
+      "description": "Single or multi-select option list using OptionCards.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": ["option-card"],
+      "files": [
+        { "path": "registry/components/option-group.tsx", "type": "registry:ui", "target": "components/ui/option-group.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["form", "selection"] }
     },
     {
       "name": "action-icon",
@@ -412,18 +244,21 @@
       "dependencies": [],
       "registryDependencies": ["theme", "glass", "icon-symbol"],
       "files": [
-        {
-          "path": "registry/components/action-icon.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/action-icon.tsx"
-        }
+        { "path": "registry/components/action-icon.tsx", "type": "registry:ui", "target": "components/ui/action-icon.tsx" }
       ],
-      "meta": {
-        "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-glass-effect"],
-        "animationTier": 1,
-        "tags": ["action", "icon"]
-      }
+      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-glass-effect"], "animationTier": 1, "tags": ["action", "icon"] }
+    },
+    {
+      "name": "theme-icon",
+      "type": "registry:ui",
+      "title": "Theme Icon",
+      "description": "Icon wrapped in a tinted circle background. Ideal for category icons and settings.",
+      "dependencies": [],
+      "registryDependencies": ["icon-symbol"],
+      "files": [
+        { "path": "registry/components/theme-icon.tsx", "type": "registry:ui", "target": "components/ui/theme-icon.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["icon", "display"] }
     },
     {
       "name": "slider-bar",
@@ -433,18 +268,69 @@
       "dependencies": ["react-native-reanimated", "react-native-gesture-handler"],
       "registryDependencies": ["theme", "haptics", "icon-symbol"],
       "files": [
-        {
-          "path": "registry/components/slider-bar.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/slider-bar.tsx"
-        }
+        { "path": "registry/components/slider-bar.tsx", "type": "registry:ui", "target": "components/ui/slider-bar.tsx" }
       ],
-      "meta": {
-        "platforms": ["ios", "android"],
-        "optionalDeps": ["expo-haptics"],
-        "animationTier": 3,
-        "tags": ["form", "input", "gesture"]
-      }
+      "meta": { "platforms": ["ios", "android"], "optionalDeps": ["expo-haptics"], "animationTier": 3, "tags": ["form", "input", "gesture"] }
+    },
+    {
+      "name": "ruler-slider",
+      "type": "registry:ui",
+      "title": "Ruler Slider",
+      "description": "iOS-style ruler picker with Skia rendering, momentum scrolling, decay physics, and haptic feedback.",
+      "dependencies": ["@shopify/react-native-skia", "@react-native-masked-view/masked-view", "expo-linear-gradient", "react-native-reanimated", "react-native-gesture-handler"],
+      "registryDependencies": ["theme", "haptics"],
+      "files": [
+        { "path": "registry/components/ruler-slider.tsx", "type": "registry:ui", "target": "components/ui/ruler-slider.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "optionalDeps": ["expo-haptics"], "animationTier": 3, "tags": ["form", "input", "gesture", "skia"] }
+    },
+    {
+      "name": "progress-ring",
+      "type": "registry:ui",
+      "title": "Progress Ring",
+      "description": "Animated circular progress indicator with spring animation and customizable colors.",
+      "dependencies": ["react-native-reanimated", "react-native-svg"],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/progress-ring.tsx", "type": "registry:ui", "target": "components/ui/progress-ring.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 2, "tags": ["feedback", "display"] }
+    },
+    {
+      "name": "ticker",
+      "type": "registry:ui",
+      "title": "Ticker",
+      "description": "Animated number ticker with staggered digit rolls, currency/locale formatting, and masked gradient edges.",
+      "dependencies": ["moti", "@react-native-masked-view/masked-view", "expo-linear-gradient", "react-native-reanimated"],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/ticker.tsx", "type": "registry:ui", "target": "components/ui/ticker.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "animationTier": 2, "tags": ["display", "animation", "number"] }
+    },
+    {
+      "name": "markdown",
+      "type": "registry:ui",
+      "title": "Markdown",
+      "description": "Themed markdown renderer with code block copy button.",
+      "dependencies": ["react-native-markdown-display"],
+      "registryDependencies": ["theme", "action-icon"],
+      "files": [
+        { "path": "registry/components/markdown.tsx", "type": "registry:ui", "target": "components/ui/markdown.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["display", "text"] }
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "Date Picker",
+      "description": "Three-column month/day/year picker using native scroll wheels.",
+      "dependencies": ["@react-native-picker/picker"],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/date-picker.tsx", "type": "registry:ui", "target": "components/ui/date-picker.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "animationTier": 1, "tags": ["form", "input", "date"] }
     },
     {
       "name": "bottom-sheet",
@@ -454,17 +340,9 @@
       "dependencies": ["react-native-reanimated", "react-native-gesture-handler"],
       "registryDependencies": ["theme"],
       "files": [
-        {
-          "path": "registry/components/bottom-sheet.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/bottom-sheet.tsx"
-        }
+        { "path": "registry/components/bottom-sheet.tsx", "type": "registry:ui", "target": "components/ui/bottom-sheet.tsx" }
       ],
-      "meta": {
-        "platforms": ["ios", "android"],
-        "animationTier": 3,
-        "tags": ["overlay", "modal", "gesture"]
-      }
+      "meta": { "platforms": ["ios", "android"], "animationTier": 3, "tags": ["overlay", "modal", "gesture"] }
     }
   ]
 }

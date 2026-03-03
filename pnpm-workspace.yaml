@@ -1,3 +1,6 @@
 packages:
-  - "cli"
-  - "example"
+  - cli
+  - example
+
+ignoredBuiltDependencies:
+  - esbuild
