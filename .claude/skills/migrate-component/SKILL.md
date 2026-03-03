@@ -309,7 +309,42 @@ If a file referenced in `registry.json` doesn't exist, the build will fail with 
 
 ---
 
-## Step 9 — Commit and push
+## Step 9 — Update README.md
+
+Open `README.md` at the repo root and add the new component to the correct table in the **Available Components** section.
+
+The README organizes components into these category tables:
+
+| Section | What goes here |
+|---|---|
+| **Core** | Foundation utilities: `theme`, `haptics`, `glass`, `use-color-scheme` |
+| **Icons** | Icon-related: `icon-symbol`, `svg-icons`, `action-icon`, `theme-icon` |
+| **Form & Input** | Interactive inputs: `button`, `text-input`, `text-area`, `otp-input`, `date-picker`, `slider-bar`, `ruler-slider` |
+| **Selection** | Choice/selection UI: `choice-card`, `choice-binary`, `option-card`, `option-group` |
+| **Display & Feedback** | Visual/read-only: `card`, `badge`, `separator`, `skeleton`, `touchable-scale`, `progress-ring`, `ticker`, `markdown` |
+| **Overlay** | Modal/sheet layers: `bottom-sheet` |
+
+Add a new row in the appropriate table using this format:
+
+```markdown
+| `my-component` | Short description of what it does | N |
+```
+
+Where `N` is the animation tier (`1`, `2`, or `3`). For core items use `—` instead of a number.
+
+If the new component doesn't fit any existing category, create a new category section following the same pattern:
+
+```markdown
+### New Category
+
+| Component | Description | Tier |
+|-----------|-------------|------|
+| `my-component` | Description here | 2 |
+```
+
+---
+
+## Step 10 — Commit and push
 
 Stage only the relevant files (never stage `node_modules`, `.env`, or `public/` which is gitignored):
 
@@ -318,7 +353,8 @@ cd /Users/klim/Projects/popapp/ui
 
 git add \
   registry/components/my-component.tsx \
-  registry.json
+  registry.json \
+  README.md
 
 git commit -m "feat: add my-component
 
@@ -338,7 +374,7 @@ git push origin main
 
 ---
 
-## Step 10 — Verify GitHub Pages deployment
+## Step 11 — Verify GitHub Pages deployment
 
 After pushing, GitHub Actions automatically:
 1. Builds the CLI (`pnpm build`)
@@ -377,6 +413,7 @@ Before considering the migration complete, verify ALL of these:
 - [ ] Entry added to `registry.json` with correct `dependencies`, `registryDependencies`, `files`, `meta`
 - [ ] `npx tsc --noEmit` passes with zero errors
 - [ ] `pnpm build:registry` succeeds and shows the new component
+- [ ] `README.md` updated with new component in the correct category table
 - [ ] Changes committed and pushed to `main`
 - [ ] GitHub Actions deployment succeeded
 - [ ] Component accessible at `https://popapp-ai.github.io/ui/r/{name}.json`
