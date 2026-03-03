@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useTheme } from "@popapp/theme/use-theme";
 import { impactMedium } from "@popapp/utils/haptics";
+import { SafeGlassView, isGlassAvailable } from "@popapp/utils/glass";
 
 // ---------------------------------------------------------------------------
 // Size tokens
@@ -36,6 +37,8 @@ export interface ButtonProps extends TouchableOpacityProps {
   /** Trigger haptic feedback on press. */
   haptic?: boolean;
   fullWidth?: boolean;
+  /** Enable Liquid Glass effect (iOS 26+). Default: false */
+  glass?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -54,10 +57,13 @@ export function Button({
   haptic = true,
   onPress,
   fullWidth = false,
+  glass = false,
   ...rest
 }: ButtonProps) {
   const { colors } = useTheme();
   const tokens = SIZE_TOKENS[size];
+
+  const useGlass = glass && isGlassAvailable();
 
   // Resolve variant colours
   let bg: string;
@@ -95,9 +101,9 @@ export function Button({
     onPress?.(e);
   };
 
-  return (
+  const buttonContent = (
     <TouchableOpacity
-      activeOpacity={0.8}
+      activeOpacity={useGlass ? 1 : 0.8}
       disabled={disabled || isLoading}
       onPress={handlePress}
       {...rest}
@@ -108,8 +114,8 @@ export function Button({
           styles.button,
           {
             borderRadius: tokens.borderRadius,
-            backgroundColor: bg,
-            borderColor,
+            backgroundColor: useGlass ? "transparent" : bg,
+            borderColor: useGlass ? "transparent" : borderColor,
             height: tokens.height,
             paddingHorizontal: tokens.paddingHorizontal,
           },
@@ -135,6 +141,20 @@ export function Button({
       </View>
     </TouchableOpacity>
   );
+
+  if (useGlass) {
+    return (
+      <SafeGlassView
+        tintColor={bg}
+        isInteractive={!disabled}
+        style={{ borderRadius: tokens.borderRadius }}
+      >
+        {buttonContent}
+      </SafeGlassView>
+    );
+  }
+
+  return buttonContent;
 }
 
 // ---------------------------------------------------------------------------

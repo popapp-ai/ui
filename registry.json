@@ -68,7 +68,7 @@
       "title": "Button",
       "description": "Pressable button with variants, sizes, loading state, and haptic feedback.",
       "dependencies": [],
-      "registryDependencies": ["theme", "haptics"],
+      "registryDependencies": ["theme", "haptics", "glass"],
       "files": [
         {
           "path": "registry/components/button.tsx",
@@ -78,7 +78,7 @@
       ],
       "meta": {
         "platforms": ["ios", "android", "web"],
-        "optionalDeps": ["expo-haptics"],
+        "optionalDeps": ["expo-haptics", "expo-glass-effect"],
         "animationTier": 1,
         "tags": ["form", "action"]
       }
@@ -326,6 +326,144 @@
         "optionalDeps": ["expo-haptics"],
         "animationTier": 2,
         "tags": ["form", "selection"]
+      }
+    },
+    {
+      "name": "glass",
+      "type": "registry:lib",
+      "title": "Glass View",
+      "description": "Safe wrapper for expo-glass-effect Liquid Glass. Falls back gracefully when unavailable.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/utils/glass.tsx",
+          "type": "registry:lib",
+          "target": "lib/glass.tsx"
+        }
+      ],
+      "meta": {
+        "optionalDeps": ["expo-glass-effect"]
+      }
+    },
+    {
+      "name": "svg-icons",
+      "type": "registry:ui",
+      "title": "SVG Icons",
+      "description": "Extensible custom SVG icon system with BaseIcon wrapper and registry pattern.",
+      "dependencies": ["react-native-svg"],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/svg-icons/base-icon.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/svg-icons/base-icon.tsx"
+        },
+        {
+          "path": "registry/components/svg-icons/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/svg-icons/index.ts"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "tags": ["icon", "svg"]
+      }
+    },
+    {
+      "name": "icon-symbol",
+      "type": "registry:ui",
+      "title": "Icon Symbol",
+      "description": "Cross-platform icon component: SF Symbols on iOS, Material Icons on Android/web, with custom SVG support.",
+      "dependencies": ["expo-symbols", "@expo/vector-icons"],
+      "registryDependencies": ["svg-icons"],
+      "files": [
+        {
+          "path": "registry/components/icon-symbol.types.ts",
+          "type": "registry:ui",
+          "target": "components/ui/icon-symbol.types.ts"
+        },
+        {
+          "path": "registry/components/icon-svg.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/icon-svg.tsx"
+        },
+        {
+          "path": "registry/components/icon-symbol.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/icon-symbol.tsx"
+        },
+        {
+          "path": "registry/components/icon-symbol.ios.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/icon-symbol.ios.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "tags": ["icon", "cross-platform"]
+      }
+    },
+    {
+      "name": "action-icon",
+      "type": "registry:ui",
+      "title": "Action Icon",
+      "description": "Circular icon button with Liquid Glass support and size/variant options.",
+      "dependencies": [],
+      "registryDependencies": ["theme", "glass", "icon-symbol"],
+      "files": [
+        {
+          "path": "registry/components/action-icon.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/action-icon.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android", "web"],
+        "optionalDeps": ["expo-glass-effect"],
+        "animationTier": 1,
+        "tags": ["action", "icon"]
+      }
+    },
+    {
+      "name": "slider-bar",
+      "type": "registry:ui",
+      "title": "Slider Bar",
+      "description": "Animated slider with gesture control, step snapping, labels, and haptic feedback.",
+      "dependencies": ["react-native-reanimated", "react-native-gesture-handler"],
+      "registryDependencies": ["theme", "haptics", "icon-symbol"],
+      "files": [
+        {
+          "path": "registry/components/slider-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/slider-bar.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android"],
+        "optionalDeps": ["expo-haptics"],
+        "animationTier": 3,
+        "tags": ["form", "input", "gesture"]
+      }
+    },
+    {
+      "name": "bottom-sheet",
+      "type": "registry:ui",
+      "title": "Bottom Sheet",
+      "description": "Modal bottom sheet with pan-to-dismiss gesture, backdrop, and spring animations.",
+      "dependencies": ["react-native-reanimated", "react-native-gesture-handler"],
+      "registryDependencies": ["theme"],
+      "files": [
+        {
+          "path": "registry/components/bottom-sheet.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/bottom-sheet.tsx"
+        }
+      ],
+      "meta": {
+        "platforms": ["ios", "android"],
+        "animationTier": 3,
+        "tags": ["overlay", "modal", "gesture"]
       }
     }
   ]

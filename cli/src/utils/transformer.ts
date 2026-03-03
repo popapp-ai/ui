@@ -23,22 +23,22 @@ export function transformImports(
   return source
     // @popapp/theme/* -> {alias}{lib}/theme/*
     .replace(
-      /@popapp\/theme\/([\w-]+)/g,
+      /@popapp\/theme\/([\w./-]+)/g,
       `${pathAlias}${aliases.lib}/theme/$1`,
     )
     // @popapp/components/* -> {alias}{components}/*
     .replace(
-      /@popapp\/components\/([\w-]+)/g,
+      /@popapp\/components\/([\w./-]+)/g,
       `${pathAlias}${aliases.components}/$1`,
     )
     // @popapp/hooks/* -> {alias}{hooks}/*
     .replace(
-      /@popapp\/hooks\/([\w-]+)/g,
+      /@popapp\/hooks\/([\w./-]+)/g,
       `${pathAlias}${aliases.hooks}/$1`,
     )
     // @popapp/utils/* -> {alias}{lib}/*
     .replace(
-      /@popapp\/utils\/([\w-]+)/g,
+      /@popapp\/utils\/([\w./-]+)/g,
       `${pathAlias}${aliases.lib}/$1`,
     );
 }
