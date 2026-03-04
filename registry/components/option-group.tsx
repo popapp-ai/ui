@@ -18,8 +18,6 @@ interface SingleSelectProps {
   mode: "single";
   value: string | null;
   onChange: (value: string) => void;
-  /** Optional checkmark icon for multi-select checkbox. */
-  checkIcon?: React.ReactNode;
   /** Trigger haptic feedback. Default: true */
   haptic?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -30,8 +28,6 @@ interface MultiSelectProps {
   mode: "multi";
   value: string[];
   onChange: (value: string[]) => void;
-  /** Optional checkmark icon for multi-select checkbox. */
-  checkIcon?: React.ReactNode;
   /** Trigger haptic feedback. Default: true */
   haptic?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -44,7 +40,7 @@ export type OptionGroupProps = SingleSelectProps | MultiSelectProps;
 // ---------------------------------------------------------------------------
 
 export function OptionGroup(props: OptionGroupProps) {
-  const { options, mode, checkIcon, haptic = true, style } = props;
+  const { options, mode, haptic = true, style } = props;
 
   const handlePress = (optionValue: string) => {
     if (mode === "single") {
@@ -76,7 +72,6 @@ export function OptionGroup(props: OptionGroupProps) {
           selected={isSelected(option.value)}
           onPress={() => handlePress(option.value)}
           showCheckbox={mode === "multi"}
-          checkIcon={checkIcon}
           haptic={haptic}
         />
       ))}

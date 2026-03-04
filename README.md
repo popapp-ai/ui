@@ -86,6 +86,7 @@ export default function RootLayout() {
 | `date-picker` | Three-column month/day/year native picker | 1 |
 | `slider-bar` | Gesture slider with step snapping and labels | 3 |
 | `ruler-slider` | iOS-style Skia ruler with momentum & decay physics | 3 |
+| `input-stepper` | Numeric stepper with animated ticker and +/- buttons | 2 |
 
 ### Selection
 

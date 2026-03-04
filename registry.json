@@ -218,7 +218,7 @@
       "title": "Option Card",
       "description": "Selectable list option with optional checkbox, icon, and description.",
       "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["theme", "haptics", "touchable-scale"],
+      "registryDependencies": ["theme", "haptics", "touchable-scale", "icon-symbol"],
       "files": [
         { "path": "registry/components/option-card.tsx", "type": "registry:ui", "target": "components/ui/option-card.tsx" }
       ],
@@ -337,12 +337,24 @@
       "type": "registry:ui",
       "title": "Bottom Sheet",
       "description": "Modal bottom sheet with pan-to-dismiss gesture, backdrop, and spring animations.",
-      "dependencies": ["react-native-reanimated", "react-native-gesture-handler"],
+      "dependencies": ["react-native-reanimated", "react-native-gesture-handler", "react-native-multiple-modals", "react-native-keyboard-controller", "react-native-safe-area-context"],
       "registryDependencies": ["theme"],
       "files": [
         { "path": "registry/components/bottom-sheet.tsx", "type": "registry:ui", "target": "components/ui/bottom-sheet.tsx" }
       ],
       "meta": { "platforms": ["ios", "android"], "animationTier": 3, "tags": ["overlay", "modal", "gesture"] }
+    },
+    {
+      "name": "input-stepper",
+      "type": "registry:ui",
+      "title": "Input Stepper",
+      "description": "Numeric stepper with animated ticker display, increment/decrement buttons, and optional value tap action.",
+      "dependencies": ["moti", "@react-native-masked-view/masked-view", "expo-linear-gradient", "react-native-reanimated"],
+      "registryDependencies": ["theme", "ticker", "action-icon", "touchable-scale"],
+      "files": [
+        { "path": "registry/components/input-stepper.tsx", "type": "registry:ui", "target": "components/ui/input-stepper.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "optionalDeps": ["expo-haptics", "expo-glass-effect"], "animationTier": 2, "tags": ["form", "input", "stepper"] }
     }
   ]
 }

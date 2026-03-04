@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
 import { useTheme } from "@popapp/theme/use-theme";
+import { IconSymbol } from "@popapp/components/icon-symbol";
 import { TouchableScale } from "@popapp/components/touchable-scale";
 import { impactLight } from "@popapp/utils/haptics";
 
@@ -21,8 +22,6 @@ export interface OptionCardProps {
   onPress: () => void;
   /** Show a checkbox indicator on the left. Default: false */
   showCheckbox?: boolean;
-  /** Optional checkmark icon to render when selected with checkbox. */
-  checkIcon?: React.ReactNode;
   /** Trigger haptic feedback on press. Default: true */
   haptic?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -39,7 +38,6 @@ export function OptionCard({
   selected,
   onPress,
   showCheckbox = false,
-  checkIcon,
   haptic = true,
   style,
 }: OptionCardProps) {
@@ -74,7 +72,9 @@ export function OptionCard({
             },
           ]}
         >
-          {selected && checkIcon}
+          {selected && (
+            <IconSymbol name="checkmark" size={14} color={colors.primaryForeground} />
+          )}
         </View>
       )}
       {icon && <View style={styles.iconContainer}>{icon}</View>}

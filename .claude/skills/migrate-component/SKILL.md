@@ -429,7 +429,7 @@ When setting `registryDependencies`, use these names:
 **Form:** `button`, `text-input`, `text-area`, `otp-input`, `date-picker`, `slider-bar`, `ruler-slider`
 **Selection:** `choice-card`, `choice-binary`, `option-card`, `option-group`
 **Display:** `card`, `badge`, `separator`, `skeleton`, `touchable-scale`, `progress-ring`, `ticker`, `markdown`
-**Overlay:** `bottom-sheet`
+**Overlay:** `bottom-sheet` — requires `react-native-multiple-modals`, `react-native-keyboard-controller` (for ModalView and KeyboardStickyView)
 
 ---
 

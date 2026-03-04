@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect } from "react";
-import { Keyboard, Modal, StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { ModalView } from 'react-native-multiple-modals';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -22,6 +25,8 @@ export interface BottomSheetProps {
   /** Called when the sheet should close. */
   onDismiss: () => void;
   children: React.ReactNode;
+  /** Whether the sheet should be keyboard aware (default false). */
+  keyboardAware?: boolean;
   /** Backdrop opacity (default 0.4). */
   backdropOpacity?: number;
   /** Dismiss when tapping the backdrop (default true). */
@@ -29,7 +34,9 @@ export interface BottomSheetProps {
   /** Allow swipe-to-dismiss (default true). */
   panToDismiss?: boolean;
   /** Extra padding at the bottom (default 16). */
-  extraBottomPadding?: number;
+  paddingBottom?: number;
+  /** Offset for extra bottom space outside the screen */
+  bottomOverflowOffset?: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -40,12 +47,15 @@ export function BottomSheet({
   visible,
   onDismiss,
   children,
+  keyboardAware = false,
   backdropOpacity = 0.4,
   dismissOnBackdrop = true,
   panToDismiss = true,
-  extraBottomPadding = 16,
+  paddingBottom = 16,
+  bottomOverflowOffset = 100,
 }: BottomSheetProps) {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const translateY = useSharedValue(800);
   const backdrop = useSharedValue(0);
@@ -58,6 +68,7 @@ export function BottomSheet({
   }, [onDismiss, contentHeight]);
 
   const triggerDismiss = useCallback(() => {
+    if (!dismissOnBackdrop) return;
     translateY.value = withTiming(800, { duration: 280 });
     backdrop.value = withTiming(0, { duration: 220 }, (finished) => {
       if (finished) {
@@ -137,50 +148,54 @@ export function BottomSheet({
     });
 
   const sheetAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
+    transform: [{ translateY: translateY.value + bottomOverflowOffset }],
   }));
 
   const backdropAnimatedStyle = useAnimatedStyle(() => ({
     opacity: backdrop.value,
   }));
 
-  if (!visible) return null;
+  const sheetContent = (
+    <GestureDetector gesture={panGesture}>
+      <Animated.View
+        style={[
+          styles.sheet,
+          sheetAnimatedStyle,
+          {
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+            paddingBottom: insets.bottom + paddingBottom + bottomOverflowOffset,
+          },
+        ]}
+      >
+        <View style={styles.handle}>
+          <View style={[styles.handleBar, { backgroundColor: colors.muted }]} />
+        </View>
+        <View onLayout={handleContentLayout}>{children}</View>
+      </Animated.View>
+    </GestureDetector>
+  );
+
+  if(!visible) return null;
 
   return (
-    <Modal
-      transparent
-      animationType="none"
-      visible={visible}
-      onRequestClose={triggerDismiss}
-    >
+    <ModalView animationType="none" onRequestDismiss={triggerDismiss} showBackdrop={false} >
       <View style={styles.overlay}>
-        <Animated.View
-          style={[styles.backdrop, backdropAnimatedStyle]}
-          onTouchStart={dismissOnBackdrop ? triggerDismiss : undefined}
-        />
+        <Animated.View style={[styles.backdrop, backdropAnimatedStyle]} onTouchStart={triggerDismiss} />
 
-        <GestureDetector gesture={panGesture}>
-          <Animated.View
-            style={[
-              styles.sheet,
-              sheetAnimatedStyle,
-              {
-                backgroundColor: colors.card,
-                borderColor: colors.border,
-                paddingBottom: extraBottomPadding,
-              },
-            ]}
+        {keyboardAware ? (
+          <KeyboardStickyView
+            style={styles.keyboardWrapper}
+            offset={{ opened: insets.bottom, closed: 0 }}
+            pointerEvents='box-none'
           >
-            <View style={styles.handle}>
-              <View
-                style={[styles.handleBar, { backgroundColor: colors.muted }]}
-              />
-            </View>
-            <View onLayout={handleContentLayout}>{children}</View>
-          </Animated.View>
-        </GestureDetector>
+            {sheetContent}
+          </KeyboardStickyView>
+        ) : (
+          sheetContent
+        )}
       </View>
-    </Modal>
+    </ModalView>
   );
 }
 
@@ -211,5 +226,11 @@ const styles = StyleSheet.create({
     width: 36,
     height: 4,
     borderRadius: 2,
+  },
+  keyboardWrapper: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });

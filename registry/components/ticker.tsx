@@ -44,6 +44,7 @@ const Tick: React.FC<TickProps> = ({ children, fontSize, style, color }) => {
         styles.tickText,
         {
           fontSize,
+          height: fontSize * HEIGHT_MULTIPLIER,
           lineHeight: fontSize * HEIGHT_MULTIPLIER,
           color,
         },

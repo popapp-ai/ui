@@ -63,7 +63,7 @@ export function Button({
   const { colors } = useTheme();
   const tokens = SIZE_TOKENS[size];
 
-  const useGlass = glass && isGlassAvailable();
+  const useGlass = glass && isGlassAvailable() && variant !== "ghost";
 
   // Resolve variant colours
   let bg: string;
@@ -79,6 +79,7 @@ export function Button({
     case "ghost":
       bg = "transparent";
       fg = colors.primary;
+      borderColor = 'transparent';
       break;
     case "subtle":
       bg = colors.cardSecondary;
