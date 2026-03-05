@@ -21,7 +21,7 @@ Read the source component file. Identify:
 - Dependencies (`import` statements)
 - What theme values it uses (colors, spacing, etc.)
 - Platform-specific code (iOS/Android/web)
-- Animation libraries used (Reanimated, Gesture Handler, Moti, Skia, etc.)
+- Animation libraries used (Reanimated, Gesture Handler, Skia, etc.)
 - Any hard-coded colors/strings that should use theme tokens
 
 ---
@@ -358,9 +358,7 @@ git add \
 
 git commit -m "feat: add my-component
 
-Description of what the component does.
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+Description of what the component does."
 
 git push origin main
 ```

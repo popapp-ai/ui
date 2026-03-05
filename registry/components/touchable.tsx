@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import {
   Pressable,
+  TouchableOpacity,
+  type TouchableOpacityProps as RNTouchableOpacityProps,
   type PressableProps,
   type TransformsStyle,
 } from "react-native";
@@ -15,7 +17,7 @@ import { impactLight } from "@popapp/utils/haptics";
 // Props
 // ---------------------------------------------------------------------------
 
-export interface TouchableScaleProps extends Omit<PressableProps, "style"> {
+export type TouchableScaleProps = Omit<PressableProps, "style"> & {
   children: React.ReactNode;
   style?: PressableProps["style"];
   disabled?: boolean;
@@ -30,7 +32,15 @@ export interface TouchableScaleProps extends Omit<PressableProps, "style"> {
   transform?: TransformsStyle["transform"];
   /** Trigger haptic feedback on press. */
   haptic?: boolean;
+  /** Effect to use. Default: "scale" */
+  effect?: "scale";
 }
+
+export type TouchableOpacityProps = Omit<RNTouchableOpacityProps, "style"> & {
+  effect?: "opacity";
+}
+
+export type TouchableProps = TouchableScaleProps | TouchableOpacityProps;
 
 // ---------------------------------------------------------------------------
 // Component
@@ -38,7 +48,19 @@ export interface TouchableScaleProps extends Omit<PressableProps, "style"> {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export function TouchableScale({
+export function Touchable(props: TouchableOpacityProps): React.ReactElement;
+export function Touchable(props: TouchableScaleProps): React.ReactElement;
+export function Touchable(
+  props: TouchableScaleProps | TouchableOpacityProps
+): React.ReactElement {
+  if (props.effect === "opacity") {
+    const { effect, ...rest } = props;
+    return <TouchableOpacity {...(rest as RNTouchableOpacityProps)} />;
+  }
+  return <TouchableScale {...(props as TouchableScaleProps)} />;
+}
+
+function TouchableScale({
   children,
   style,
   disabled = false,
@@ -49,6 +71,7 @@ export function TouchableScale({
   pressOutDuration = 150,
   transform = [],
   haptic = true,
+  effect = "scale", 
   ...pressableProps
 }: TouchableScaleProps) {
   const scale = useSharedValue(1);

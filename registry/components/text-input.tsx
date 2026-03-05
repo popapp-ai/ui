@@ -31,9 +31,8 @@ export interface TextInputProps extends Omit<RNTextInputProps, "style"> {
   label?: string;
   error?: string;
   size?: keyof typeof SIZE_TOKENS;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  onRightIconPress?: () => void;
+  leftSection?: React.ReactNode;
+  rightSection?: React.ReactNode;
   disabled?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
@@ -49,9 +48,8 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
       label,
       error,
       size = "lg",
-      leftIcon,
-      rightIcon,
-      onRightIconPress,
+      leftSection,
+      rightSection,
       disabled = false,
       containerStyle,
       inputStyle,
@@ -90,7 +88,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
             },
           ]}
         >
-          {leftIcon && <View style={styles.iconLeft}>{leftIcon}</View>}
+          {leftSection && <View style={styles.leftSection}>{leftSection}</View>}
 
           <RNTextInput
             ref={ref}
@@ -112,15 +110,8 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
             ]}
           />
 
-          {rightIcon && (
-            <Pressable
-              onPress={onRightIconPress}
-              hitSlop={8}
-              disabled={!onRightIconPress}
-              style={styles.iconRight}
-            >
-              {rightIcon}
-            </Pressable>
+          {rightSection && (
+            <View style={styles.rightSection}>{rightSection}</View>
           )}
         </View>
         {error && (
@@ -160,10 +151,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
   },
-  iconLeft: {
+  leftSection: {
     marginRight: 8,
   },
-  iconRight: {
+  rightSection: {
     marginLeft: 8,
   },
   error: {

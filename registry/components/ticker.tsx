@@ -1,10 +1,17 @@
 import { useTheme } from "@popapp/theme/use-theme";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { MotiView } from "moti";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+} from "react-native-reanimated";
 
 type TickerProps = {
   value: number | string;
@@ -65,9 +72,26 @@ const TickerList: React.FC<TickerListProps> = ({
   layoutDisabled,
 }) => {
   const numbers = Array.from({ length: 10 }, (_, i) => i);
+  const translateY = useSharedValue(0);
+
+  useLayoutEffect(() => {
+    const target = -fontSize * HEIGHT_MULTIPLIER * digit;
+    if (animationDisabled) {
+      translateY.value = target;
+    } else {
+      translateY.value = withDelay(
+        index * STAGGER,
+        withSpring(target, { damping: 18, stiffness: 150, mass: 1 })
+      );
+    }
+  }, [digit, fontSize, animationDisabled, index]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   return (
-    <MotiView
+    <Animated.View
       entering={animationDisabled ? undefined : FadeIn}
       exiting={animationDisabled ? undefined : FadeOut}
       layout={layoutDisabled || animationDisabled ? undefined : LinearTransition.springify().mass(1).damping(18).stiffness(150)}
@@ -84,30 +108,15 @@ const TickerList: React.FC<TickerListProps> = ({
         }
         style={[styles.cellContainer, { height: fontSize * HEIGHT_MULTIPLIER }]}
       >
-        <MotiView
-          animate={{
-            translateY: -fontSize * HEIGHT_MULTIPLIER * digit,
-          }}
-          transition={
-            animationDisabled
-              ? { type: "timing", duration: 0 }
-              : {
-                  type: "spring",
-                  damping: 18,
-                  stiffness: 150,
-                  mass: 1,
-                  delay: index * STAGGER,
-                }
-          }
-        >
+        <Animated.View style={animatedStyle}>
           {numbers.map((n) => (
             <Tick key={n} fontSize={fontSize} color={color}>
               {n.toString()}
             </Tick>
           ))}
-        </MotiView>
+        </Animated.View>
       </MaskedView>
-    </MotiView>
+    </Animated.View>
   );
 };
 
@@ -175,13 +184,13 @@ export const Ticker: React.FC<TickerProps> = ({
         );
       })}
       {unit ? (
-        <MotiView
+        <Animated.View
           entering={animationDisabled ? undefined : FadeIn}
           exiting={animationDisabled ? undefined : FadeOut}
           layout={layoutDisabled || animationDisabled ? undefined : LinearTransition.springify().mass(1).damping(18).stiffness(150)}
         >
           <Tick fontSize={fontSize} color={tickColor} style={[styles.nonNumber, { marginLeft: fontSize / 5 }]}>{unit}</Tick>
-        </MotiView>
+        </Animated.View>
       ) : null}
     </View>
   );

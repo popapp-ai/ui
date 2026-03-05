@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
 import { useTheme } from "@popapp/theme/use-theme";
-import { TouchableScale } from "@popapp/components/touchable-scale";
+import { Touchable } from "@popapp/components/touchable";
 import { impactLight } from "@popapp/utils/haptics";
 
 // ---------------------------------------------------------------------------
@@ -39,21 +39,19 @@ export function ChoiceCard({
 }: ChoiceCardProps) {
   const { colors } = useTheme();
 
-  const selectedBg = colors.primary + "10";
-
   const handlePress = () => {
     if (haptic) impactLight();
     onPress();
   };
 
   return (
-    <TouchableScale
+    <Touchable
       onPress={handlePress}
       style={[
         styles.card,
         {
           borderColor: selected ? colors.primary : colors.border,
-          backgroundColor: selected ? selectedBg : colors.card,
+          backgroundColor: colors.card,
         },
         style,
       ]}
@@ -65,7 +63,7 @@ export function ChoiceCard({
           {subtitle}
         </Text>
       )}
-    </TouchableScale>
+    </Touchable>
   );
 }
 
@@ -97,5 +95,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     textAlign: "center",
     marginTop: -4,
+    marginBottom: 6,
   },
 });

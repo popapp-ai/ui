@@ -48,7 +48,7 @@ export function CardHeader({ children, style, ...rest }: CardHeaderProps) {
 // ---------------------------------------------------------------------------
 
 export interface CardTitleProps {
-  children: string;
+  children: string | React.ReactNode;
   style?: ViewStyle;
 }
 
@@ -67,7 +67,7 @@ export function CardTitle({ children, style }: CardTitleProps) {
 // ---------------------------------------------------------------------------
 
 export interface CardDescriptionProps {
-  children: string;
+  children: string | React.ReactNode;
   style?: ViewStyle;
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
 import { useTheme } from "@popapp/theme/use-theme";
 import { IconSymbol } from "@popapp/components/icon-symbol";
-import { TouchableScale } from "@popapp/components/touchable-scale";
+import { Touchable } from "@popapp/components/touchable";
 import { impactLight } from "@popapp/utils/haptics";
 
 // ---------------------------------------------------------------------------
@@ -49,13 +49,13 @@ export function OptionCard({
   };
 
   return (
-    <TouchableScale
+    <Touchable
       onPress={handlePress}
       style={[
         styles.container,
         {
           borderColor: selected ? colors.primary : colors.border,
-          backgroundColor: selected ? colors.backgroundSecondary : colors.card,
+          backgroundColor: colors.card,
         },
         style,
       ]}
@@ -90,7 +90,7 @@ export function OptionCard({
           </Text>
         )}
       </View>
-    </TouchableScale>
+    </Touchable>
   );
 }
 

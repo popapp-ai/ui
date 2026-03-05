@@ -10,6 +10,7 @@ import {
 import { useTheme } from "@popapp/theme/use-theme";
 import { impactMedium } from "@popapp/utils/haptics";
 import { SafeGlassView, isGlassAvailable } from "@popapp/utils/glass";
+import { Touchable } from "./touchable";
 
 // ---------------------------------------------------------------------------
 // Size tokens
@@ -46,6 +47,7 @@ export interface ButtonProps extends TouchableOpacityProps {
 // ---------------------------------------------------------------------------
 
 export function Button({
+  onPress,
   title,
   variant = "solid",
   size = "lg",
@@ -55,9 +57,8 @@ export function Button({
   rightIcon,
   disabled,
   haptic = true,
-  onPress,
   fullWidth = false,
-  glass = false,
+  glass = true,
   ...rest
 }: ButtonProps) {
   const { colors } = useTheme();
@@ -82,18 +83,20 @@ export function Button({
       borderColor = 'transparent';
       break;
     case "subtle":
-      bg = colors.cardSecondary;
+      bg = useGlass ? colors.card : colors.cardSecondary;
       fg = colors.foreground;
       borderColor = colors.border;
       break;
     case "destructive":
       bg = colors.destructive;
       fg = colors.destructiveForeground;
+      borderColor = colors.destructive;
       break;
     case "solid":
     default:
       bg = disabled ? colors.muted : colors.primary;
       fg = disabled ? colors.background : colors.primaryForeground;
+      borderColor = disabled ? colors.muted : colors.primary;
       break;
   }
 
@@ -102,9 +105,11 @@ export function Button({
     onPress?.(e);
   };
 
+  const TouchableComponent = useGlass ? TouchableOpacity : Touchable;
+
   const buttonContent = (
-    <TouchableOpacity
-      activeOpacity={useGlass ? 1 : 0.8}
+    <TouchableComponent
+      activeOpacity={0.8}
       disabled={disabled || isLoading}
       onPress={handlePress}
       {...rest}
@@ -117,7 +122,7 @@ export function Button({
             borderRadius: tokens.borderRadius,
             backgroundColor: useGlass ? "transparent" : bg,
             borderColor: useGlass ? "transparent" : borderColor,
-            height: tokens.height,
+            height: tokens.height,            
             paddingHorizontal: tokens.paddingHorizontal,
           },
         ]}
@@ -140,7 +145,7 @@ export function Button({
           )}
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableComponent>
   );
 
   if (useGlass) {
@@ -148,7 +153,7 @@ export function Button({
       <SafeGlassView
         tintColor={bg}
         isInteractive={!disabled}
-        style={{ borderRadius: tokens.borderRadius }}
+        style={{ borderRadius: tokens.borderRadius, height: tokens.height }}
       >
         {buttonContent}
       </SafeGlassView>

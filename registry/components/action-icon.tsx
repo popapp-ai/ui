@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
   type TouchableOpacityProps,
@@ -7,7 +8,19 @@ import {
 import { useTheme } from "@popapp/theme/use-theme";
 import { IconSymbol } from "@popapp/components/icon-symbol";
 import type { IconSymbolName } from "@popapp/components/icon-symbol.types";
+import { impactMedium } from "@popapp/utils/haptics";
 import { SafeGlassView, isGlassAvailable } from "@popapp/utils/glass";
+
+// ---------------------------------------------------------------------------
+// Size tokens
+// ---------------------------------------------------------------------------
+
+const SIZE_TOKENS = {
+  xs: { width: 32, height: 32, borderRadius: 16, iconSize: 16 },
+  sm: { width: 38, height: 38, borderRadius: 19, iconSize: 18 },
+  md: { width: 44, height: 44, borderRadius: 22, iconSize: 22 },
+  lg: { width: 56, height: 56, borderRadius: 28, iconSize: 26 },
+} as const;
 
 // ---------------------------------------------------------------------------
 // Props
@@ -16,31 +29,19 @@ import { SafeGlassView, isGlassAvailable } from "@popapp/utils/glass";
 export interface ActionIconProps extends TouchableOpacityProps {
   /** SF Symbol name (iOS) / Material Icon mapping (Android). */
   name: IconSymbolName;
-  /** Enable Liquid Glass effect. Default: true */
-  glass?: boolean;
-  /** Icon button size. Default: "medium" */
-  size?: "small" | "medium" | "large";
+  /** Visual variant. Default: "subtle" */
+  variant?: "solid" | "outline" | "ghost" | "subtle" | "destructive";
+  /** Icon button size. Default: "md" */
+  size?: keyof typeof SIZE_TOKENS;
   /** Disabled state. */
   disabled?: boolean;
-  /** Color variant. Default: "secondary" */
-  variant?: "secondary" | "primary";
+  /** Show a loading spinner instead of the icon. */
+  isLoading?: boolean;
+  /** Trigger haptic feedback on press. */
+  haptic?: boolean;
+  /** Enable Liquid Glass effect (iOS 26+). Default: false */
+  glass?: boolean;
 }
-
-// ---------------------------------------------------------------------------
-// Size map
-// ---------------------------------------------------------------------------
-
-const SIZE_MAP = {
-  small: { width: 38, height: 38 },
-  medium: { width: 44, height: 44 },
-  large: { width: 56, height: 56 },
-} as const;
-
-const ICON_SIZE_MAP = {
-  small: 18,
-  medium: 22,
-  large: 26,
-} as const;
 
 // ---------------------------------------------------------------------------
 // Component
@@ -49,54 +50,99 @@ const ICON_SIZE_MAP = {
 export function ActionIcon({
   onPress,
   name,
-  glass = true,
-  size = "medium",
+  variant = "subtle",
+  size = "md",
   disabled = false,
-  variant = "secondary",
+  isLoading = false,
+  haptic = true,
+  glass = true,
   style,
   ...rest
 }: ActionIconProps) {
   const { colors } = useTheme();
+  const tokens = SIZE_TOKENS[size];
 
-  const sizeStyle = SIZE_MAP[size];
-  const iconSize = ICON_SIZE_MAP[size];
-  const useGlass = glass && isGlassAvailable();
+  const useGlass = glass && isGlassAvailable() && variant !== "ghost";
 
-  const bgColor = variant === "primary" ? colors.primary : colors.card;
-  const textColor =
-    variant === "primary" ? colors.primaryForeground : colors.foreground;
+  // Resolve variant colours
+  let bg: string;
+  let fg: string;
+  let borderColor: string | undefined;
 
-  const inner = (
+  switch (variant) {
+    case "outline":
+      bg = "transparent";
+      fg = colors.primary;
+      borderColor = colors.primary;
+      break;
+    case "ghost":
+      bg = "transparent";
+      fg = colors.primary;
+      borderColor = "transparent";
+      break;
+    case "subtle":
+      bg = useGlass ? colors.card : colors.cardSecondary;
+      fg = colors.foreground;
+      borderColor = colors.border;
+      break;
+    case "destructive":
+      bg = colors.destructive;
+      fg = colors.destructiveForeground;
+      borderColor = colors.destructive;
+      break;
+    case "solid":
+    default:
+      bg = disabled ? colors.muted : colors.primary;
+      fg = disabled ? colors.background : colors.primaryForeground;
+      borderColor = disabled ? colors.muted : colors.primary;
+      break;
+  }
+
+  const handlePress = (e: any) => {
+    if (haptic) impactMedium();
+    onPress?.(e);
+  };
+
+  const buttonContent = (
     <TouchableOpacity
-      onPress={onPress}
       activeOpacity={useGlass ? 1 : 0.8}
+      disabled={disabled || isLoading}
+      onPress={handlePress}
+      {...rest}
       style={[
         styles.wrapper,
-        sizeStyle,
-        !useGlass && { backgroundColor: bgColor },
+        {
+          width: tokens.width,
+          height: tokens.height,
+          borderRadius: tokens.borderRadius,
+          backgroundColor: useGlass ? "transparent" : bg,
+          borderColor: useGlass ? "transparent" : borderColor,
+        },
         disabled && { opacity: 0.5 },
-        style,
+        !useGlass && style,
       ]}
-      disabled={disabled}
-      {...rest}
     >
-      <IconSymbol name={name} size={iconSize} color={textColor} />
+      {isLoading ? (
+        <ActivityIndicator size="small" color={fg} />
+      ) : (
+        <IconSymbol name={name} size={tokens.iconSize} color={fg} />
+      )}
     </TouchableOpacity>
   );
 
   if (useGlass) {
     return (
       <SafeGlassView
+        tintColor={bg}
         isInteractive={!disabled}
-        tintColor={bgColor}
-        style={{ borderRadius: 100 }}
+        style={[{ borderRadius: tokens.borderRadius }, style]}
       >
-        {inner}
+        {buttonContent}
       </SafeGlassView>
     );
   }
 
-  return inner;
+  return buttonContent;
 }
 
 // ---------------------------------------------------------------------------
@@ -107,6 +153,7 @@ const styles = StyleSheet.create({
   wrapper: {
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 100,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "transparent",
   },
 });

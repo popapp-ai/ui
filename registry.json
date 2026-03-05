@@ -86,7 +86,7 @@
       "title": "Button",
       "description": "Pressable button with variants, sizes, loading state, and haptic feedback.",
       "dependencies": [],
-      "registryDependencies": ["theme", "haptics", "glass"],
+      "registryDependencies": ["theme", "haptics", "glass", "touchable"],
       "files": [
         { "path": "registry/components/button.tsx", "type": "registry:ui", "target": "components/ui/button.tsx" }
       ],
@@ -129,14 +129,14 @@
       "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["form", "input"] }
     },
     {
-      "name": "touchable-scale",
+      "name": "touchable",
       "type": "registry:ui",
-      "title": "Touchable Scale",
+      "title": "Touchable",
       "description": "Animated pressable with spring scale, opacity animations, and haptics.",
       "dependencies": ["react-native-reanimated"],
       "registryDependencies": ["haptics"],
       "files": [
-        { "path": "registry/components/touchable-scale.tsx", "type": "registry:ui", "target": "components/ui/touchable-scale.tsx" }
+        { "path": "registry/components/touchable.tsx", "type": "registry:ui", "target": "components/ui/touchable.tsx" }
       ],
       "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["interaction", "animation"] }
     },
@@ -194,7 +194,7 @@
       "title": "Choice Card",
       "description": "Selectable card for picking one option from a set. Supports icon and subtitle.",
       "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["theme", "haptics", "touchable-scale"],
+      "registryDependencies": ["theme", "haptics", "touchable"],
       "files": [
         { "path": "registry/components/choice-card.tsx", "type": "registry:ui", "target": "components/ui/choice-card.tsx" }
       ],
@@ -218,7 +218,7 @@
       "title": "Option Card",
       "description": "Selectable list option with optional checkbox, icon, and description.",
       "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["theme", "haptics", "touchable-scale", "icon-symbol"],
+      "registryDependencies": ["theme", "haptics", "touchable", "icon-symbol"],
       "files": [
         { "path": "registry/components/option-card.tsx", "type": "registry:ui", "target": "components/ui/option-card.tsx" }
       ],
@@ -301,7 +301,7 @@
       "type": "registry:ui",
       "title": "Ticker",
       "description": "Animated number ticker with staggered digit rolls, currency/locale formatting, and masked gradient edges.",
-      "dependencies": ["moti", "@react-native-masked-view/masked-view", "expo-linear-gradient", "react-native-reanimated"],
+      "dependencies": ["@react-native-masked-view/masked-view", "expo-linear-gradient", "react-native-reanimated"],
       "registryDependencies": ["theme"],
       "files": [
         { "path": "registry/components/ticker.tsx", "type": "registry:ui", "target": "components/ui/ticker.tsx" }
@@ -313,7 +313,7 @@
       "type": "registry:ui",
       "title": "Markdown",
       "description": "Themed markdown renderer with code block copy button.",
-      "dependencies": ["react-native-markdown-display"],
+      "dependencies": ["react-native-markdown-display", "@react-native-clipboard/clipboard"],
       "registryDependencies": ["theme", "action-icon"],
       "files": [
         { "path": "registry/components/markdown.tsx", "type": "registry:ui", "target": "components/ui/markdown.tsx" }
@@ -349,12 +349,98 @@
       "type": "registry:ui",
       "title": "Input Stepper",
       "description": "Numeric stepper with animated ticker display, increment/decrement buttons, and optional value tap action.",
-      "dependencies": ["moti", "@react-native-masked-view/masked-view", "expo-linear-gradient", "react-native-reanimated"],
-      "registryDependencies": ["theme", "ticker", "action-icon", "touchable-scale"],
+      "dependencies": ["@react-native-masked-view/masked-view", "expo-linear-gradient", "react-native-reanimated"],
+      "registryDependencies": ["theme", "ticker", "action-icon", "touchable"],
       "files": [
         { "path": "registry/components/input-stepper.tsx", "type": "registry:ui", "target": "components/ui/input-stepper.tsx" }
       ],
       "meta": { "platforms": ["ios", "android"], "optionalDeps": ["expo-haptics", "expo-glass-effect"], "animationTier": 2, "tags": ["form", "input", "stepper"] }
+    },
+    {
+      "name": "gradient-tint",
+      "type": "registry:lib",
+      "title": "Gradient Tint",
+      "description": "Gradient fade utility for headers, footers, and scroll edges.",
+      "dependencies": ["expo-linear-gradient"],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/utils/gradient-tint.tsx", "type": "registry:lib", "target": "lib/gradient-tint.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["layout", "visual"] }
+    },
+    {
+      "name": "screen",
+      "type": "registry:ui",
+      "title": "Screen",
+      "description": "Composable screen layout with absolute header/footer, keyboard-aware content, gradient fading, and sticky button.",
+      "dependencies": ["react-native-reanimated", "react-native-keyboard-controller", "react-native-safe-area-context", "expo-linear-gradient"],
+      "registryDependencies": ["theme", "button", "gradient-tint"],
+      "files": [
+        { "path": "registry/components/screen.tsx", "type": "registry:ui", "target": "components/ui/screen.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "animationTier": 2, "tags": ["layout", "screen", "keyboard"] }
+    },
+    {
+      "name": "list",
+      "type": "registry:ui",
+      "title": "List",
+      "description": "iOS Settings-style grouped list with navigation, toggle, and action cells.",
+      "dependencies": [],
+      "registryDependencies": ["theme", "card", "icon-symbol", "touchable"],
+      "files": [
+        { "path": "registry/components/list.tsx", "type": "registry:ui", "target": "components/ui/list.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["layout", "settings", "form"] }
+    },
+    {
+      "name": "animated-content",
+      "type": "registry:ui",
+      "title": "Animated Content",
+      "description": "Animate content transitions with spring-based enter/exit animations. Supports horizontal, vertical, and fade presets.",
+      "dependencies": ["react-native-reanimated"],
+      "registryDependencies": [],
+      "files": [
+        { "path": "registry/components/animated-content.tsx", "type": "registry:ui", "target": "components/ui/animated-content.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "animationTier": 2, "tags": ["animation", "transition", "layout"] }
+    },
+    {
+      "name": "onboarding",
+      "type": "registry:ui",
+      "title": "Onboarding",
+      "description": "Step-based onboarding engine with animated layout, progress bar, skip logic, and lifecycle hooks.",
+      "dependencies": ["react-native-reanimated", "react-native-keyboard-controller", "react-native-safe-area-context", "expo-linear-gradient", "zustand"],
+      "registryDependencies": ["theme", "button", "icon-symbol", "gradient-tint", "screen", "animated-content"],
+      "files": [
+        { "path": "registry/components/onboarding/types.ts", "type": "registry:ui", "target": "components/ui/onboarding/types.ts" },
+        { "path": "registry/components/onboarding/engine.ts", "type": "registry:ui", "target": "components/ui/onboarding/engine.ts" },
+        { "path": "registry/components/onboarding/store.ts", "type": "registry:ui", "target": "components/ui/onboarding/store.ts" },
+        { "path": "registry/components/onboarding/context.ts", "type": "registry:ui", "target": "components/ui/onboarding/context.ts" },
+        { "path": "registry/components/onboarding/use-onboarding.ts", "type": "registry:ui", "target": "components/ui/onboarding/use-onboarding.ts" },
+        { "path": "registry/components/onboarding/progress-bar.tsx", "type": "registry:ui", "target": "components/ui/onboarding/progress-bar.tsx" },
+        { "path": "registry/components/onboarding/layout.tsx", "type": "registry:ui", "target": "components/ui/onboarding/layout.tsx" },
+        { "path": "registry/components/onboarding/screen.tsx", "type": "registry:ui", "target": "components/ui/onboarding/screen.tsx" },
+        { "path": "registry/components/onboarding/index.ts", "type": "registry:ui", "target": "components/ui/onboarding/index.ts" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "animationTier": 2, "tags": ["onboarding", "flow", "navigation"] },
+      "docs": "Define your steps, data type, and hooks. Wrap your onboarding layout with <OnboardingProvider>. Use <OnboardingScreen> for each step."
+    },
+    {
+      "name": "auth-supabase",
+      "type": "registry:template",
+      "title": "Supabase Auth + React Query",
+      "description": "Starter template for Supabase auth with MMKV persistence, Zustand auth store, and React Query patterns.",
+      "dependencies": ["@supabase/supabase-js", "react-native-mmkv", "zustand", "@tanstack/react-query"],
+      "registryDependencies": [],
+      "files": [
+        { "path": "registry/templates/auth-supabase/supabase.ts", "type": "registry:template", "target": "lib/auth/supabase.ts" },
+        { "path": "registry/templates/auth-supabase/auth-store.ts", "type": "registry:template", "target": "lib/auth/auth-store.ts" },
+        { "path": "registry/templates/auth-supabase/auth-provider.tsx", "type": "registry:template", "target": "lib/auth/auth-provider.tsx" },
+        { "path": "registry/templates/auth-supabase/query-provider.tsx", "type": "registry:template", "target": "lib/auth/query-provider.tsx" },
+        { "path": "registry/templates/auth-supabase/query-keys.ts", "type": "registry:template", "target": "lib/auth/query-keys.ts" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "tags": ["auth", "supabase", "react-query", "template"] },
+      "docs": "After installation, update lib/auth/supabase.ts with your project URL and anon key. Wrap your root layout: <QueryProvider><AuthProvider>...</AuthProvider></QueryProvider>"
     }
   ]
 }

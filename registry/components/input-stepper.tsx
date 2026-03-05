@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-na
 import { useTheme } from "@popapp/theme/use-theme";
 import { Ticker } from "@popapp/components/ticker";
 import { ActionIcon } from "@popapp/components/action-icon";
-import { TouchableScale } from "@popapp/components/touchable-scale";
+import { Touchable } from "@popapp/components/touchable";
 
 // ---------------------------------------------------------------------------
 // Props
@@ -28,12 +28,6 @@ export interface InputStepperProps {
 // ---------------------------------------------------------------------------
 // Size maps
 // ---------------------------------------------------------------------------
-
-const ACTION_ICON_SIZE = {
-  sm: "small",
-  md: "medium",
-  lg: "large",
-} as const;
 
 const FONT_SIZE = {
   sm: 24,
@@ -87,7 +81,7 @@ export function InputStepper({
   return (
     <View style={[styles.container, style]}>
       <ActionIcon
-        size={ACTION_ICON_SIZE[size]}
+        size={size}
         name="minus"
         onPress={onDecrement}
         onLongPress={onDecrementLongPress ?? undefined}
@@ -95,12 +89,12 @@ export function InputStepper({
       />
 
       {onValuePress ? (
-        <TouchableScale
+        <Touchable
           onPress={onValuePress}
           style={[styles.valueContainer, styles.valuePressable, { minWidth }]}
         >
           {valueContent}
-        </TouchableScale>
+        </Touchable>
       ) : (
         <View style={[styles.valueContainer, { minWidth }]}>
           {valueContent}
@@ -108,7 +102,7 @@ export function InputStepper({
       )}
 
       <ActionIcon
-        size={ACTION_ICON_SIZE[size]}
+        size={size}
         name="plus"
         onPress={onIncrement}
         onLongPress={onIncrementLongPress ?? undefined}
