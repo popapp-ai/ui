@@ -417,6 +417,18 @@
       ],
       "meta": { "platforms": ["ios", "android"], "tags": ["auth", "supabase", "react-query", "template"] },
       "docs": "After installation, update lib/auth/supabase.ts with your project URL and anon key. Wrap your root layout: <QueryProvider><AuthProvider>...</AuthProvider></QueryProvider>"
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "Swipeable pager carousel with animated page dots and active-page injection.",
+      "dependencies": ["react-native-pager-view", "react-native-reanimated"],
+      "registryDependencies": ["theme"],
+      "files": [
+        { "path": "registry/components/carousel.tsx", "type": "registry:ui", "target": "components/ui/carousel.tsx" }
+      ],
+      "meta": { "platforms": ["ios", "android"], "animationTier": 2, "tags": ["display", "navigation", "pager"] }
     }
   ]
 }

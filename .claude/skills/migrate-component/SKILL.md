@@ -309,22 +309,11 @@ If a file referenced in `registry.json` doesn't exist, the build will fail with 
 
 ---
 
-## Step 9 — Update README.md
+## Step 9 — Update README.md, docs page, and docs index
 
-Open `README.md` at the repo root and add the new component to the correct table in the **Available Components** section.
+### 9a — Update README.md
 
-The README organizes components into these category tables:
-
-| Section | What goes here |
-|---|---|
-| **Core** | Foundation utilities: `theme`, `haptics`, `glass`, `use-color-scheme` |
-| **Icons** | Icon-related: `icon-symbol`, `svg-icons`, `action-icon`, `theme-icon` |
-| **Form & Input** | Interactive inputs: `button`, `text-input`, `text-area`, `otp-input`, `date-picker`, `slider-bar`, `ruler-slider` |
-| **Selection** | Choice/selection UI: `option-card`, `option-group` |
-| **Display & Feedback** | Visual/read-only: `card`, `badge`, `separator`, `skeleton`, `touchable-scale`, `progress-ring`, `ticker`, `markdown` |
-| **Overlay** | Modal/sheet layers: `bottom-sheet` |
-
-Add a new row in the appropriate table using this format:
+Open `README.md` at the repo root and add the new component to the correct table in the **UI Components** section, sorted by tier.
 
 ```markdown
 | `my-component` | Short description of what it does | N |
@@ -332,14 +321,57 @@ Add a new row in the appropriate table using this format:
 
 Where `N` is the animation tier (`1`, `2`, or `3`). For core items use `—` instead of a number.
 
-If the new component doesn't fit any existing category, create a new category section following the same pattern:
+### 9b — Create a docs page
+
+Create a new page at `/Users/klim/Projects/popapp/docs/pages/components/my-component.mdx` (or `hooks/`, `utils/`, `templates/` depending on type).
+
+Follow the structure of existing docs pages. Each page should include:
+
+- Title and one-line description
+- Tier, npm deps, registry deps, and platforms
+- Install command (`npx popapp add my-component`)
+- Usage example(s)
+- Props table
+
+Example structure:
+
+```mdx
+import { PreviewImage } from '../../components/preview-image'
+
+# My Component
+
+One-line description.
+
+- **Tier N** — requires `dependency`
+- **npm deps:** `some-package`
+- **Registry deps:** [Theme](/theme)
+- **Platforms:** iOS, Android
+
+\`\`\`bash [Terminal]
+npx popapp add my-component
+\`\`\`
+
+## Usage
+
+\`\`\`tsx
+import { MyComponent } from "@/components/ui/my-component";
+
+<MyComponent />
+\`\`\`
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `someProp` | `string` | — | Description |
+```
+
+### 9c — Update docs index
+
+Open `/Users/klim/Projects/popapp/docs/pages/index.mdx` and add a linked row for the new component in the **Component Registry** table, matching the position by tier:
 
 ```markdown
-### New Category
-
-| Component | Description | Tier |
-|-----------|-------------|------|
-| `my-component` | Description here | 2 |
+| [`my-component`](/components/my-component) | Short description | N |
 ```
 
 ---
@@ -411,7 +443,9 @@ Before considering the migration complete, verify ALL of these:
 - [ ] Entry added to `registry.json` with correct `dependencies`, `registryDependencies`, `files`, `meta`
 - [ ] `npx tsc --noEmit` passes with zero errors
 - [ ] `pnpm build:registry` succeeds and shows the new component
-- [ ] `README.md` updated with new component in the correct category table
+- [ ] `README.md` updated with new component in the correct table
+- [ ] Docs page created at `docs/pages/components/{name}.mdx` (or appropriate directory)
+- [ ] `docs/pages/index.mdx` updated with linked row for the new component
 - [ ] Changes committed and pushed to `main`
 - [ ] GitHub Actions deployment succeeded
 - [ ] Component accessible at `https://popapp-ai.github.io/ui/r/{name}.json`
@@ -426,7 +460,7 @@ When setting `registryDependencies`, use these names:
 **Icons:** `icon-symbol`, `svg-icons`, `action-icon`, `theme-icon`
 **Form:** `button`, `text-input`, `text-area`, `otp-input`, `date-picker`, `slider-bar`, `ruler-slider`
 **Selection:** `option-card`, `option-group`
-**Display:** `card`, `badge`, `separator`, `skeleton`, `touchable-scale`, `progress-ring`, `ticker`, `markdown`
+**Display:** `card`, `badge`, `separator`, `skeleton`, `touchable`, `progress-ring`, `ticker`, `markdown`, `carousel`
 **Overlay:** `bottom-sheet` — requires `react-native-multiple-modals`, `react-native-keyboard-controller` (for ModalView and KeyboardStickyView)
 
 ---

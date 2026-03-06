@@ -84,6 +84,7 @@ export default function RootLayout() {
 | `input-stepper` | Numeric stepper with animated ticker display | 2 |
 | `animated-content` | Spring-based enter/exit content transitions | 2 |
 | `screen` | Composable screen layout with keyboard-aware content | 2 |
+| `carousel` | Swipeable pager carousel with animated page dots | 2 |
 | `onboarding` | Step-based onboarding engine with progress and skip logic | 2 |
 | `slider-bar` | Gesture-controlled slider with thumb/track variants, step snapping, and haptics | 3 |
 | `ruler-slider` | iOS-style ruler picker with Skia rendering and momentum scrolling | 3 |
