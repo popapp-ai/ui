@@ -2,16 +2,16 @@
 
 **Native StyleSheet. Native gestures. Native haptics. No Tailwind required.**
 
-A shadcn-style component registry for React Native and Expo. Copy beautiful, meticulously crafted components into your project with a single command.
+A shadcn-style component registry for React Native and Expo. Copy beautiful, production-ready components into your project with a single command.
 
 ## Why PopApp UI?
 
-PopApp UI provides **beautiful, native-feeling components** designed specifically for React Native. Every component is crafted with haptic feedback, natural spring animations, and smooth, understated interactions that feel right at home on iOS and Android.
+PopApp UI follows the **copy-and-own model** — every component lives in your project, fully customizable. No opaque `node_modules`.
 
+- **StyleSheet-native** — no NativeWind, no Tailwind, no className resolution
 - **Gesture-first** — spring physics and UI-thread animations via Reanimated
-- **Haptic feedback** — tactile responses built into every interactive component
-- **StyleSheet-native** — pure React Native StyleSheet without NativeWind/Tailwind CSS
-- **Copy-paste** — you own the code, customize freely
+- **Haptic feedback** — built into every interactive component
+- **Liquid Glass** — iOS 26+ glass effects where supported
 - **TypeScript-first** — full type safety with exported interfaces
 - **Expo-optimized** — works out of the box with Expo, compatible with bare RN
 
@@ -55,72 +55,66 @@ export default function RootLayout() {
 </ThemeProvider>
 ```
 
-## Available Components
+## Component Registry
 
-### Core
-
-| Component | Description | Tier |
-|-----------|-------------|------|
-| `theme` | Token-based theme system with light/dark mode | — |
-| `haptics` | Safe haptics wrapper (no-ops if expo-haptics missing) | — |
-| `glass` | Safe expo-glass-effect wrapper with fallback | — |
-| `use-color-scheme` | Color scheme hook with safe default | — |
-
-### Icons
+### UI Components
 
 | Component | Description | Tier |
 |-----------|-------------|------|
-| `icon-symbol` | SF Symbols (iOS) + Material Icons (Android/web) | 1 |
-| `svg-icons` | **Optional extension** — custom SVG icon registry | 1 |
-| `action-icon` | Circular icon button with Liquid Glass support | 1 |
-| `theme-icon` | Icon in a tinted circle background | 1 |
-
-### Form & Input
-
-| Component | Description | Tier |
-|-----------|-------------|------|
-| `button` | Pressable with variants, sizes, loading, glass, haptics | 1 |
-| `text-input` | Themed input with label, error, icon slots | 1 |
-| `text-area` | Multiline text input with label and error state | 1 |
-| `otp-input` | One-time password input with digit boxes | 1 |
-| `date-picker` | Three-column month/day/year native picker | 1 |
-| `slider-bar` | Gesture slider with step snapping and labels | 3 |
-| `ruler-slider` | iOS-style Skia ruler with momentum & decay physics | 3 |
-| `input-stepper` | Numeric stepper with animated ticker and +/- buttons | 2 |
-
-### Selection
-
-| Component | Description | Tier |
-|-----------|-------------|------|
-| `choice-card` | Selectable card with icon and subtitle | 2 |
-| `choice-binary` | Two-option selector with side-by-side cards | 2 |
-| `option-card` | List option with checkbox, icon, description | 2 |
-| `option-group` | Single/multi-select option list | 2 |
-
-### Display & Feedback
-
-| Component | Description | Tier |
-|-----------|-------------|------|
-| `card` | Composable card with header, content, footer | 1 |
+| `button` | Pressable button with variants, sizes, loading state, and haptic feedback | 1 |
+| `card` | Composable card container with header, content, and footer | 1 |
+| `text-input` | Themed text input with label, error state, and icon slots | 1 |
+| `text-area` | Multiline text input with configurable height | 1 |
 | `badge` | Status badge with color variants | 1 |
-| `separator` | Horizontal/vertical divider | 1 |
+| `separator` | Horizontal or vertical divider line | 1 |
+| `icon-symbol` | Cross-platform icon: SF Symbols on iOS, Material Icons on Android/web | 1 |
+| `svg-icons` | Custom SVG icon extension for `icon-symbol` | 1 |
+| `action-icon` | Circular icon button with Liquid Glass support | 1 |
+| `theme-icon` | Icon wrapped in a tinted circle background | 1 |
+| `otp-input` | One-time password input with individual digit boxes | 1 |
+| `date-picker` | Three-column month/day/year picker with native scroll wheels | 1 |
+| `list` | iOS Settings-style grouped list with navigation, toggle, and action cells | 1 |
+| `markdown` | Themed markdown renderer with code block copy button | 1 |
+| `touchable` | Animated pressable with spring scale and opacity | 2 |
 | `skeleton` | Pulsing loading placeholder | 2 |
-| `touchable-scale` | Animated pressable with spring scale | 2 |
-| `progress-ring` | Animated circular progress with spring animation | 2 |
+| `choice-card` | Selectable card for picking an option from a set | 2 |
+| `choice-binary` | Two-option selector using side-by-side ChoiceCards | 2 |
+| `option-card` | Selectable list option with checkbox, icon, and description | 2 |
+| `option-group` | Single or multi-select option list using OptionCards | 2 |
+| `progress-ring` | Animated circular progress indicator | 2 |
 | `ticker` | Animated number ticker with staggered digit rolls | 2 |
-| `markdown` | Themed markdown renderer with code copy button | 1 |
+| `input-stepper` | Numeric stepper with animated ticker display | 2 |
+| `animated-content` | Spring-based enter/exit content transitions | 2 |
+| `screen` | Composable screen layout with keyboard-aware content | 2 |
+| `onboarding` | Step-based onboarding engine with progress and skip logic | 2 |
+| `slider-bar` | Gesture-controlled slider with step snapping and haptics | 3 |
+| `ruler-slider` | iOS-style ruler picker with Skia rendering and momentum scrolling | 3 |
+| `bottom-sheet` | Modal bottom sheet with pan-to-dismiss gesture | 3 |
 
-### Overlay
+### Libraries & Utilities
 
-| Component | Description | Tier |
-|-----------|-------------|------|
-| `bottom-sheet` | Pan-to-dismiss modal sheet with spring animations | 3 |
+| Item | Type | Description |
+|------|------|-------------|
+| `theme` | Library | Token-based theme system with light/dark mode |
+| `haptics` | Library | Safe haptics wrapper (never crashes without `expo-haptics`) |
+| `glass` | Library | Liquid Glass wrapper (graceful fallback on non-iOS 26) |
+| `gradient-tint` | Library | Gradient fade for headers, footers, and scroll edges |
+| `use-color-scheme` | Hook | Color scheme hook with safe default |
+| `use-theme` | Hook | Access theme colors and color scheme in any component |
 
-### Animation Tiers
+### Templates
 
-- **Tier 1** — Zero animation dependencies. Pure React Native.
-- **Tier 2** — Requires `react-native-reanimated` (included in Expo by default).
-- **Tier 3** — Requires `react-native-reanimated` + `react-native-gesture-handler`.
+| Template | Description |
+|----------|-------------|
+| `auth-supabase` | Supabase auth with MMKV persistence, Zustand store, and React Query |
+
+## Animation Tiers
+
+| Tier | Dependencies | Description |
+|------|-------------|-------------|
+| **Tier 1** | None | Pure React Native. Zero animation dependencies. |
+| **Tier 2** | `react-native-reanimated` | Spring animations on the UI thread. Included in Expo by default. |
+| **Tier 3** | `reanimated` + `gesture-handler` | Full gesture control with pan, pinch, and swipe support. |
 
 ## Icon System
 
@@ -134,13 +128,11 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 
 ### Adding custom SVG icons
 
-Install the optional `svg-icons` extension:
-
-```bash [Terminal]
+```bash
 npx popapp add svg-icons
 ```
 
-Then add your icons to `components/ui/svg-icons/` and register them in the `ICON_COMPONENTS` map. Use them with the `svg-` prefix:
+Add your icons to `components/ui/svg-icons/` and register them in the `ICON_COMPONENTS` map. Use them with the `svg-` prefix:
 
 ```tsx
 <IconSymbol name="svg-myLogo" size={24} color={colors.primary} />
@@ -148,15 +140,11 @@ Then add your icons to `components/ui/svg-icons/` and register them in the `ICON
 
 ## Theme Tokens
 
-The theme system provides typed color tokens:
-
 ```tsx
 const { colors, colorScheme } = useTheme();
 ```
 
-### Color tokens
-
-`primary`, `primaryForeground`, `accent`, `background`, `backgroundSecondary`, `backgroundTertiary`, `card`, `cardForeground`, `cardSecondary`, `foreground`, `foregroundSecondary`, `muted`, `mutedForeground`, `border`, `icon`, `destructive`, `success`, `warning`, `info` (with foreground variants), and extensible via index signature.
+Available tokens: `primary`, `primaryForeground`, `accent`, `background`, `backgroundSecondary`, `backgroundTertiary`, `card`, `cardForeground`, `cardSecondary`, `foreground`, `foregroundSecondary`, `muted`, `mutedForeground`, `border`, `icon`, `destructive`, `success`, `warning`, `info` (with foreground variants), and extensible via index signature.
 
 ## License
 
