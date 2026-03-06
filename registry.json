@@ -189,34 +189,10 @@
       "meta": { "platforms": ["ios", "android", "web"], "animationTier": 1, "tags": ["form", "input", "auth"] }
     },
     {
-      "name": "choice-card",
-      "type": "registry:ui",
-      "title": "Choice Card",
-      "description": "Selectable card for picking one option from a set. Supports icon and subtitle.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["theme", "haptics", "touchable"],
-      "files": [
-        { "path": "registry/components/choice-card.tsx", "type": "registry:ui", "target": "components/ui/choice-card.tsx" }
-      ],
-      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["form", "selection"] }
-    },
-    {
-      "name": "choice-binary",
-      "type": "registry:ui",
-      "title": "Binary Choice",
-      "description": "Two-option selector using side-by-side ChoiceCards.",
-      "dependencies": ["react-native-reanimated"],
-      "registryDependencies": ["choice-card"],
-      "files": [
-        { "path": "registry/components/choice-binary.tsx", "type": "registry:ui", "target": "components/ui/choice-binary.tsx" }
-      ],
-      "meta": { "platforms": ["ios", "android", "web"], "optionalDeps": ["expo-haptics"], "animationTier": 2, "tags": ["form", "selection"] }
-    },
-    {
       "name": "option-card",
       "type": "registry:ui",
       "title": "Option Card",
-      "description": "Selectable list option with optional checkbox, icon, and description.",
+      "description": "Selectable option card with checkbox, icon, description, and left/center alignment.",
       "dependencies": ["react-native-reanimated"],
       "registryDependencies": ["theme", "haptics", "touchable", "icon-symbol"],
       "files": [
@@ -228,7 +204,7 @@
       "name": "option-group",
       "type": "registry:ui",
       "title": "Option Group",
-      "description": "Single or multi-select option list using OptionCards.",
+      "description": "Single or multi-select option group with vertical/horizontal layout.",
       "dependencies": ["react-native-reanimated"],
       "registryDependencies": ["option-card"],
       "files": [

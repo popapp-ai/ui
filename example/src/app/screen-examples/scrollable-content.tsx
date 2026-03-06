@@ -48,9 +48,8 @@ const UPDATES = [
     date: "Jan 25, 2026",
     badge: undefined,
     items: [
-      "OptionGroup for single and multi-select lists",
-      "ChoiceCard with icon and selection state",
-      "ChoiceBinary for two-option selectors",
+      "OptionGroup with vertical and horizontal layouts",
+      "OptionCard with left/center alignment and checkbox",
       "Improved touch feedback with spring animations",
     ],
   },

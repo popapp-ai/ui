@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useTheme } from "@popapp/theme/use-theme";
 import { Screen, ScreenHeader, ScreenContent } from "@popapp/components/screen";
-import { ChoiceCard } from "@popapp/components/choice-card";
+import { OptionCard } from "@popapp/components/option-card";
 import { IconSymbol } from "@popapp/components/icon-symbol";
 import { ActionIcon } from "@popapp/components/action-icon";
 
@@ -31,24 +31,27 @@ export default function ChoosePlanScreen() {
         }}
       >
         <View style={styles.list}>
-          <ChoiceCard
-            title="Free"
-            subtitle="5 projects, 1 GB storage"
+          <OptionCard
+            label="Free"
+            description="5 projects, 1 GB storage"
             icon={<IconSymbol name="gift.fill" size={24} color={colors.foreground} />}
+            align="center"
             selected={plan === "free"}
             onPress={() => setPlan("free")}
           />
-          <ChoiceCard
-            title="Pro"
-            subtitle="Unlimited projects, 100 GB storage"
+          <OptionCard
+            label="Pro"
+            description="Unlimited projects, 100 GB storage"
             icon={<IconSymbol name="bolt.fill" size={24} color={colors.foreground} />}
+            align="center"
             selected={plan === "pro"}
             onPress={() => setPlan("pro")}
           />
-          <ChoiceCard
-            title="Team"
-            subtitle="Everything in Pro + team features"
+          <OptionCard
+            label="Team"
+            description="Everything in Pro + team features"
             icon={<IconSymbol name="person.3.fill" size={24} color={colors.foreground} />}
+            align="center"
             selected={plan === "team"}
             onPress={() => setPlan("team")}
           />

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,7 @@ export interface TextAreaProps
   extends Omit<RNTextInputProps, "style" | "multiline"> {
   label?: string;
   error?: string;
+  variant?: "filled" | "outline";
   minHeight?: number;
   maxHeight?: number;
   disabled?: boolean;
@@ -35,25 +36,31 @@ export const TextArea = forwardRef<RNTextInput, TextAreaProps>(
     {
       label,
       error,
+      variant = "filled",
       minHeight = 120,
       maxHeight,
       disabled = false,
       containerStyle,
       inputStyle,
-      onFocus,
-      onBlur,
       ...rest
     },
     ref,
   ) => {
     const { colors } = useTheme();
-    const [focused, setFocused] = useState(false);
 
-    const borderColor = error
-      ? colors.destructive
-      : focused
-        ? colors.primary
-        : colors.border;
+    const isFilled = variant === "filled";
+
+    const inputColors = isFilled
+      ? {
+          backgroundColor: colors.backgroundSecondary,
+          borderWidth: 0,
+          borderColor: "transparent",
+        }
+      : {
+          backgroundColor: "transparent",
+          borderWidth: 1,
+          borderColor: error ? colors.destructive : colors.border,
+        };
 
     return (
       <View style={[disabled && styles.disabled, containerStyle]}>
@@ -67,24 +74,15 @@ export const TextArea = forwardRef<RNTextInput, TextAreaProps>(
           multiline
           editable={!disabled}
           textAlignVertical="top"
-          placeholderTextColor={colors.muted}
+          placeholderTextColor={colors.mutedForeground}
           {...rest}
-          onFocus={(e) => {
-            setFocused(true);
-            onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            setFocused(false);
-            onBlur?.(e);
-          }}
           style={[
             styles.input,
             {
               minHeight,
               maxHeight,
-              borderColor,
-              backgroundColor: colors.background,
               color: colors.foreground,
+              ...inputColors,
             },
             inputStyle,
           ]}
@@ -116,7 +114,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 1,
   },
   input: {
-    borderWidth: 2,
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 12,

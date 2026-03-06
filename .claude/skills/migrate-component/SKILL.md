@@ -143,8 +143,8 @@ Place the component in the correct directory:
 
 ### Naming conventions
 
-- File names: `kebab-case.tsx` (e.g., `ruler-slider.tsx`, `choice-binary.tsx`)
-- Component names: `PascalCase` (e.g., `RulerSlider`, `ChoiceBinary`)
+- File names: `kebab-case.tsx` (e.g., `ruler-slider.tsx`, `option-group.tsx`)
+- Component names: `PascalCase` (e.g., `RulerSlider`, `OptionGroup`)
 - Platform-specific: `component-name.ios.tsx` / `component-name.tsx` (default)
 - Type files: `component-name.types.ts`
 - Subdirectories for extensions: `svg-icons/base-icon.tsx`
@@ -320,7 +320,7 @@ The README organizes components into these category tables:
 | **Core** | Foundation utilities: `theme`, `haptics`, `glass`, `use-color-scheme` |
 | **Icons** | Icon-related: `icon-symbol`, `svg-icons`, `action-icon`, `theme-icon` |
 | **Form & Input** | Interactive inputs: `button`, `text-input`, `text-area`, `otp-input`, `date-picker`, `slider-bar`, `ruler-slider` |
-| **Selection** | Choice/selection UI: `choice-card`, `choice-binary`, `option-card`, `option-group` |
+| **Selection** | Choice/selection UI: `option-card`, `option-group` |
 | **Display & Feedback** | Visual/read-only: `card`, `badge`, `separator`, `skeleton`, `touchable-scale`, `progress-ring`, `ticker`, `markdown` |
 | **Overlay** | Modal/sheet layers: `bottom-sheet` |
 
@@ -425,7 +425,7 @@ When setting `registryDependencies`, use these names:
 **Core:** `theme`, `haptics`, `glass`, `use-color-scheme`
 **Icons:** `icon-symbol`, `svg-icons`, `action-icon`, `theme-icon`
 **Form:** `button`, `text-input`, `text-area`, `otp-input`, `date-picker`, `slider-bar`, `ruler-slider`
-**Selection:** `choice-card`, `choice-binary`, `option-card`, `option-group`
+**Selection:** `option-card`, `option-group`
 **Display:** `card`, `badge`, `separator`, `skeleton`, `touchable-scale`, `progress-ring`, `ticker`, `markdown`
 **Overlay:** `bottom-sheet` — requires `react-native-multiple-modals`, `react-native-keyboard-controller` (for ModalView and KeyboardStickyView)
 
