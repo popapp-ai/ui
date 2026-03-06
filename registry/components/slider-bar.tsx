@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from "react";
 import {
   type LayoutChangeEvent,
+  Pressable,
   type StyleProp,
   StyleSheet,
   Text,
@@ -28,6 +29,7 @@ const THUMB_SPRING = { damping: 18, stiffness: 180, mass: 1 };
 
 // ── Dimensions ─────────────────────────────────────────────────────────
 const TRACK_HEIGHT = 6;
+const THICK_TRACK_HEIGHT = 28;
 const THUMB_SIZE = 28;
 const ACTIVE_THUMB_SCALE = 1.15;
 
@@ -42,6 +44,8 @@ export interface SliderLabel {
   /** Optional icon rendered before the label text. */
   icon?: IconSymbolName;
 }
+
+export type SliderVariant = "thumb" | "track";
 
 export interface SliderBarProps {
   /** Current value. */
@@ -58,6 +62,19 @@ export interface SliderBarProps {
   labels?: SliderLabel[];
   /** Enable haptic feedback on step changes (default true). */
   haptic?: boolean;
+  /**
+   * Visual style variant.
+   * - `"thumb"` — thin track with a draggable thumb (default).
+   * - `"track"` — thick rounded track, no thumb.
+   */
+  variant?: SliderVariant;
+  /**
+   * When true, the thumb animates to the finger position on touch start
+   * so the slider tracks the finger exactly. When false, the offset between
+   * the finger and the thumb at touch start is preserved during dragging.
+   * Defaults to `true` for `"thumb"` variant, `false` for `"track"` variant.
+   */
+  stickyToFinger?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -70,11 +87,13 @@ function AnimatedLabel({
   thumbX,
   trackWidth,
   color,
+  onPress,
 }: {
   label: SliderLabel;
   thumbX: SharedValue<number>;
   trackWidth: SharedValue<number>;
   color: string;
+  onPress: () => void;
 }) {
   const animStyle = useAnimatedStyle(() => {
     if (trackWidth.value === 0) return { opacity: 0.4 };
@@ -116,12 +135,14 @@ function AnimatedLabel({
         animStyle,
       ]}
     >
-      <View style={styles.labelItemContent}>
-        {label.icon && (
-          <IconSymbol name={label.icon} size={14} color={color} />
-        )}
-        <Text style={[styles.labelText, { color }]}>{label.text}</Text>
-      </View>
+      <Pressable onPress={onPress} hitSlop={8}>
+        <View style={styles.labelItemContent}>
+          {label.icon && (
+            <IconSymbol name={label.icon} size={14} color={color} />
+          )}
+          <Text style={[styles.labelText, { color }]}>{label.text}</Text>
+        </View>
+      </Pressable>
     </Animated.View>
   );
 }
@@ -138,9 +159,15 @@ export function SliderBar({
   step = 0,
   labels,
   haptic = true,
+  variant = "thumb",
+  stickyToFinger,
   style,
 }: SliderBarProps) {
   const { colors } = useTheme();
+
+  const isThumbVariant = variant === "thumb";
+  const sticky = stickyToFinger ?? isThumbVariant;
+  const currentTrackHeight = isThumbVariant ? TRACK_HEIGHT : THICK_TRACK_HEIGHT;
 
   const trackWidth = useSharedValue(0);
   const thumbX = useSharedValue(0);
@@ -222,17 +249,40 @@ export function SliderBar({
     },
   );
 
+  // ── Label press handler ────────────────────────────────────────────
+  const handleLabelPress = useCallback(
+    (position: number) => {
+      const targetValue =
+        step > 0
+          ? Math.round((min + position * (max - min)) / step) * step
+          : Math.round((min + position * (max - min)) * 100) / 100;
+      onValueChangeRef.current(targetValue);
+    },
+    [min, max, step],
+  );
+
   // ── Gesture ──────────────────────────────────────────────────────
   const pan = Gesture.Pan()
     .hitSlop({ top: 16, bottom: 16, left: 8, right: 8 })
-    .onStart(() => {
+    .onStart((e) => {
       "worklet";
       isActive.value = true;
-      contextX.value = thumbX.value;
+      if (sticky) {
+        // Animate thumb to finger position immediately
+        const target = clampX(e.x);
+        thumbX.value = withSpring(target, THUMB_SPRING);
+        contextX.value = target;
+      } else {
+        contextX.value = thumbX.value;
+      }
     })
     .onUpdate((e) => {
       "worklet";
-      thumbX.value = clampX(contextX.value + e.translationX);
+      if (sticky) {
+        thumbX.value = clampX(e.x);
+      } else {
+        thumbX.value = clampX(contextX.value + e.translationX);
+      }
     })
     .onEnd(() => {
       "worklet";
@@ -272,11 +322,15 @@ export function SliderBar({
   );
 
   // ── Animated styles ──────────────────────────────────────────────
+  // Fill uses translateX for GPU-only animation: a full-width bar is shifted
+  // left so only the filled portion is visible inside the overflow:hidden track.
   const fillStyle = useAnimatedStyle(() => {
     "worklet";
-    const w = Math.max(0, thumbX.value);
-    // Cap near-zero to avoid progress bar blinking from sub-pixel oscillation
-    return { width: w < 1 ? 0 : w };
+    const x = thumbX.value;
+    const w = trackWidth.value;
+    // Shift the full-width fill bar so that (w - offset) pixels are visible.
+    const offset = x < 1 ? -w : x - w;
+    return { transform: [{ translateX: offset }] };
   });
 
   const thumbStyle = useAnimatedStyle(() => {
@@ -287,6 +341,13 @@ export function SliderBar({
     return {
       transform: [{ translateX: thumbX.value - THUMB_SIZE / 2 }, { scale }],
     };
+  });
+
+  // Thick-track variant: animate active scale on the track itself
+  const thickTrackActiveStyle = useAnimatedStyle(() => {
+    if (isThumbVariant) return {};
+    const scale = withSpring(isActive.value ? 1.04 : 1, THUMB_SPRING);
+    return { transform: [{ scaleY: scale }] };
   });
 
   return (
@@ -300,33 +361,52 @@ export function SliderBar({
               thumbX={thumbX}
               trackWidth={trackWidth}
               color={colors.foreground}
+              onPress={() => handleLabelPress(label.position)}
             />
           ))}
         </View>
       )}
 
       <GestureDetector gesture={composed}>
-        <Animated.View style={styles.trackWrapper}>
+        <Animated.View
+          style={[
+            isThumbVariant ? styles.trackWrapper : styles.thickTrackWrapper,
+            thickTrackActiveStyle,
+          ]}
+        >
           <View
-            style={[styles.track, { backgroundColor: colors.border }]}
+            style={[
+              styles.track,
+              {
+                backgroundColor: colors.border,
+                height: currentTrackHeight,
+                borderRadius: currentTrackHeight / 2,
+              },
+            ]}
             onLayout={onLayout}
           >
             <Animated.View
               style={[
                 styles.fill,
-                { backgroundColor: colors.primary },
+                {
+                  backgroundColor: colors.primary,
+                  width: "100%",
+                  borderRadius: currentTrackHeight / 2,
+                },
                 fillStyle,
               ]}
             />
           </View>
 
-          <Animated.View
-            style={[
-              styles.thumb,
-              { backgroundColor: colors.primary },
-              thumbStyle,
-            ]}
-          />
+          {isThumbVariant && (
+            <Animated.View
+              style={[
+                styles.thumb,
+                { backgroundColor: colors.primary },
+                thumbStyle,
+              ]}
+            />
+          )}
         </Animated.View>
       </GestureDetector>
     </View>
@@ -357,19 +437,21 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: 13,
     fontWeight: "600",
+    fontVariant: ["tabular-nums"],
   },
   trackWrapper: {
     height: THUMB_SIZE + 16,
     justifyContent: "center",
   },
+  thickTrackWrapper: {
+    height: THICK_TRACK_HEIGHT + 16,
+    justifyContent: "center",
+  },
   track: {
-    height: TRACK_HEIGHT,
-    borderRadius: TRACK_HEIGHT / 2,
     overflow: "hidden",
   },
   fill: {
     height: "100%",
-    borderRadius: TRACK_HEIGHT / 2,
   },
   thumb: {
     position: "absolute",
