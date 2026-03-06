@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useTheme } from "@popapp/theme/use-theme";
 import { Screen, ScreenHeader, ScreenContent } from "@popapp/components/screen";
-import { ChoiceBinary } from "@popapp/components/choice-binary";
 import { OptionCard } from "@popapp/components/option-card";
 import { OptionGroup } from "@popapp/components/option-group";
 import { IconSymbol } from "@popapp/components/icon-symbol";
@@ -44,12 +43,14 @@ export default function SelectionScreen() {
 
         <Separator style={{ marginBottom: 24 }} />
 
-        {/* ── ChoiceBinary ────────────────────────────────────── */}
-        <DemoSection title="ChoiceBinary" description="Quick two-option selection">
+        {/* ── Horizontal Selection ──────────────────────────────── */}
+        <DemoSection title="Horizontal Selection" description="Quick two-option selection">
           <Text style={[styles.label, { color: colors.foreground }]}>
             How do you prefer to travel?
           </Text>
-          <ChoiceBinary
+          <OptionGroup
+            mode="single"
+            layout="horizontal"
             options={[
               {
                 value: "window",
@@ -69,7 +70,9 @@ export default function SelectionScreen() {
           <Text style={[styles.label, { color: colors.foreground }]}>
             Dietary preference?
           </Text>
-          <ChoiceBinary
+          <OptionGroup
+            mode="single"
+            layout="horizontal"
             options={[
               {
                 value: "regular",

@@ -13,24 +13,25 @@ export interface OptionGroupOption {
   icon?: React.ReactNode;
 }
 
-interface SingleSelectProps {
+interface BaseProps {
   options: OptionGroupOption[];
-  mode: "single";
-  value: string | null;
-  onChange: (value: string) => void;
+  /** Layout direction. Default: "vertical" */
+  layout?: "vertical" | "horizontal";
   /** Trigger haptic feedback. Default: true */
   haptic?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
-interface MultiSelectProps {
-  options: OptionGroupOption[];
+interface SingleSelectProps extends BaseProps {
+  mode: "single";
+  value: string | null;
+  onChange: (value: string) => void;
+}
+
+interface MultiSelectProps extends BaseProps {
   mode: "multi";
   value: string[];
   onChange: (value: string[]) => void;
-  /** Trigger haptic feedback. Default: true */
-  haptic?: boolean;
-  style?: StyleProp<ViewStyle>;
 }
 
 export type OptionGroupProps = SingleSelectProps | MultiSelectProps;
@@ -40,7 +41,7 @@ export type OptionGroupProps = SingleSelectProps | MultiSelectProps;
 // ---------------------------------------------------------------------------
 
 export function OptionGroup(props: OptionGroupProps) {
-  const { options, mode, haptic = true, style } = props;
+  const { options, mode, layout = "vertical", haptic = true, style } = props;
 
   const handlePress = (optionValue: string) => {
     if (mode === "single") {
@@ -61,8 +62,10 @@ export function OptionGroup(props: OptionGroupProps) {
     return (props as MultiSelectProps).value.includes(optionValue);
   };
 
+  const isHorizontal = layout === "horizontal";
+
   return (
-    <View style={[styles.container, style]}>
+    <View style={[isHorizontal ? styles.horizontal : styles.vertical, style]}>
       {options.map((option) => (
         <OptionCard
           key={option.value}
@@ -72,6 +75,7 @@ export function OptionGroup(props: OptionGroupProps) {
           selected={isSelected(option.value)}
           onPress={() => handlePress(option.value)}
           showCheckbox={mode === "multi"}
+          align={isHorizontal ? "center" : "left"}
           haptic={haptic}
         />
       ))}
@@ -84,7 +88,11 @@ export function OptionGroup(props: OptionGroupProps) {
 // ---------------------------------------------------------------------------
 
 const styles = StyleSheet.create({
-  container: {
+  vertical: {
+    gap: 12,
+  },
+  horizontal: {
+    flexDirection: "row",
     gap: 12,
   },
 });

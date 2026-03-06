@@ -63,8 +63,8 @@ export default function RootLayout() {
 |-----------|-------------|------|
 | `button` | Pressable button with variants, sizes, loading state, and haptic feedback | 1 |
 | `card` | Composable card container with header, content, and footer | 1 |
-| `text-input` | Themed text input with label, error state, and icon slots | 1 |
-| `text-area` | Multiline text input with configurable height | 1 |
+| `text-input` | Native text input with filled/outline variants, label, error, and icon slots | 1 |
+| `text-area` | Native multiline input with filled/outline variants and configurable height | 1 |
 | `badge` | Status badge with color variants | 1 |
 | `separator` | Horizontal or vertical divider line | 1 |
 | `icon-symbol` | Cross-platform icon: SF Symbols on iOS, Material Icons on Android/web | 1 |
@@ -77,10 +77,8 @@ export default function RootLayout() {
 | `markdown` | Themed markdown renderer with code block copy button | 1 |
 | `touchable` | Animated pressable with spring scale and opacity | 2 |
 | `skeleton` | Pulsing loading placeholder | 2 |
-| `choice-card` | Selectable card for picking an option from a set | 2 |
-| `choice-binary` | Two-option selector using side-by-side ChoiceCards | 2 |
-| `option-card` | Selectable list option with checkbox, icon, and description | 2 |
-| `option-group` | Single or multi-select option list using OptionCards | 2 |
+| `option-card` | Selectable option card with checkbox, icon, and left/center alignment | 2 |
+| `option-group` | Single or multi-select option group with vertical/horizontal layout | 2 |
 | `progress-ring` | Animated circular progress indicator | 2 |
 | `ticker` | Animated number ticker with staggered digit rolls | 2 |
 | `input-stepper` | Numeric stepper with animated ticker display | 2 |

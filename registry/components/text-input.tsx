@@ -1,6 +1,5 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef } from "react";
 import {
-  Pressable,
   StyleSheet,
   Text,
   TextInput as RNTextInput,
@@ -30,6 +29,7 @@ const SIZE_TOKENS = {
 export interface TextInputProps extends Omit<RNTextInputProps, "style"> {
   label?: string;
   error?: string;
+  variant?: "filled" | "outline";
   size?: keyof typeof SIZE_TOKENS;
   leftSection?: React.ReactNode;
   rightSection?: React.ReactNode;
@@ -47,27 +47,33 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     {
       label,
       error,
+      variant = "filled",
       size = "lg",
       leftSection,
       rightSection,
       disabled = false,
       containerStyle,
       inputStyle,
-      onFocus,
-      onBlur,
       ...rest
     },
     ref,
   ) => {
     const { colors } = useTheme();
-    const [focused, setFocused] = useState(false);
     const tokens = SIZE_TOKENS[size];
 
-    const borderColor = error
-      ? colors.destructive
-      : focused
-        ? colors.primary
-        : colors.border;
+    const isFilled = variant === "filled";
+
+    const containerColors = isFilled
+      ? {
+          backgroundColor: colors.backgroundSecondary,
+          borderWidth: 0,
+          borderColor: "transparent",
+        }
+      : {
+          backgroundColor: "transparent",
+          borderWidth: 1,
+          borderColor: error ? colors.destructive : colors.border,
+        };
 
     return (
       <View style={[disabled && styles.disabled, containerStyle]}>
@@ -82,9 +88,8 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
             {
               height: tokens.height,
               borderRadius: tokens.borderRadius,
-              borderColor,
-              backgroundColor: colors.background,
               paddingHorizontal: tokens.paddingHorizontal,
+              ...containerColors,
             },
           ]}
         >
@@ -93,16 +98,8 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
           <RNTextInput
             ref={ref}
             editable={!disabled}
-            placeholderTextColor={colors.muted}
+            placeholderTextColor={colors.mutedForeground}
             {...rest}
-            onFocus={(e) => {
-              setFocused(true);
-              onFocus?.(e);
-            }}
-            onBlur={(e) => {
-              setFocused(false);
-              onBlur?.(e);
-            }}
             style={[
               styles.input,
               { fontSize: tokens.fontSize, color: colors.foreground },
@@ -143,7 +140,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderWidth: 2,
     minHeight: 44,
   },
   input: {
@@ -153,10 +149,10 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   leftSection: {
-    marginRight: 8,
+    marginRight: 6,
   },
   rightSection: {
-    marginLeft: 8,
+    marginLeft: 6,
   },
   error: {
     fontSize: 12,
