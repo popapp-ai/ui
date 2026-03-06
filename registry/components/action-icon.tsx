@@ -16,10 +16,10 @@ import { SafeGlassView, isGlassAvailable } from "@popapp/utils/glass";
 // ---------------------------------------------------------------------------
 
 const SIZE_TOKENS = {
-  xs: { width: 32, height: 32, borderRadius: 16, iconSize: 16 },
-  sm: { width: 38, height: 38, borderRadius: 19, iconSize: 18 },
-  md: { width: 44, height: 44, borderRadius: 22, iconSize: 22 },
-  lg: { width: 56, height: 56, borderRadius: 28, iconSize: 26 },
+  xs: { width: 36, height: 36, borderRadius: 18, iconSize: 18 },
+  sm: { width: 44, height: 44, borderRadius: 22, iconSize: 22 },
+  md: { width: 48, height: 48, borderRadius: 24, iconSize: 24 },
+  lg: { width: 56, height: 56, borderRadius: 28, iconSize: 28 },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -51,7 +51,7 @@ export function ActionIcon({
   onPress,
   name,
   variant = "subtle",
-  size = "md",
+  size = "sm",
   disabled = false,
   isLoading = false,
   haptic = true,

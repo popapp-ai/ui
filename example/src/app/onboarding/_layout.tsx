@@ -57,7 +57,7 @@ export default function OnboardingLayout_() {
           if(router.canDismiss()) {
             router.dismissAll();
           }
-          router.replace("/(tabs)");
+          router.replace("/");
         },
       }}
     >

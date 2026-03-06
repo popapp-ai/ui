@@ -4,7 +4,6 @@ import { useRouter } from "expo-router";
 import { useTheme } from "@popapp/theme/use-theme";
 import { Screen, ScreenHeader, ScreenContent } from "@popapp/components/screen";
 import { ActionIcon } from "@popapp/components/action-icon";
-import { Button } from "@popapp/components/button";
 import { IconSymbol } from "@popapp/components/icon-symbol.ios";
 
 export default function CenteredContentExample() {
@@ -16,12 +15,19 @@ export default function CenteredContentExample() {
       <ScreenHeader
         title=""
         rightSection={
-          <ActionIcon name="xmark" size="sm" onPress={() => router.back()} />
+          <ActionIcon name="xmark" onPress={() => router.back()} />
         }
         gradient={false}
         transparent
       />
-      <ScreenContent scroll={false} centerContent>
+      <ScreenContent
+        scroll={false}
+        centerContent
+        stickyButton={{
+          title: "View Order",
+          onPress: () => router.back(),
+        }}
+      >
         <View style={styles.content}>
           <View style={[styles.iconCircle, { backgroundColor: colors.successLight }]}>
             <IconSymbol name="checkmark" size={40} color={colors.success} />
@@ -40,19 +46,6 @@ export default function CenteredContentExample() {
               $149.99
             </Text>
           </View>
-          <View style={styles.buttons}>
-            <Button
-              title="View Order"
-              onPress={() => router.back()}
-              fullWidth
-            />
-            <Button
-              title="Back to Home"
-              variant="ghost"
-              onPress={() => router.back()}
-              fullWidth
-            />
-          </View>
         </View>
       </ScreenContent>
     </Screen>
@@ -63,6 +56,7 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "center",
     paddingHorizontal: 12,
+    paddingBottom: 70,
     gap: 16,
   },
   iconCircle: {
@@ -95,10 +89,5 @@ const styles = StyleSheet.create({
   amountValue: {
     fontSize: 36,
     fontWeight: "700",
-  },
-  buttons: {
-    width: "100%",
-    gap: 8,
-    marginTop: 24,
   },
 });

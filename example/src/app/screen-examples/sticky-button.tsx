@@ -25,7 +25,7 @@ export default function StickyButtonExample() {
       <ScreenHeader
         title="Edit Profile"
         leftSection={
-          <ActionIcon name="chevron.left" size="sm" onPress={() => router.back()} />
+          <ActionIcon name="chevron.left" onPress={() => router.back()} />
         }
       />
       <ScreenContent

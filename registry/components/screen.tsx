@@ -298,7 +298,7 @@ export function ScreenContent({
   return (
     <>
       <Animated.View
-        style={[contentStyles.plain, animatedPadding, style]}
+        style={[contentStyles.plain, animatedPadding, centerContent ? contentStyles.centerContent : null, style]}
         entering={scaleInEntering ? scaleIn : undefined}
         exiting={scaleInEntering ? scaleOut : undefined}
       >

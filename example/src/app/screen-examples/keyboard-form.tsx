@@ -25,10 +25,10 @@ export default function KeyboardFormExample() {
       <ScreenHeader
         title="Contact Info"
         leftSection={
-          <ActionIcon name="chevron.left" size="sm" onPress={() => router.back()} />
+          <ActionIcon name="chevron.left" onPress={() => router.back()} />
         }
       />
-      <ScreenContent>
+      <ScreenContent contentContainerStyle={{ gap: 16 }}>
         <View style={styles.row}>
           <View style={styles.half}>
             <TextInput

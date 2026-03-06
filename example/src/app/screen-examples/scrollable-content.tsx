@@ -77,10 +77,10 @@ export default function ScrollableContentExample() {
       <ScreenHeader
         title="Release Notes"
         leftSection={
-          <ActionIcon name="chevron.left" size="sm" onPress={() => router.back()} />
+          <ActionIcon name="chevron.left" onPress={() => router.back()} />
         }
         rightSection={
-          <ActionIcon name="square.and.arrow.up" size="sm" onPress={() => {}} />
+          <ActionIcon name="square.and.arrow.up" onPress={() => {}} />
         }
       />
       <ScreenContent>

@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
-    padding: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
@@ -129,7 +128,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   header: {
-    marginBottom: 8,
+    padding: 16,
+    paddingBottom: 0,
   },
   title: {
     fontSize: 18,
@@ -140,11 +140,12 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   content: {
-    marginTop: 8,
+    padding: 16,
   },
   footer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 12,
+    padding: 16,
+    paddingTop: 0,
   },
 });
