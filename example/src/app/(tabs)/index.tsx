@@ -328,7 +328,7 @@ export default function ComponentsScreen() {
 
         <DemoSection title="Markdown" description="Themed markdown renderer">
           <Markdown>
-            {`# Heading 1\n## Heading 2\n\nThis is **bold** and *italic* text.\n\n- List item one\n- List item two\n- List item three\n\n\`inline code\` and:\n\n\`\`\`\ncode block\nwith multiple lines\n\`\`\``}
+            {`# Heading 1\n\nThis is **bold** and *italic* text.\n\n- List item one\n- List item two\n- List item three\n\n\`inline code\` and:\n\n\`\`\`\ncode block\nwith multiple lines\n\`\`\``}
           </Markdown>
         </DemoSection>
 
@@ -343,8 +343,8 @@ export default function ComponentsScreen() {
         </DemoSection>
       </ScreenContent>
 
-      <BottomSheet visible={sheetOpen} onDismiss={() => setSheetOpen(false)}>
-        <View style={{ padding: 20, gap: 16 }}>
+      <BottomSheet paddingBottom={-44} visible={sheetOpen} onDismiss={() => setSheetOpen(false)}>
+        <View style={{ paddingHorizontal: 20, gap: 16 }}>
           <Text
             style={{
               color: colors.foreground,
@@ -368,6 +368,7 @@ export default function ComponentsScreen() {
             midStep={5}
             unit="ML"
           />
+          <Button title="Close" onPress={() => setSheetOpen(false)} />
         </View>
       </BottomSheet>
     </Screen>

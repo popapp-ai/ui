@@ -19,12 +19,14 @@ export function DemoSection({
 
   return (
     <View style={[styles.container, style]}>
+      <View style={styles.header}>
       <Text style={[styles.title, { color: colors.foreground }]}>{title}</Text>
       {description && (
         <Text style={[styles.description, { color: colors.foregroundSecondary }]}>
           {description}
         </Text>
       )}
+      </View> 
       <View style={styles.content}>{children}</View>
     </View>
   );
@@ -33,7 +35,11 @@ export function DemoSection({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 32,
+    gap: 32,
+  },
+  header: {
     gap: 8,
+    marginBottom: -16,
   },
   title: {
     fontSize: 20,

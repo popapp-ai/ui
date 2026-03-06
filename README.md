@@ -2,15 +2,15 @@
 
 **Native StyleSheet. Native gestures. Native haptics. No Tailwind required.**
 
-A shadcn-style component registry for React Native and Expo. Copy beautiful, production-ready components into your project with a single command.
+A shadcn-style component registry for React Native and Expo. Copy beautiful, meticulously crafted components into your project with a single command.
 
 ## Why PopApp UI?
 
-Every existing React Native component registry requires NativeWind/Tailwind CSS. PopApp UI uses **pure React Native StyleSheet** — zero build configuration, works with any Expo template instantly.
+PopApp UI provides **beautiful, native-feeling components** designed specifically for React Native. Every component is crafted with haptic feedback, natural spring animations, and smooth, understated interactions that feel right at home on iOS and Android.
 
-- **StyleSheet-native** — no NativeWind, no Tailwind, no className resolution
 - **Gesture-first** — spring physics and UI-thread animations via Reanimated
-- **Haptic feedback** — built into every interactive component
+- **Haptic feedback** — tactile responses built into every interactive component
+- **StyleSheet-native** — pure React Native StyleSheet without NativeWind/Tailwind CSS
 - **Copy-paste** — you own the code, customize freely
 - **TypeScript-first** — full type safety with exported interfaces
 - **Expo-optimized** — works out of the box with Expo, compatible with bare RN

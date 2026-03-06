@@ -272,9 +272,12 @@ export function SliderBar({
   );
 
   // ── Animated styles ──────────────────────────────────────────────
-  const fillStyle = useAnimatedStyle(() => ({
-    width: thumbX.value,
-  }));
+  const fillStyle = useAnimatedStyle(() => {
+    "worklet";
+    const w = Math.max(0, thumbX.value);
+    // Cap near-zero to avoid progress bar blinking from sub-pixel oscillation
+    return { width: w < 1 ? 0 : w };
+  });
 
   const thumbStyle = useAnimatedStyle(() => {
     const scale = withSpring(

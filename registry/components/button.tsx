@@ -64,7 +64,7 @@ export function Button({
   const { colors } = useTheme();
   const tokens = SIZE_TOKENS[size];
 
-  const useGlass = glass && isGlassAvailable() && variant !== "ghost";
+  const useGlass = glass && isGlassAvailable() && variant !== "ghost" && variant !== "outline";
 
   // Resolve variant colours
   let bg: string;
@@ -85,7 +85,7 @@ export function Button({
     case "subtle":
       bg = useGlass ? colors.card : colors.cardSecondary;
       fg = colors.foreground;
-      borderColor = colors.border;
+      borderColor = colors.cardSecondary;
       break;
     case "destructive":
       bg = colors.destructive;
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 2,
     borderColor: "transparent",
   },
   content: {

@@ -40,13 +40,10 @@ export default function FormsScreen() {
         <DemoSection title="Button" description="Variants and sizes">
           <View style={styles.row}>
             <Button title="Solid" variant="solid" size="md" onPress={() => {}} />
+            <Button title="Subtle" variant="subtle" size="md" onPress={() => {}} />
             <Button title="Outline" variant="outline" size="md" onPress={() => {}} />
+            <Button title="Destructive" variant="destructive" size="md" onPress={() => {}} />
             <Button title="Ghost" variant="ghost" size="md" onPress={() => {}} />
-          </View>
-          <View style={styles.row}>
-            <Button title="Subtle" variant="subtle" size="sm" onPress={() => {}} />
-            <Button title="Destructive" variant="destructive" size="sm" onPress={() => {}} />
-            <Button title="Loading" variant="solid" size="sm" isLoading onPress={() => {}} />
           </View>
           <View style={styles.row}>
             <Button title="XS" size="xs" onPress={() => {}} />
@@ -54,10 +51,12 @@ export default function FormsScreen() {
             <Button title="MD" size="md" onPress={() => {}} />
             <Button title="LG" size="lg" onPress={() => {}} />
           </View>
-          <Button title="Full Width Button" fullWidth onPress={() => {}} />
-          <Button title="Not Glass Button" glass={false} onPress={() => {}} />
-          <Button variant='subtle' title="Not Glass Subtle Button" glass={false} onPress={() => {}} />
-          <Button title="Disabled" disabled onPress={() => {}} />
+          <View style={styles.list}>
+            <Button title="Full Width Button" fullWidth onPress={() => {}} />
+            <Button title="Not Glass Button" glass={false} onPress={() => {}} />
+            <Button variant='subtle' title="Not Glass Subtle Button" glass={false} onPress={() => {}} />
+            <Button title="Disabled" disabled onPress={() => {}} />
+          </View>
         </DemoSection>
 
         <DemoSection title="TextInput" description="With label, error, and icons">
@@ -66,13 +65,16 @@ export default function FormsScreen() {
             label="Password"
             placeholder="Enter password"
             secureTextEntry
-            rightSection={<ActionIcon name="eye.fill" onPress={() => {}} />}
+            rightSection={<ActionIcon variant="ghost" name="eye.fill" onPress={() => {}} />}
           />
           <TextInput label="With Error" placeholder="Required" error="This field is required" />
           <TextInput label="Disabled" placeholder="Can't edit" disabled />
           <View style={styles.row}>
             <View style={{ flex: 1 }}>
               <TextInput label="Small" size="sm" placeholder="SM" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <TextInput label="Medium" size="md" placeholder="MD" />
             </View>
             <View style={{ flex: 1 }}>
               <TextInput label="Large" size="lg" placeholder="LG" />
@@ -238,6 +240,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     flexWrap: "wrap",
+  },
+  list: {
+    flexDirection: "column",
+    gap: 10,
   },
   datePicker: {
     marginTop: 16,

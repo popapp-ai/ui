@@ -73,7 +73,7 @@ export function OptionCard({
           ]}
         >
           {selected && (
-            <IconSymbol name="checkmark" size={14} color={colors.primaryForeground} />
+            <IconSymbol name="checkmark" weight="bold" size={14} color={colors.primaryForeground} />
           )}
         </View>
       )}

@@ -19,8 +19,8 @@ import { useTheme } from "@popapp/theme/use-theme";
 const SIZE_TOKENS = {
   sm: { height: 44, borderRadius: 12, fontSize: 14, paddingHorizontal: 14 },
   md: { height: 48, borderRadius: 14, fontSize: 16, paddingHorizontal: 16 },
-  lg: { height: 56, borderRadius: 18, fontSize: 16, paddingHorizontal: 16 },
-  xl: { height: 64, borderRadius: 20, fontSize: 18, paddingHorizontal: 20 },
+  lg: { height: 56, borderRadius: 16, fontSize: 16, paddingHorizontal: 16 },
+  xl: { height: 64, borderRadius: 16, fontSize: 18, paddingHorizontal: 20 },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     marginBottom: 6,
+    marginHorizontal: 1,
   },
   inputContainer: {
     flexDirection: "row",

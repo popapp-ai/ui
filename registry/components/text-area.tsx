@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     marginBottom: 6,
+    marginHorizontal: 1,
   },
   input: {
     borderWidth: 2,
