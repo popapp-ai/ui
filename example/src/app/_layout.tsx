@@ -12,6 +12,7 @@ export default function RootLayout() {
           <Stack screenOptions={{ headerShown: false, animation: "none", gestureEnabled: false }}>
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="onboarding" />
+            <Stack.Screen name="screen-examples" options={{ animation: "ios_from_right", gestureEnabled: true }} />
           </Stack>
         </ThemeProvider>
       </KeyboardProvider>

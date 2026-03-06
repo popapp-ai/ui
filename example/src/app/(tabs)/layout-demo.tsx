@@ -33,7 +33,48 @@ export default function LayoutDemoScreen() {
         {/* ── Screen Component ─────────────────────────────────── */}
         <DemoSection
           title="Screen"
-          description="Composable layout with header, content, and footer. This entire tab uses the Screen component." children={undefined}        />
+          description="Composable layout with header, content, and footer. Tap to see examples."
+        >
+          <ListSection title="Examples">
+            <ListNavigationCell
+              icon="hand.tap.fill"
+              label="Sticky Button"
+              value="Edit profile"
+              onPress={() => router.push("/screen-examples/sticky-button")}
+            />
+            <ListNavigationCell
+              icon="keyboard.fill"
+              label="Keyboard Form"
+              value="Input handling"
+              onPress={() => router.push("/screen-examples/keyboard-form")}
+            />
+            <ListNavigationCell
+              icon="slider.horizontal.3"
+              label="Custom Header"
+              value="Search & actions"
+              onPress={() => router.push("/screen-examples/custom-header")}
+            />
+            <ListNavigationCell
+              icon="rectangle.center.inset.filled"
+              label="Centered Content"
+              value="No scroll"
+              onPress={() => router.push("/screen-examples/centered-content")}
+            />
+            <ListNavigationCell
+              icon="dock.rectangle"
+              label="Custom Footer"
+              value="Two buttons"
+              onPress={() => router.push("/screen-examples/custom-footer")}
+            />
+            <ListNavigationCell
+              icon="scroll.fill"
+              label="Scrollable Content"
+              value="Long list"
+              onPress={() => router.push("/screen-examples/scrollable-content")}
+              last
+            />
+          </ListSection>
+        </DemoSection>
 
         {/* ── List Component ───────────────────────────────────── */}
         <DemoSection
