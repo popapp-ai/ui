@@ -9,7 +9,7 @@ export function Markdown({ children }: { children: string }) {
   return (
     <RNMarkdown
       style={{
-        body: { color: colors.foreground, fontSize: 18, lineHeight: 24 },
+        body: { color: colors.foreground, fontSize: 16, lineHeight: 22 },
         list_item: { lineHeight: 28, marginTop: 10, marginLeft: -10 },
         heading1: { lineHeight: 36, marginTop: 16, fontSize: 32 },
         heading2: { lineHeight: 32, marginTop: 16, fontSize: 28 },

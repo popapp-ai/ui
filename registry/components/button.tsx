@@ -11,6 +11,8 @@ import { useTheme } from "@popapp/theme/use-theme";
 import { impactMedium } from "@popapp/utils/haptics";
 import { SafeGlassView, isGlassAvailable } from "@popapp/utils/glass";
 import { Touchable } from "./touchable";
+import { IconSymbolName } from "./icon-symbol.types";
+import { IconSymbol } from "./icon-symbol";
 
 // ---------------------------------------------------------------------------
 // Size tokens
@@ -33,8 +35,8 @@ export interface ButtonProps extends TouchableOpacityProps {
   variant?: "solid" | "outline" | "ghost" | "subtle" | "destructive";
   size?: keyof typeof SIZE_TOKENS;
   isLoading?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIcon?: React.ReactNode | IconSymbolName;
+  rightIcon?: React.ReactNode | IconSymbolName;
   /** Trigger haptic feedback on press. */
   haptic?: boolean;
   fullWidth?: boolean;
@@ -113,7 +115,7 @@ export function Button({
       disabled={disabled || isLoading}
       onPress={handlePress}
       {...rest}
-      style={[style, fullWidth && { width: "100%" }]}
+      style={[!useGlass && style, fullWidth && { width: "100%" }]}
     >
       <View
         style={[
@@ -129,7 +131,7 @@ export function Button({
       >
         <View style={styles.content}>
           {leftIcon && !isLoading && (
-            <View style={styles.iconLeft}>{leftIcon}</View>
+            <View style={styles.iconLeft}>{typeof leftIcon === "string" ? <IconSymbol name={leftIcon} size={tokens.fontSize} color={fg} /> : leftIcon}</View>
           )}
 
           {isLoading ? (
@@ -141,7 +143,7 @@ export function Button({
           )}
 
           {rightIcon && !isLoading && (
-            <View style={styles.iconRight}>{rightIcon}</View>
+            <View style={styles.iconRight}>{typeof rightIcon === "string" ? <IconSymbol name={rightIcon} size={tokens.fontSize} color={fg} /> : rightIcon}</View>
           )}
         </View>
       </View>
@@ -153,7 +155,7 @@ export function Button({
       <SafeGlassView
         tintColor={bg}
         isInteractive={!disabled}
-        style={{ borderRadius: tokens.borderRadius, height: tokens.height }}
+        style={[style, { borderRadius: tokens.borderRadius, height: tokens.height }]}
       >
         {buttonContent}
       </SafeGlassView>

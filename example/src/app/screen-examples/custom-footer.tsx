@@ -41,7 +41,7 @@ export default function CustomFooterExample() {
       <ScreenHeader
         title="Choose Plan"
         leftSection={
-          <ActionIcon name="chevron.left" size="sm" onPress={() => router.back()} />
+          <ActionIcon name="chevron.left" onPress={() => router.back()} />
         }
       />
       <ScreenContent>

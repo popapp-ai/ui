@@ -9,10 +9,15 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <KeyboardProvider>
         <ThemeProvider>
-          <Stack screenOptions={{ headerShown: false, animation: "none", gestureEnabled: false }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="onboarding" />
-            <Stack.Screen name="screen-examples" options={{ animation: "ios_from_right", gestureEnabled: true }} />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              animation: "ios_from_right",
+              gestureEnabled: true,
+            }}
+          >
+            <Stack.Screen name="index" options={{ animation: "none", gestureEnabled: false }} />
+            <Stack.Screen name="onboarding" options={{ animation: "none" }} />
           </Stack>
         </ThemeProvider>
       </KeyboardProvider>
