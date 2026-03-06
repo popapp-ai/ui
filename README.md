@@ -87,7 +87,7 @@ export default function RootLayout() {
 | `animated-content` | Spring-based enter/exit content transitions | 2 |
 | `screen` | Composable screen layout with keyboard-aware content | 2 |
 | `onboarding` | Step-based onboarding engine with progress and skip logic | 2 |
-| `slider-bar` | Gesture-controlled slider with step snapping and haptics | 3 |
+| `slider-bar` | Gesture-controlled slider with thumb/track variants, step snapping, and haptics | 3 |
 | `ruler-slider` | iOS-style ruler picker with Skia rendering and momentum scrolling | 3 |
 | `bottom-sheet` | Modal bottom sheet with pan-to-dismiss gesture | 3 |
 
