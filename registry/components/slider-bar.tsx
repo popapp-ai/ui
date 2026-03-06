@@ -26,9 +26,10 @@ import type { IconSymbolName } from "@popapp/components/icon-symbol.types";
 
 // ── Spring config ──────────────────────────────────────────────────────
 const THUMB_SPRING = { damping: 18, stiffness: 180, mass: 1 };
+const ATTACH_SPRING = { damping: 28, stiffness: 350, mass: 0.8 };
 
-// ── Dimensions ─────────────────────────────────────────────────────────
-const TRACK_HEIGHT = 6;
+// ── Default dimensions ─────────────────────────────────────────────────
+const DEFAULT_TRACK_HEIGHT = 6;
 const THICK_TRACK_HEIGHT = 28;
 const THUMB_SIZE = 28;
 const ACTIVE_THUMB_SCALE = 1.15;
@@ -64,17 +65,18 @@ export interface SliderBarProps {
   haptic?: boolean;
   /**
    * Visual style variant.
-   * - `"thumb"` — thin track with a draggable thumb (default).
-   * - `"track"` — thick rounded track, no thumb.
+   * - "thumb" (default): thin track with a circular thumb handle.
+   * - "track": thick rounded track without a thumb — progress fills the bar.
    */
   variant?: SliderVariant;
-  /**
-   * When true, the thumb animates to the finger position on touch start
-   * so the slider tracks the finger exactly. When false, the offset between
-   * the finger and the thumb at touch start is preserved during dragging.
-   * Defaults to `true` for `"thumb"` variant, `false` for `"track"` variant.
-   */
-  stickyToFinger?: boolean;
+  /** Track / progress bar border-radius in px. Defaults to half the track height. */
+  trackRadius?: number;
+  /** Progress fill color. Defaults to theme `primary`. */
+  progressColor?: string;
+  /** Track background color. Defaults to theme `border`. */
+  backgroundColor?: string;
+  /** Track height in px. Overrides the default for the chosen variant. */
+  trackSize?: number;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -160,14 +162,20 @@ export function SliderBar({
   labels,
   haptic = true,
   variant = "thumb",
-  stickyToFinger,
+  trackRadius,
+  progressColor,
+  backgroundColor,
+  trackSize,
   style,
 }: SliderBarProps) {
   const { colors } = useTheme();
 
   const isThumbVariant = variant === "thumb";
-  const sticky = stickyToFinger ?? isThumbVariant;
-  const currentTrackHeight = isThumbVariant ? TRACK_HEIGHT : THICK_TRACK_HEIGHT;
+  const resolvedTrackHeight =
+    trackSize ?? (isThumbVariant ? DEFAULT_TRACK_HEIGHT : THICK_TRACK_HEIGHT);
+  const resolvedRadius = trackRadius ?? resolvedTrackHeight / 2;
+  const fillColor = progressColor ?? colors.primary;
+  const bgColor = backgroundColor ?? colors.border;
 
   const trackWidth = useSharedValue(0);
   const thumbX = useSharedValue(0);
@@ -262,51 +270,116 @@ export function SliderBar({
   );
 
   // ── Gesture ──────────────────────────────────────────────────────
+  const startX = useSharedValue(0);
+  const isAttached = useSharedValue(false);
+
+  // Threshold: if total finger movement is below this, treat as a tap.
+  const TAP_THRESHOLD = 10;
+
   const pan = Gesture.Pan()
     .hitSlop({ top: 16, bottom: 16, left: 8, right: 8 })
     .onStart((e) => {
       "worklet";
       isActive.value = true;
-      if (sticky) {
-        // Animate thumb to finger position immediately
+      startX.value = e.x;
+
+      if (isThumbVariant) {
         const target = clampX(e.x);
-        thumbX.value = withSpring(target, THUMB_SPRING);
-        contextX.value = target;
+        const dist = Math.abs(thumbX.value - target);
+        if (dist < THUMB_SIZE) {
+          // Finger landed on the thumb — direct tracking.
+          isAttached.value = true;
+        } else {
+          // Finger is far from thumb — animate thumb toward finger.
+          isAttached.value = false;
+          thumbX.value = withSpring(target, ATTACH_SPRING);
+        }
       } else {
+        // Track variant: relative drag from current position.
         contextX.value = thumbX.value;
+        isAttached.value = true;
       }
     })
     .onUpdate((e) => {
       "worklet";
-      if (sticky) {
-        thumbX.value = clampX(e.x);
+      if (isThumbVariant) {
+        const fingerX = clampX(startX.value + e.translationX);
+        if (!isAttached.value) {
+          const dist = Math.abs(thumbX.value - fingerX);
+          if (dist < 2) {
+            isAttached.value = true;
+            thumbX.value = fingerX;
+          } else {
+            thumbX.value = withSpring(fingerX, ATTACH_SPRING);
+            return;
+          }
+        }
+        thumbX.value = fingerX;
       } else {
+        // Track variant: relative drag.
         thumbX.value = clampX(contextX.value + e.translationX);
       }
     })
-    .onEnd(() => {
+    .onEnd((e) => {
       "worklet";
       isActive.value = false;
-      if (step > 0 && trackWidth.value > 0) {
+      const wasAttached = isAttached.value;
+      isAttached.value = false;
+
+      // Detect "sloppy taps" — slight finger movement that activated Pan
+      // but was clearly intended as a tap, not a drag.
+      const isTap =
+        Math.abs(e.translationX) < TAP_THRESHOLD &&
+        Math.abs(e.translationY) < TAP_THRESHOLD;
+
+      // For taps: spring to the finger position (the intended target).
+      // For thumb-variant short gestures where thumb never attached: same.
+      // For real drags: snap from the current thumbX.
+      const jumpToFinger = isTap || (isThumbVariant && !wasAttached);
+
+      if (jumpToFinger) {
+        const target = clampX(startX.value + e.translationX);
+        if (step > 0 && trackWidth.value > 0) {
+          const snapped = xToSnapped(target);
+          thumbX.value = withSpring(
+            valueToX(snapped, trackWidth.value),
+            THUMB_SPRING,
+          );
+        } else {
+          thumbX.value = withSpring(target, THUMB_SPRING);
+        }
+      } else if (step > 0 && trackWidth.value > 0) {
         const snapped = xToSnapped(thumbX.value);
-        const targetX = valueToX(snapped, trackWidth.value);
-        thumbX.value = withSpring(targetX, THUMB_SPRING);
+        thumbX.value = withSpring(
+          valueToX(snapped, trackWidth.value),
+          THUMB_SPRING,
+        );
       }
     });
 
-  const tap = Gesture.Tap().onEnd((e) => {
-    "worklet";
-    const target = clampX(e.x);
-    if (step > 0) {
-      const snapped = xToSnapped(target);
-      const snapX = valueToX(snapped, trackWidth.value);
-      thumbX.value = withSpring(snapX, THUMB_SPRING);
-    } else {
-      thumbX.value = withSpring(target, THUMB_SPRING);
-    }
-  });
+  // Tap is a fallback for perfectly stationary touches (0 movement) where
+  // Pan never activates.
+  const tap = Gesture.Tap()
+    .onStart(() => {
+      "worklet";
+      isActive.value = true;
+    })
+    .onEnd((e) => {
+      "worklet";
+      const target = clampX(e.x);
+      if (step > 0) {
+        const snapped = xToSnapped(target);
+        thumbX.value = withSpring(
+          valueToX(snapped, trackWidth.value),
+          THUMB_SPRING,
+        );
+      } else {
+        thumbX.value = withSpring(target, THUMB_SPRING);
+      }
+      isActive.value = false;
+    });
 
-  const composed = Gesture.Race(pan, tap);
+  const composed = Gesture.Exclusive(pan, tap);
 
   // ── Layout ───────────────────────────────────────────────────────
   const onLayout = useCallback(
@@ -370,28 +443,33 @@ export function SliderBar({
       <GestureDetector gesture={composed}>
         <Animated.View
           style={[
-            isThumbVariant ? styles.trackWrapper : styles.thickTrackWrapper,
+            styles.trackWrapper,
+            {
+              height: isThumbVariant
+                ? THUMB_SIZE + 16
+                : resolvedTrackHeight + 16,
+            },
             thickTrackActiveStyle,
           ]}
         >
           <View
             style={[
-              styles.track,
               {
-                backgroundColor: colors.border,
-                height: currentTrackHeight,
-                borderRadius: currentTrackHeight / 2,
+                height: resolvedTrackHeight,
+                borderRadius: resolvedRadius,
+                overflow: "hidden",
+                backgroundColor: bgColor,
               },
             ]}
             onLayout={onLayout}
           >
             <Animated.View
               style={[
-                styles.fill,
                 {
-                  backgroundColor: colors.primary,
+                  height: "100%",
                   width: "100%",
-                  borderRadius: currentTrackHeight / 2,
+                  borderRadius: resolvedRadius,
+                  backgroundColor: fillColor,
                 },
                 fillStyle,
               ]}
@@ -402,7 +480,7 @@ export function SliderBar({
             <Animated.View
               style={[
                 styles.thumb,
-                { backgroundColor: colors.primary },
+                { backgroundColor: fillColor },
                 thumbStyle,
               ]}
             />
@@ -440,18 +518,7 @@ const styles = StyleSheet.create({
     fontVariant: ["tabular-nums"],
   },
   trackWrapper: {
-    height: THUMB_SIZE + 16,
     justifyContent: "center",
-  },
-  thickTrackWrapper: {
-    height: THICK_TRACK_HEIGHT + 16,
-    justifyContent: "center",
-  },
-  track: {
-    overflow: "hidden",
-  },
-  fill: {
-    height: "100%",
   },
   thumb: {
     position: "absolute",

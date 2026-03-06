@@ -95,7 +95,7 @@ export default function FormsScreen() {
           <DatePicker value={date} onChange={setDate} style={styles.datePicker} />
         </DemoSection>
 
-        <DemoSection title="SliderBar" description="Gesture-based slider with labels">
+        <DemoSection title="SliderBar" description="Thumb variant with labels">
           <SliderBar
             value={slider}
             onValueChange={setSlider}
@@ -117,6 +117,22 @@ export default function FormsScreen() {
           >
             Value: {(slider * 100).toFixed(0)}%
           </Text>
+        </DemoSection>
+
+        <DemoSection title="SliderBar (Track)" description="Track variant without thumb">
+          <SliderBar
+            value={slider}
+            onValueChange={setSlider}
+            min={0}
+            max={1}
+            step={0.1}
+            variant="track"
+            labels={[
+              { text: "0%", position: 0 },
+              { text: "50%", position: 0.5 },
+              { text: "100%", position: 1 },
+            ]}
+          />
         </DemoSection>
 
         <DemoSection title="RulerSlider" description="iOS-style ruler with momentum">
