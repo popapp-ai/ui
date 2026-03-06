@@ -264,7 +264,7 @@
       "name": "slider-bar",
       "type": "registry:ui",
       "title": "Slider Bar",
-      "description": "Animated slider with gesture control, step snapping, labels, and haptic feedback.",
+      "description": "Animated slider with gesture control, step snapping, labels, haptic feedback, and thumb/track style variants.",
       "dependencies": ["react-native-reanimated", "react-native-gesture-handler"],
       "registryDependencies": ["theme", "haptics", "icon-symbol"],
       "files": [
