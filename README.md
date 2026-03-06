@@ -136,7 +136,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 
 Install the optional `svg-icons` extension:
 
-```bash
+```bash [Terminal]
 npx popapp add svg-icons
 ```
 
