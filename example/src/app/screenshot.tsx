@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@popapp/theme/use-theme";
@@ -112,6 +112,42 @@ const SCREENSHOTS: Record<string, React.FC> = {
     );
   },
 
+  // TextInput: variants (filled vs outline)
+  "input-variants": () => (
+    <View style={styles.list}>
+      <TextInput label="Filled" placeholder="Native filled input..." variant="filled" value="Jane Cooper" />
+      <TextInput label="Outline" placeholder="Outline input..." variant="outline" value="jane@example.com" />
+    </View>
+  ),
+
+  // TextInput: with icons and sections
+  "input-with-icons": () => {
+    const { colors } = useTheme();
+    return (
+      <View style={styles.list}>
+        <TextInput
+          label="Search"
+          placeholder="Search products..."
+          leftSection={<IconSymbol name="magnifyingglass" size={18} color={colors.icon} />}
+        />
+        <TextInput
+          label="Website"
+          placeholder="example.com"
+          variant="outline"
+          leftSection={<Text style={{ fontSize: 15, color: colors.foregroundSecondary }}>https://</Text>}
+          value="popapp.dev"
+        />
+        <TextInput
+          label="Price"
+          placeholder="0.00"
+          leftSection={<Text style={{ fontSize: 15, color: colors.foregroundSecondary }}>$</Text>}
+          rightSection={<Text style={{ fontSize: 13, fontWeight: "500", color: colors.foregroundSecondary }}>USD</Text>}
+          value="29.99"
+        />
+      </View>
+    );
+  },
+
   // TextInput: sizes
   "input-sizes": () => (
     <View style={styles.list}>
@@ -121,11 +157,32 @@ const SCREENSHOTS: Record<string, React.FC> = {
     </View>
   ),
 
-  // TextArea: states
+  // TextArea: states (legacy combined)
   "textarea-states": () => (
     <View style={styles.list}>
       <TextArea label="Feedback" placeholder="Tell us what you think about the app..." />
       <TextArea label="Bug Report" placeholder="Describe the issue..." error="Please provide at least 20 characters" />
+    </View>
+  ),
+
+  // TextArea: variants (filled vs outline)
+  "textarea-variants": () => (
+    <View style={styles.list}>
+      <TextArea label="Feedback" placeholder="Tell us what you think..." variant="filled" value="The app is great! I love the new dark mode feature and the smooth animations." />
+      <TextArea label="Bug Report" placeholder="Describe the issue..." variant="outline" value="When I tap the settings icon, the app briefly flickers before showing the screen." />
+    </View>
+  ),
+
+  // TextArea: error state
+  "textarea-error": () => (
+    <View style={styles.list}>
+      <TextArea
+        label="Description"
+        placeholder="Min 20 characters"
+        variant="outline"
+        error="Please provide at least 20 characters"
+        value="Too short"
+      />
     </View>
   ),
 
@@ -172,7 +229,7 @@ const SCREENSHOTS: Record<string, React.FC> = {
     );
   },
 
-  // ActionIcon: variants and sizes
+  // ActionIcon: all variants and sizes together (legacy)
   "action-icons-variations": () => (
     <View style={styles.list}>
       <View style={styles.row}>
@@ -188,6 +245,27 @@ const SCREENSHOTS: Record<string, React.FC> = {
         <ActionIcon name="heart.fill" size="md" onPress={() => {}} />
         <ActionIcon name="heart.fill" size="lg" onPress={() => {}} />
       </View>
+    </View>
+  ),
+
+  // ActionIcon: variants only
+  "action-icon-variants": () => (
+    <View style={styles.row}>
+      <ActionIcon name="plus" variant="solid" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="subtle" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="outline" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="ghost" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="destructive" size="md" onPress={() => {}} />
+    </View>
+  ),
+
+  // ActionIcon: sizes only
+  "action-icon-sizes": () => (
+    <View style={styles.row}>
+      <ActionIcon name="heart.fill" size="xs" onPress={() => {}} />
+      <ActionIcon name="heart.fill" size="sm" onPress={() => {}} />
+      <ActionIcon name="heart.fill" size="md" onPress={() => {}} />
+      <ActionIcon name="heart.fill" size="lg" onPress={() => {}} />
     </View>
   ),
 
@@ -341,7 +419,7 @@ const SCREENSHOTS: Record<string, React.FC> = {
     <DatePicker value={new Date(2000, 5, 15)} onChange={() => {}} />
   ),
 
-  // SliderBar
+  // SliderBar: thumb variant with labels
   "slider-bar": () => (
     <View style={styles.list}>
       <SliderBar value={0.7} onValueChange={() => {}} min={0} max={1} step={0.01} />
@@ -360,6 +438,14 @@ const SCREENSHOTS: Record<string, React.FC> = {
     </View>
   ),
 
+  // SliderBar: thick track variant
+  "slider-bar-track": () => (
+    <View style={styles.list}>
+      <SliderBar value={0.6} onValueChange={() => {}} min={0} max={1} step={0.01} variant="track" />
+      <SliderBar value={0.35} onValueChange={() => {}} min={0} max={1} step={0.01} variant="track" progressColor="#FF9500" backgroundColor="#1C1C1E" />
+    </View>
+  ),
+
   // RulerSlider
   "ruler-slider": () => (
     <RulerSlider
@@ -373,6 +459,263 @@ const SCREENSHOTS: Record<string, React.FC> = {
       unit="cm"
     />
   ),
+
+  // ── Animated entries (for video capture) ─────────────────────────
+
+  // ProgressRing: animates 0 → 73 on mount
+  "anim-progress-ring": () => {
+    const [value, setValue] = useState(0);
+    useEffect(() => {
+      const timer = setTimeout(() => setValue(73), 500);
+      return () => clearTimeout(timer);
+    }, []);
+    return (
+      <View style={styles.centered}>
+        <ProgressRing
+          value={value}
+          maxValue={100}
+          size={140}
+          strokeWidth={12}
+          centerLabel={<Ticker value={value} fontSize={28} decimals={0} unit="%" />}
+        />
+      </View>
+    );
+  },
+
+  // Ticker: cycles through values
+  "anim-ticker": () => {
+    const values = [
+      { temp: 42.5, price: 1299.99 },
+      { temp: 18.3, price: 849.50 },
+      { temp: 36.6, price: 2150.00 },
+      { temp: 42.5, price: 1299.99 },
+    ];
+    const [idx, setIdx] = useState(0);
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIdx((i) => (i + 1) % values.length);
+      }, 1500);
+      return () => clearInterval(interval);
+    }, []);
+    const { temp, price } = values[idx];
+    return (
+      <View style={styles.centered}>
+        <View style={{ flexDirection: "row", justifyContent: "space-around", width: "100%" }}>
+          <View style={{ alignItems: "center", gap: 4 }}>
+            <Ticker value={temp} decimals={1} fontSize={32} unit="°C" />
+          </View>
+          <View style={{ alignItems: "center", gap: 4 }}>
+            <Ticker value={price} decimals={2} fontSize={32} unit="$" />
+          </View>
+        </View>
+      </View>
+    );
+  },
+
+  // SliderBar: animated drag gesture with finger cursor
+  "anim-slider-bar": () => {
+    const [value, setValue] = useState(0.3);
+    const [fingerVisible, setFingerVisible] = useState(false);
+    const [containerWidth, setContainerWidth] = useState(0);
+    const valueRef = useRef(0.3);
+
+    useEffect(() => {
+      const ease = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+
+      const animateTo = (target: number, durationMs: number): Promise<void> =>
+        new Promise((resolve) => {
+          const from = valueRef.current;
+          const start = Date.now();
+          const tick = () => {
+            const elapsed = Date.now() - start;
+            const t = Math.min(1, elapsed / durationMs);
+            const v = from + (target - from) * ease(t);
+            valueRef.current = v;
+            setValue(v);
+            if (t < 1) requestAnimationFrame(tick);
+            else resolve();
+          };
+          requestAnimationFrame(tick);
+        });
+      const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+      const run = async () => {
+        await wait(500);
+        setFingerVisible(true);
+        await wait(200);
+        await animateTo(0.75, 1500);
+        await wait(300);
+        await animateTo(0.3, 1500);
+        await wait(200);
+        setFingerVisible(false);
+      };
+      run();
+    }, []);
+
+    const FINGER = 54;
+    const fingerLeft = value * containerWidth - FINGER / 2;
+    // SliderBar thumb variant: trackWrapper height=44, thumb centered at y=22
+    const fingerTop = 22 - FINGER / 2;
+
+    return (
+      <View
+        style={[styles.list, { position: "relative" }]}
+        onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+      >
+        <SliderBar value={value} onValueChange={() => {}} min={0} max={1} step={0.01} />
+        {fingerVisible && containerWidth > 0 && (
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              left: fingerLeft,
+              top: 22 - FINGER / 2,
+              width: FINGER,
+              height: FINGER,
+              borderRadius: FINGER / 2,
+              backgroundColor: "rgba(90, 90, 90, 0.25)",
+              borderWidth: 2,
+              borderColor: "rgba(60, 60, 60, 0.3)",
+              zIndex: 999,
+            }}
+          />
+        )}
+      </View>
+    );
+  },
+
+  // RulerSlider: animated scroll gesture with finger cursor
+  "anim-ruler-slider": () => {
+    const [value, setValue] = useState(170);
+    const [fingerVisible, setFingerVisible] = useState(false);
+    const [containerWidth, setContainerWidth] = useState(0);
+    const [fingerOffset, setFingerOffset] = useState(0);
+    const valueRef = useRef(170);
+    const offsetRef = useRef(0);
+    const lastRounded = useRef(170);
+
+    useEffect(() => {
+      const ease = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+
+      // Animate value in discrete integer steps to avoid spring pile-ups
+      // in RulerSlider's sync mechanism. Finger offset updates independently.
+      const animateTo = (
+        targetValue: number,
+        targetOffset: number,
+        durationMs: number,
+      ): Promise<void> =>
+        new Promise((resolve) => {
+          const fromValue = valueRef.current;
+          const fromOffset = offsetRef.current;
+          const startTime = Date.now();
+          const stepInterval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const t = Math.min(1, elapsed / durationMs);
+            const e = ease(t);
+            const v = fromValue + (targetValue - fromValue) * e;
+            const o = fromOffset + (targetOffset - fromOffset) * e;
+            valueRef.current = v;
+            offsetRef.current = o;
+            setFingerOffset(o);
+            const rounded = Math.round(v);
+            if (rounded !== lastRounded.current) {
+              lastRounded.current = rounded;
+              setValue(rounded);
+            }
+            if (t >= 1) {
+              clearInterval(stepInterval);
+              resolve();
+            }
+          }, 80); // ~12fps for value updates, lets each spring settle
+        });
+      const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+      const run = async () => {
+        await wait(500);
+        setFingerVisible(true);
+        await wait(200);
+        // Drag left → value increases, finger moves left
+        await animateTo(188, -90, 1800);
+        await wait(300);
+        // Drag back to start → finger returns to center
+        await animateTo(170, 0, 1800);
+        await wait(200);
+        setFingerVisible(false);
+      };
+      run();
+    }, []);
+
+    const FINGER = 54;
+    // Finger positioned in the ruler area
+    // Display: ~55px, marginTop 16px, ruler height 88px → ruler center ≈ 55+16+44 = 115
+    const fingerCenterX = containerWidth / 2 + fingerOffset;
+    const fingerLeft = fingerCenterX - FINGER / 2;
+    const fingerTop = 55 + 16 + 30 - FINGER / 2; // roughly mid-ruler area
+
+    return (
+      <View
+        style={{ position: "relative" }}
+        onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+      >
+        <RulerSlider
+          value={value}
+          onValueChange={() => {}}
+          min={100}
+          max={220}
+          step={1}
+          majorStep={10}
+          midStep={5}
+          unit="cm"
+        />
+        {fingerVisible && containerWidth > 0 && (
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              left: fingerLeft,
+              top: fingerTop,
+              width: FINGER,
+              height: FINGER,
+              borderRadius: FINGER / 2,
+              backgroundColor: "rgba(90, 90, 90, 0.25)",
+              borderWidth: 2,
+              borderColor: "rgba(60, 60, 60, 0.3)",
+              zIndex: 999,
+            }}
+          />
+        )}
+      </View>
+    );
+  },
+
+  // Skeleton: already animates shimmer, just render it
+  "anim-skeleton": () => {
+    const { colors } = useTheme();
+    return (
+      <View style={{ gap: 16 }}>
+        <Card>
+          <CardContent>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+              <Skeleton width={56} height={56} borderRadius={28} />
+              <View style={{ flex: 1, gap: 8 }}>
+                <Skeleton width="60%" height={18} borderRadius={4} />
+                <Skeleton width="40%" height={14} borderRadius={4} />
+              </View>
+            </View>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <View style={{ gap: 10 }}>
+              <Skeleton width="100%" height={16} borderRadius={4} />
+              <Skeleton width="100%" height={16} borderRadius={4} />
+              <Skeleton width="75%" height={16} borderRadius={4} />
+            </View>
+          </CardContent>
+        </Card>
+      </View>
+    );
+  },
 };
 
 // ─── Screen component ──────────────────────────────────────────────
@@ -407,6 +750,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
   },
   list: {
     gap: 12,

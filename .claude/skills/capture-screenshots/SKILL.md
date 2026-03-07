@@ -7,10 +7,10 @@ description: Capture component screenshots from the iOS simulator for documentat
 
 You are capturing component screenshots from the iPhone simulator and saving them to the docs site.
 
-**Example app:** `/Users/klim/conductor/workspaces/ui/hamburg/example`
+**Example app:** `/Users/klim/Projects/popapp/ui/example`
 **Screenshot route:** `example/src/app/screenshot.tsx`
-**Docs images:** `/Users/klim/conductor/workspaces/docs/almaty/public/images/`
-**Capture script:** `.context/capture.py`
+**Docs images:** `/Users/klim/Projects/popapp/docs/public/images/`
+**Capture script:** `.claude/skills/capture-screenshots/capture.py`
 **Deep link scheme:** `popapp-demo`
 
 ---
@@ -37,7 +37,7 @@ python3 -m venv /tmp/imgtools && /tmp/imgtools/bin/pip install Pillow
 Use the capture script with specific IDs:
 
 ```bash
-/tmp/imgtools/bin/python3 .context/capture.py card badge-variants button-variants
+/tmp/imgtools/bin/python3 .claude/skills/capture-screenshots/capture.py card badge-variants button-variants
 ```
 
 This deep-links to each screenshot, captures, smart-crops (removes status bar + home indicator + whitespace), and saves to docs.
@@ -47,10 +47,10 @@ This deep-links to each screenshot, captures, smart-crops (removes status bar + 
 ## Option B: Capture all screenshots
 
 ```bash
-/tmp/imgtools/bin/python3 .context/capture.py
+/tmp/imgtools/bin/python3 .claude/skills/capture-screenshots/capture.py
 ```
 
-Captures all 24 registered screenshots.
+Captures all registered screenshots.
 
 ---
 
@@ -64,11 +64,17 @@ Captures all 24 registered screenshots.
 | `button-sizes` | `button-sizes.png` | XS/SM/MD/LG buttons |
 | `button-variants-full-width` | `button-variants-full-width.png` | Full-width button styles |
 | `input-states` | `input-states.png` | TextInput: empty, filled, error, disabled |
+| `input-variants` | `input-variants.png` | TextInput: filled vs outline |
+| `input-with-icons` | `input-with-icons.png` | TextInput: search, URL prefix, price |
 | `input-sizes` | `input-sizes.png` | TextInput size variants |
 | `textarea-states` | `textarea-states.png` | TextArea: default and error |
+| `textarea-variants` | `textarea-variants.png` | TextArea: filled vs outline |
+| `textarea-error` | `textarea-error.png` | TextArea: error state |
 | `input-otp` | `input-otp.png` | OTP digit input boxes |
 | `input-stepper` | `input-stepper.png` | Numeric stepper in card |
 | `action-icons-variations` | `action-icons-variations.png` | ActionIcon variants and sizes |
+| `action-icon-variants` | `action-icon-variants.png` | ActionIcon variants only |
+| `action-icon-sizes` | `action-icon-sizes.png` | ActionIcon sizes only |
 | `theme-icons-variations` | `theme-icons-variations.png` | ThemeIcon color grid |
 | `option-group-single-select` | `option-group-single-select.png` | Radio-style selection |
 | `option-group-multi-select` | `option-group-multi-select.png` | Checkbox-style selection |
@@ -81,6 +87,7 @@ Captures all 24 registered screenshots.
 | `markdown` | `markdown.png` | Rendered markdown in card |
 | `date-picker-wheel` | `date-picker-wheel.png` | Date picker wheels |
 | `slider-bar` | `slider-bar.png` | Slider with labels |
+| `slider-bar-track` | `slider-bar-track.png` | Thick track variant (no thumb) |
 | `ruler-slider` | `ruller-slider.png` | iOS-style ruler picker |
 
 ---
@@ -107,12 +114,13 @@ Open `example/src/app/screenshot.tsx` and add a new entry to the `SCREENSHOTS` m
 - No section titles or descriptive text
 - Show realistic content (real names, real data, not "Lorem ipsum")
 - For variants, show them in a row/column with `styles.row` or `styles.list`
+- `styles.row` is centered (`justifyContent: "center"`, `alignItems: "center"`)
 - For in-context examples, wrap in a `Card` if that's how it would be used
 - Import any new components at the top of the file
 
 ### Step 2 — Add to capture script
 
-Open `.context/capture.py` and add the mapping in `SCREENSHOT_MAP`:
+Open `.claude/skills/capture-screenshots/capture.py` and add the mapping in `SCREENSHOT_MAP`:
 
 ```python
 SCREENSHOT_MAP = {
@@ -121,24 +129,23 @@ SCREENSHOT_MAP = {
 }
 ```
 
-### Step 3 — Reload and capture
+### Step 3 — Sync and capture
+
+The metro dev server watches `/Users/klim/Projects/popapp/ui/`. After editing screenshot.tsx in the workspace, copy it to the metro-watched directory so hot reload picks up new entries:
 
 ```bash
-# Relaunch app to pick up new route content
-xcrun simctl terminate booted dev.popapp.demo
-sleep 1
-xcrun simctl launch booted dev.popapp.demo
-sleep 3
+cp example/src/app/screenshot.tsx /Users/klim/Projects/popapp/ui/example/src/app/screenshot.tsx
+sleep 2
 
 # Capture just the new screenshot
-/tmp/imgtools/bin/python3 .context/capture.py my-component
+/tmp/imgtools/bin/python3 .claude/skills/capture-screenshots/capture.py my-component
 ```
 
 ### Step 4 — Verify
 
 Check the output image:
 ```bash
-open /Users/klim/conductor/workspaces/docs/almaty/public/images/my-component.png
+open /Users/klim/Projects/popapp/docs/public/images/my-component.png
 ```
 
 The image should be:
@@ -149,7 +156,7 @@ The image should be:
 
 ### Step 5 — Reference in docs
 
-In the component's MDX file at `almaty/pages/components/my-component.mdx`:
+In the component's MDX file:
 
 ```mdx
 import { PreviewImage } from '../../components/preview-image'
@@ -167,10 +174,10 @@ import { PreviewImage } from '../../components/preview-image'
 4. **Smart crop** — Python/Pillow scans pixel rows to find content bounds:
    - Skips top 190px (status bar)
    - Skips bottom 100px (home indicator)
-   - Finds first/last non-white row
+   - Finds first/last non-white row (threshold=2 to catch Liquid Glass shadows)
    - Adds 60px padding
    - Crops to content bounds (width unchanged)
-5. **Save** — Writes directly to `almaty/public/images/`
+5. **Save** — Writes directly to docs `public/images/`
 
 ---
 
@@ -192,3 +199,9 @@ Adjust the `padding` parameter in `capture.py`'s `smart_crop()` function (defaul
 
 **Screenshot is blank white:**
 The `id` param doesn't match any entry in `SCREENSHOTS`. Check spelling matches exactly.
+
+**New entries not rendering (40px output):**
+The metro server watches `/Users/klim/Projects/popapp/ui/`, not the workspace. Copy screenshot.tsx:
+```bash
+cp example/src/app/screenshot.tsx /Users/klim/Projects/popapp/ui/example/src/app/screenshot.tsx
+```
