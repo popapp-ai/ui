@@ -67,7 +67,7 @@ export const lightColors: ColorTokens = {
 
   background: "#ffffff",
   backgroundSecondary: "#f5f5f5",
-  backgroundTertiary: "#e0e0e0",
+  backgroundTertiary: "#EBEBEC",
   card: "#ffffff",
   cardForeground: "#11181C",
   cardSecondary: "#f0f0f0",

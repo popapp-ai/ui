@@ -1,4 +1,7 @@
-import React, { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { useTheme } from "@popapp/theme/use-theme";
+import { GradientTint } from "@popapp/utils/gradient-tint";
+import { BlurView } from "expo-blur";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,27 +13,37 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView, KeyboardStickyView } from "react-native-keyboard-controller";
 import Animated, {
-  type EntryExitAnimationFunction,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
   withSpring,
   withTiming,
+  type EntryExitAnimationFunction,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Button } from "@popapp/components/button";
-import { useTheme } from "@popapp/theme/use-theme";
-import { GradientTint } from "@popapp/utils/gradient-tint";
 
 // ---------------------------------------------------------------------------
 // Context
 // ---------------------------------------------------------------------------
 
+export type ScreenVariant = "gradient" | "solid" | "blur" | "none";
+
 interface ScreenContextValue {
   headerHeight: number;
   footerHeight: number;
+  subheaderHeight: number;
+  subfooterHeight: number;
+  hasTopLayer: boolean;
+  hasBottomLayer: boolean;
   setHeaderHeight: (height: number) => void;
   setFooterHeight: (height: number) => void;
+  setSubheaderHeight: (height: number) => void;
+  setSubfooterHeight: (height: number) => void;
+  setHeaderMounted: (mounted: boolean) => void;
+  setFooterMounted: (mounted: boolean) => void;
+  setSubheaderMounted: (mounted: boolean) => void;
+  setSubfooterMounted: (mounted: boolean) => void;
+  variant: ScreenVariant;
   backgroundColor?: string;
   animateInsets?: boolean;
   insideModal?: boolean;
@@ -56,6 +69,7 @@ export interface ScreenProps {
   children: ReactNode;
   style?: ViewStyle;
   backgroundColor?: string;
+  variant?: ScreenVariant;
   insideModal?: boolean;
   extraBottomOffset?: number;
   ignoreKeyboard?: boolean;
@@ -66,6 +80,7 @@ export function Screen({
   children,
   style,
   backgroundColor,
+  variant = "gradient",
   insideModal = false,
   extraBottomOffset = 0,
   ignoreKeyboard = false,
@@ -75,14 +90,37 @@ export function Screen({
   const insets = useSafeAreaInsets();
   const [headerHeight, setHeaderHeight] = useState(insets.top + 16);
   const [footerHeight, setFooterHeight] = useState(insets.bottom + 16);
+  const [subheaderHeight, setSubheaderHeight] = useState(0);
+  const [subfooterHeight, setSubfooterHeight] = useState(0);
+  const [headerMounted, setHeaderMounted] = useState(false);
+  const [footerMounted, setFooterMounted] = useState(false);
+  const [subheaderMounted, setSubheaderMounted] = useState(false);
+  const [subfooterMounted, setSubfooterMounted] = useState(false);
+
+  const bg = backgroundColor ?? colors.background;
+  const hasTopLayer = headerMounted || subheaderMounted;
+  const hasBottomLayer = footerMounted || subfooterMounted;
+  const topTintHeight = headerHeight + subheaderHeight;
+  const bottomTintHeight = footerHeight + subfooterHeight;
 
   return (
     <ScreenContext.Provider
       value={{
         headerHeight,
         footerHeight,
+        subheaderHeight,
+        subfooterHeight,
+        hasTopLayer,
+        hasBottomLayer,
         setHeaderHeight,
         setFooterHeight,
+        setSubheaderHeight,
+        setSubfooterHeight,
+        setHeaderMounted,
+        setFooterMounted,
+        setSubheaderMounted,
+        setSubfooterMounted,
+        variant,
         backgroundColor,
         animateInsets,
         insideModal,
@@ -90,12 +128,91 @@ export function Screen({
         ignoreKeyboard,
       }}
     >
-      <View style={[{ flex: 1, backgroundColor: backgroundColor ?? colors.background }, style]}>
+      <View style={[{ flex: 1, backgroundColor: bg }, style]}>
+        {hasTopLayer && <ScreenTint position="top" height={topTintHeight} variant={variant} backgroundColor={bg} borderColor={colors.border} />}
+        {hasBottomLayer && <KeyboardStickyView style={[tintStyles.container, { bottom: 0 }]} offset={{ closed: 0, opened: insets.bottom - 8 + extraBottomOffset }}>
+          <ScreenTint position="bottom" height={bottomTintHeight} variant={variant} backgroundColor={bg} borderColor={colors.border} />
+        </KeyboardStickyView>}
         {children}
       </View>
     </ScreenContext.Provider>
   );
+  }
+
+function ScreenTint({
+  position,
+  height,
+  variant,
+  backgroundColor,
+  borderColor,
+}: {
+  position: "top" | "bottom";
+  height: number;
+  variant: ScreenVariant;
+  backgroundColor: string;
+  borderColor: string;
+}) {
+  if (height <= 0 || variant === "none") return null;
+
+  const isTop = position === "top";
+  const gradientExtra = 24;
+
+  if (variant === "gradient") {
+    return (
+      <View
+        style={[
+          tintStyles.container,
+          isTop ? { top: 0 } : { bottom: 0 },
+        ]}
+        pointerEvents="none"
+      >
+        <GradientTint
+          backgroundColor={backgroundColor}
+          totalHeight={height + gradientExtra}
+          startPointY={height / (height + 64)}
+          invert={!isTop}
+        />
+      </View>
+    );
+  }
+
+  if (variant === "solid") {
+    return (
+      <View
+        style={[
+          tintStyles.container,
+          { backgroundColor, height },
+          isTop ? { top: 0, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: borderColor } : { bottom: 0, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: borderColor },
+        ]}
+        pointerEvents="none"
+      />
+    );
+  }
+
+  // blur
+  return (
+    <BlurView 
+      tint='light'
+      style={[
+        tintStyles.container,
+        { height, overflow: "hidden" },
+        { backgroundColor: backgroundColor+ '90' },
+        isTop
+          ? { top: 0, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: borderColor }
+          : { bottom: 0, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: borderColor }
+      ]} 
+    />
+  );
 }
+
+const tintStyles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    zIndex: 998,
+  },
+});
 
 // ---------------------------------------------------------------------------
 // ScreenHeader
@@ -106,9 +223,6 @@ export interface ScreenHeaderProps {
   leftSection?: ReactNode;
   rightSection?: ReactNode;
   bottomSection?: ReactNode;
-  gradient?: boolean;
-  gradientOpacity?: number;
-  transparent?: boolean;
   style?: ViewStyle;
 }
 
@@ -117,16 +231,21 @@ export function ScreenHeader({
   leftSection,
   rightSection,
   bottomSection,
-  gradient = true,
-  gradientOpacity = 1,
-  transparent = false,
   style,
 }: ScreenHeaderProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const { headerHeight, setHeaderHeight, backgroundColor, insideModal } = useScreenContext();
+  const { setHeaderHeight, setHeaderMounted, insideModal } = useScreenContext();
   const paddingTop = insideModal ? 12 : insets.top;
   const measuredHeight = useRef(0);
+
+  useEffect(() => {
+    setHeaderMounted(true);
+    return () => {
+      setHeaderMounted(false);
+      setHeaderHeight(insets.top + 16);
+    };
+  }, [insets.top]);
 
   const onLayout = (e: LayoutChangeEvent) => {
     const newHeight = e.nativeEvent.layout.height;
@@ -136,20 +255,10 @@ export function ScreenHeader({
     }
   };
 
-  useEffect(() => () => setHeaderHeight(insets.top + 16), [insets.top]);
-
   const hasContent = leftSection || rightSection || title;
 
   return (
     <View style={[headerStyles.container, style]} onLayout={onLayout}>
-      {gradient && !transparent && (
-        <GradientTint
-          backgroundColor={backgroundColor ?? colors.background}
-          totalHeight={headerHeight + 24}
-          startPointY={headerHeight / (headerHeight + 64)}
-          opacity={gradientOpacity}
-        />
-      )}
       <View style={[headerStyles.bar, { paddingTop }]}>
         {hasContent && (
           <View style={headerStyles.row}>
@@ -187,6 +296,7 @@ const headerStyles = StyleSheet.create({
     height: 52,
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 4,
   },
   sideSlot: {
     minWidth: 44,
@@ -209,17 +319,125 @@ const headerStyles = StyleSheet.create({
 });
 
 // ---------------------------------------------------------------------------
+// ScreenSubheader
+// ---------------------------------------------------------------------------
+
+export interface ScreenSubheaderProps {
+  children: ReactNode;
+  style?: ViewStyle;
+}
+
+export function ScreenSubheader({
+  children,
+  style,
+}: ScreenSubheaderProps) {
+  const { headerHeight, setSubheaderHeight, setSubheaderMounted } = useScreenContext();
+  const measuredHeight = useRef(0);
+
+  useEffect(() => {
+    setSubheaderMounted(true);
+    return () => {
+      setSubheaderMounted(false);
+      setSubheaderHeight(0);
+    };
+  }, []);
+
+  const onLayout = (e: LayoutChangeEvent) => {
+    const newHeight = e.nativeEvent.layout.height;
+    if (Math.abs(newHeight - measuredHeight.current) > 2) {
+      measuredHeight.current = newHeight;
+      setSubheaderHeight(newHeight);
+    }
+  };
+
+  return (
+    <View style={[subheaderStyles.container, { top: headerHeight }, style]} onLayout={onLayout}>
+      {children}
+    </View>
+  );
+}
+
+const subheaderStyles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    zIndex: 999,
+    paddingHorizontal: 20,
+  },
+});
+
+// ---------------------------------------------------------------------------
+// ScreenSubfooter
+// ---------------------------------------------------------------------------
+
+export interface ScreenSubfooterProps {
+  children: ReactNode;
+  style?: ViewStyle;
+}
+
+export function ScreenSubfooter({
+  children,
+  style,
+}: ScreenSubfooterProps) {
+  const insets = useSafeAreaInsets();
+  const { footerHeight, setSubfooterHeight, setSubfooterMounted, extraBottomOffset, ignoreKeyboard } =
+    useScreenContext();
+  const measuredHeight = useRef(0);
+
+  useEffect(() => {
+    setSubfooterMounted(true);
+    return () => {
+      setSubfooterMounted(false);
+      setSubfooterHeight(0);
+    };
+  }, []);
+
+  const onLayout = (e: LayoutChangeEvent) => {
+    const newHeight = e.nativeEvent.layout.height;
+    if (Math.abs(newHeight - measuredHeight.current) > 2) {
+      measuredHeight.current = newHeight;
+      setSubfooterHeight(newHeight);
+    }
+  };
+
+  const containerStyle = [subfooterStyles.container, { bottom: footerHeight }, style];
+
+  if (ignoreKeyboard) {
+    return (
+      <View style={containerStyle} onLayout={onLayout}>
+        {children}
+      </View>
+    );
+  }
+
+  return (
+    <KeyboardStickyView
+      style={containerStyle}
+      offset={{ closed: 0, opened: insets.bottom - 8 + extraBottomOffset }}
+      onLayout={onLayout}
+    >
+      {children}
+    </KeyboardStickyView>
+  );
+}
+
+const subfooterStyles = StyleSheet.create({
+  container: {
+    zIndex: 1001,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+  },
+});
+
+// ---------------------------------------------------------------------------
 // ScreenContent
 // ---------------------------------------------------------------------------
 
 const PADDING_EXTRA = 16;
 const SPRING_CONFIG = { stiffness: 250, damping: 40, mass: 1 };
-
-export interface StickyButtonConfig {
-  title: string;
-  onPress: () => void;
-  disabled?: boolean;
-}
 
 export interface ScreenContentProps {
   children: ReactNode;
@@ -229,7 +447,6 @@ export interface ScreenContentProps {
   style?: ViewStyle;
   centerContent?: boolean;
   scaleInEntering?: boolean;
-  stickyButton?: StickyButtonConfig;
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
@@ -241,26 +458,25 @@ export function ScreenContent({
   style,
   centerContent = false,
   scaleInEntering = false,
-  stickyButton,
   onScroll,
 }: ScreenContentProps) {
-  const { headerHeight, footerHeight, animateInsets } = useScreenContext();
+  const { headerHeight, footerHeight, subheaderHeight, subfooterHeight, animateInsets } = useScreenContext();
 
-  const stickyExtra = stickyButton ? STICKY_BUTTON_TOTAL_HEIGHT : 0;
-  const animPaddingTop = useSharedValue(padTop ? headerHeight + PADDING_EXTRA : 0);
-  const animPaddingBottom = useSharedValue(footerHeight + PADDING_EXTRA + stickyExtra);
+  const animPaddingTop = useSharedValue(padTop ? headerHeight + subheaderHeight + PADDING_EXTRA : 0);
+  const animPaddingBottom = useSharedValue(footerHeight + subfooterHeight + PADDING_EXTRA);
 
   // biome-ignore lint: reanimated shared values
   useEffect(() => {
-    const bottomTarget = footerHeight + PADDING_EXTRA + stickyExtra;
+    const topTarget = padTop ? headerHeight + subheaderHeight + PADDING_EXTRA : 0;
+    const bottomTarget = footerHeight + subfooterHeight + PADDING_EXTRA;
     if (!animateInsets) {
-      animPaddingTop.value = padTop ? headerHeight + PADDING_EXTRA : 0;
+      animPaddingTop.value = topTarget;
       animPaddingBottom.value = bottomTarget;
       return;
     }
-    animPaddingTop.value = withSpring(padTop ? headerHeight + PADDING_EXTRA : 0, SPRING_CONFIG);
+    animPaddingTop.value = withSpring(topTarget, SPRING_CONFIG);
     animPaddingBottom.value = withSpring(bottomTarget, SPRING_CONFIG);
-  }, [headerHeight, footerHeight, padTop, animateInsets, stickyExtra]);
+  }, [headerHeight, footerHeight, subheaderHeight, subfooterHeight, padTop, animateInsets]);
 
   const animatedPadding = useAnimatedStyle(() => ({
     paddingTop: animPaddingTop.value,
@@ -269,43 +485,36 @@ export function ScreenContent({
 
   if (scroll) {
     return (
-      <>
-        <KeyboardAwareScrollView
-          style={[contentStyles.scroll, style]}
-          contentContainerStyle={[
-            contentStyles.scrollContent,
-            centerContent ? contentStyles.centerContent : null,
-            contentContainerStyle
-          ]}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-          onScroll={onScroll}
-          // centerContent={centerContent}
+      <KeyboardAwareScrollView
+        style={[contentStyles.scroll, style]}
+        contentContainerStyle={[
+          contentStyles.scrollContent,
+          centerContent ? contentStyles.centerContent : null
+        ]}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        onScroll={onScroll}
+        // centerContent={centerContent}
+      >
+        <Animated.View
+          style={[animatedPadding, contentContainerStyle]}
+          entering={scaleInEntering ? scaleIn : undefined}
+          exiting={scaleInEntering ? scaleOut : undefined}
         >
-          <Animated.View
-            style={animatedPadding}
-            entering={scaleInEntering ? scaleIn : undefined}
-            exiting={scaleInEntering ? scaleOut : undefined}
-          >
-            {children}
-          </Animated.View>
-        </KeyboardAwareScrollView>
-        {stickyButton && <ScreenStickyButton config={stickyButton} />}
-      </>
+          {children}
+        </Animated.View>
+      </KeyboardAwareScrollView>
     );
   }
 
   return (
-    <>
-      <Animated.View
-        style={[contentStyles.plain, animatedPadding, centerContent ? contentStyles.centerContent : null, style]}
-        entering={scaleInEntering ? scaleIn : undefined}
-        exiting={scaleInEntering ? scaleOut : undefined}
-      >
-        {children}
-      </Animated.View>
-      {stickyButton && <ScreenStickyButton config={stickyButton} />}
-    </>
+    <Animated.View
+      style={[contentStyles.plain, animatedPadding, centerContent ? contentStyles.centerContent : null, style]}
+      entering={scaleInEntering ? scaleIn : undefined}
+      exiting={scaleInEntering ? scaleOut : undefined}
+    >
+      {children}
+    </Animated.View>
   );
 }
 
@@ -322,17 +531,22 @@ const contentStyles = StyleSheet.create({
 
 export interface ScreenFooterProps {
   children: ReactNode;
-  gradient?: boolean;
-  gradientOpacity?: number;
   style?: ViewStyle;
 }
 
-export function ScreenFooter({ children, gradient = true, gradientOpacity = 1, style }: ScreenFooterProps) {
-  const { colors } = useTheme();
+export function ScreenFooter({ children, style }: ScreenFooterProps) {
   const insets = useSafeAreaInsets();
-  const { footerHeight, setFooterHeight, backgroundColor, extraBottomOffset, ignoreKeyboard } =
+  const { setFooterHeight, setFooterMounted, extraBottomOffset, ignoreKeyboard } =
     useScreenContext();
   const measuredHeight = useRef(0);
+
+  useEffect(() => {
+    setFooterMounted(true);
+    return () => {
+      setFooterMounted(false);
+      setFooterHeight(insets.bottom + 16);
+    };
+  }, [insets.bottom]);
 
   const onLayout = (e: LayoutChangeEvent) => {
     const newHeight = e.nativeEvent.layout.height;
@@ -342,22 +556,11 @@ export function ScreenFooter({ children, gradient = true, gradientOpacity = 1, s
     }
   };
 
-  useEffect(() => () => setFooterHeight(insets.bottom + 16), [insets.bottom]);
-
   const paddingBottom = insets.bottom + 8 + extraBottomOffset;
-  const gradientEl = gradient && (
-    <GradientTint
-      invert
-      backgroundColor={backgroundColor ?? colors.background}
-      totalHeight={footerHeight + 24}
-      opacity={gradientOpacity}
-    />
-  );
 
   if (ignoreKeyboard) {
     return (
       <View style={[footerStyles.container, { paddingBottom }, style]} onLayout={onLayout}>
-        {gradientEl}
         {children}
       </View>
     );
@@ -369,7 +572,6 @@ export function ScreenFooter({ children, gradient = true, gradientOpacity = 1, s
       offset={{ closed: 0, opened: insets.bottom - 8 + extraBottomOffset }}
       onLayout={onLayout}
     >
-      {gradientEl}
       {children}
     </KeyboardStickyView>
   );
@@ -377,58 +579,12 @@ export function ScreenFooter({ children, gradient = true, gradientOpacity = 1, s
 
 const footerStyles = StyleSheet.create({
   container: {
+    zIndex: 1001,
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     paddingHorizontal: 20,
-  },
-});
-
-// ---------------------------------------------------------------------------
-// ScreenStickyButton
-// ---------------------------------------------------------------------------
-
-export const STICKY_BUTTON_TOTAL_HEIGHT = 68; // 56px button + 12px margin
-
-export function ScreenStickyButton({ config }: { config: StickyButtonConfig }) {
-  const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
-  const { footerHeight, backgroundColor } = useScreenContext();
-
-  return (
-    <Animated.View entering={slideIn} exiting={slideOut}>
-      <KeyboardStickyView
-        style={[stickyStyles.container, { bottom: footerHeight, paddingBottom: 0 }]}
-        offset={{ closed: 0, opened: insets.bottom - 8 }}
-      >
-        <GradientTint
-          invert
-          backgroundColor={backgroundColor ?? colors.background}
-          totalHeight={STICKY_BUTTON_TOTAL_HEIGHT + 32}
-          extraOuterHeight={footerHeight}
-        />
-        <Button
-          title={config.title}
-          onPress={config.onPress}
-          disabled={config.disabled ?? false}
-          fullWidth
-          style={stickyStyles.buttonArea}
-        />
-      </KeyboardStickyView>
-    </Animated.View>
-  );
-}
-
-const stickyStyles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    paddingHorizontal: 20,
-  },
-  buttonArea: {
-    marginBottom: 12,
   },
 });
 

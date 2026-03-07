@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
-import { useTheme } from "@popapp/theme/use-theme";
-import { Screen, ScreenHeader, ScreenContent } from "@popapp/components/screen";
 import { ActionIcon } from "@popapp/components/action-icon";
-import { TextInput } from "@popapp/components/text-input";
+import { Button } from "@popapp/components/button";
 import { IconSymbol } from "@popapp/components/icon-symbol.ios";
 import {
-  ListSection,
   ListNavigationCell,
+  ListSection,
   ListToggleCell,
 } from "@popapp/components/list";
+import { Screen, ScreenContent, ScreenFooter, ScreenHeader } from "@popapp/components/screen";
+import { TextInput } from "@popapp/components/text-input";
+import { useTheme } from "@popapp/theme/use-theme";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function StickyButtonExample() {
   const { colors } = useTheme();
@@ -28,12 +29,7 @@ export default function StickyButtonExample() {
           <ActionIcon name="chevron.left" onPress={() => router.back()} />
         }
       />
-      <ScreenContent
-        stickyButton={{
-          title: "Save Changes",
-          onPress: () => router.back(),
-        }}
-      >
+      <ScreenContent>
         <View style={styles.avatarSection}>
           <View style={[styles.avatar, { backgroundColor: colors.primaryLight }]}>
             <IconSymbol name="person.fill" size={40} color={colors.primary} />
@@ -90,6 +86,12 @@ export default function StickyButtonExample() {
           />
         </ListSection>
       </ScreenContent>
+      <ScreenFooter>
+        <Button
+          title="Save Changes"
+          onPress={() => router.back()}
+        />
+      </ScreenFooter>
     </Screen>
   );
 }

@@ -16,10 +16,11 @@ import { useTheme } from "@popapp/theme/use-theme";
 // ---------------------------------------------------------------------------
 
 const SIZE_TOKENS = {
-  sm: { height: 44, borderRadius: 12, fontSize: 14, paddingHorizontal: 14 },
-  md: { height: 48, borderRadius: 14, fontSize: 16, paddingHorizontal: 16 },
-  lg: { height: 56, borderRadius: 16, fontSize: 16, paddingHorizontal: 16 },
-  xl: { height: 64, borderRadius: 16, fontSize: 18, paddingHorizontal: 20 },
+  xs: { height: 36, borderRadius: 10, fontSize: 14, lineHeight: 18, paddingHorizontal: 12 },
+  sm: { height: 44, borderRadius: 12, fontSize: 15, lineHeight: 18, paddingHorizontal: 14 },
+  md: { height: 48, borderRadius: 14, fontSize: 16, lineHeight: undefined, paddingHorizontal: 16 },
+  lg: { height: 56, borderRadius: 16, fontSize: 16, lineHeight: undefined, paddingHorizontal: 16 },
+  xl: { height: 64, borderRadius: 16, fontSize: 18, lineHeight: undefined, paddingHorizontal: 20 },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -30,6 +31,7 @@ export interface TextInputProps extends Omit<RNTextInputProps, "style"> {
   label?: string;
   error?: string;
   variant?: "filled" | "outline";
+  shape?: "pill" | "rounded";
   size?: keyof typeof SIZE_TOKENS;
   leftSection?: React.ReactNode;
   rightSection?: React.ReactNode;
@@ -48,6 +50,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
       label,
       error,
       variant = "filled",
+      shape = "rounded",
       size = "lg",
       leftSection,
       rightSection,
@@ -87,10 +90,11 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
             styles.inputContainer,
             {
               height: tokens.height,
-              borderRadius: tokens.borderRadius,
+              borderRadius: shape === "pill" ? tokens.height / 2 : tokens.borderRadius,
               paddingHorizontal: tokens.paddingHorizontal,
               ...containerColors,
             },
+            inputStyle,
           ]}
         >
           {leftSection && <View style={styles.leftSection}>{leftSection}</View>}
@@ -102,8 +106,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
             {...rest}
             style={[
               styles.input,
-              { fontSize: tokens.fontSize, color: colors.foreground },
-              inputStyle,
+              { fontSize: tokens.fontSize, lineHeight: tokens.lineHeight, color: colors.foreground },
             ]}
           />
 

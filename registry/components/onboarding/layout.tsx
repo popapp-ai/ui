@@ -158,7 +158,7 @@ export function OnboardingLayout({ children }: OnboardingLayoutProps) {
       {children}
 
       {!continueHidden && !customFooter && (
-        <ScreenFooter gradient>
+        <ScreenFooter>
           <Animated.View style={[layoutStyles.footerContent, footerContentAnimatedStyle]}>
             <Button
               title={continueLabel || "Continue"}
@@ -179,7 +179,7 @@ export function OnboardingLayout({ children }: OnboardingLayoutProps) {
         </ScreenFooter>
       )}
 
-      {customFooter && <ScreenFooter gradient>{customFooter}</ScreenFooter>}
+      {customFooter && <ScreenFooter>{customFooter}</ScreenFooter>}
     </Screen>
   );
 }

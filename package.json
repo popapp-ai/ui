@@ -38,5 +38,8 @@
     "react-native-safe-area-context": "^5.7.0",
     "react-native-svg": "^15.15.3",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "expo-blur": "^55.0.8"
   }
 }
