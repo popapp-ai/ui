@@ -65,7 +65,7 @@ When the button is `disabled`, the `solid` variant uses `muted` background and `
 
 ## Sizes
 
-Four sizes are available via the `size` prop. Default is `lg`.
+Five sizes are available via the `size` prop. Default is `lg`.
 
 <PreviewImage src="/images/button-sizes.png" alt="Button sizes" />
 
@@ -74,14 +74,20 @@ Four sizes are available via the `size` prop. Default is `lg`.
 <Button size="sm" title="SM" />
 <Button size="md" title="MD" />
 <Button size="lg" title="LG" />
+<Button size="xl" title="XL" />
 ```
 
 | Size | Height | Border Radius | Font Size | Horizontal Padding |
 |------|--------|---------------|-----------|-------------------|
-| `xs` | 36 | 18 | 14 | 12 |
-| `sm` | 44 | 22 | 14 | 12 |
-| `md` | 48 | 24 | 16 | 16 |
-| `lg` | 56 | 28 | 16 | 24 |
+| `xs` | 36 | 10 | 14 | 12 |
+| `sm` | 44 | 12 | 14 | 12 |
+| `md` | 48 | 14 | 16 | 16 |
+| `lg` | 56 | 16 | 16 | 24 |
+| `xl` | 64 | 16 | 18 | 28 |
+
+:::note
+When `shape` is `"pill"` (default), the border radius is automatically set to half the height for a capsule shape.
+:::
 
 ## Loading State
 
@@ -196,10 +202,11 @@ Pass `disabled` to prevent interaction. The `solid` variant adjusts its colors a
 |------|------|---------|-------------|
 | `title` | `string` | — | **Required.** Button label text. |
 | `variant` | `"solid" \| "outline" \| "ghost" \| "subtle" \| "destructive"` | `"solid"` | Visual style of the button. |
-| `size` | `"xs" \| "sm" \| "md" \| "lg"` | `"lg"` | Controls height, border radius, font size, and padding. |
+| `shape` | `"pill" \| "rounded"` | `"pill"` | Border radius style. Pill uses half-height for capsule shape. |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"lg"` | Controls height, border radius, font size, and padding. |
 | `isLoading` | `boolean` | `false` | Replaces label with a spinner and disables the button. |
-| `leftIcon` | `ReactNode` | — | Icon rendered to the left of the label. |
-| `rightIcon` | `ReactNode` | — | Icon rendered to the right of the label. |
+| `leftIcon` | `ReactNode \| IconSymbolName` | — | Icon rendered to the left of the label. Pass an SF Symbol name string or a custom ReactNode. |
+| `rightIcon` | `ReactNode \| IconSymbolName` | — | Icon rendered to the right of the label. Pass an SF Symbol name string or a custom ReactNode. |
 | `haptic` | `boolean` | `true` | Trigger haptic feedback on press. |
 | `fullWidth` | `boolean` | `false` | Stretch to fill container width. |
 | `glass` | `boolean` | `true` | Enable Liquid Glass effect (iOS 26+). |
