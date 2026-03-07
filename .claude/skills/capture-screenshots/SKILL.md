@@ -87,6 +87,7 @@ Captures all registered screenshots.
 | `markdown` | `markdown.png` | Rendered markdown in card |
 | `date-picker-wheel` | `date-picker-wheel.png` | Date picker wheels |
 | `slider-bar` | `slider-bar.png` | Slider with labels |
+| `slider-bar-track` | `slider-bar-track.png` | Thick track variant (no thumb) |
 | `ruler-slider` | `ruller-slider.png` | iOS-style ruler picker |
 
 ---

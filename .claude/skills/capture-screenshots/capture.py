@@ -46,6 +46,7 @@ SCREENSHOT_MAP = {
     "markdown": "markdown.png",
     "date-picker-wheel": "date-picker-wheel.png",
     "slider-bar": "slider-bar.png",
+    "slider-bar-track": "slider-bar-track.png",
     "ruler-slider": "ruller-slider.png",
 }
 

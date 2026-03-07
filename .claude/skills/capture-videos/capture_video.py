@@ -24,6 +24,8 @@ VIDEO_MAP = {
     "anim-progress-ring": ("progress-ring.mp4", 3.0),
     "anim-ticker": ("ticker.mp4", 5.0),
     "anim-skeleton": ("skeleton.mp4", 3.0),
+    "anim-slider-bar": ("slider-bar.mp4", 5.0),
+    "anim-ruler-slider": ("ruler-slider.mp4", 5.0),
 }
 
 
@@ -88,14 +90,22 @@ def capture_video(video_id: str, filename: str, duration: float):
     top, bottom, w, h = get_crop_bounds(raw_screenshot)
     crop_h = bottom - top
 
-    # Start recording FIRST, before triggering the animation
+    # Navigate away BEFORE recording starts to force a fresh mount later.
+    # Re-navigating to the same route may reuse the component without remounting.
+    subprocess.run(
+        ["xcrun", "simctl", "openurl", "booted", "popapp-demo:///screenshot?id=card"],
+        check=True,
+    )
+    time.sleep(0.5)
+
+    # Start recording (currently showing the card screen — will be trimmed)
     rec_proc = subprocess.Popen(
         ["xcrun", "simctl", "io", "booted", "recordVideo", "--codec=h264", str(raw_video)],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
     )
     time.sleep(0.5)  # let recorder initialize
 
-    # Now navigate to the animated entry — animation starts on mount
+    # Now navigate to the animated entry — fresh mount, animation starts
     subprocess.run(
         ["xcrun", "simctl", "openurl", "booted", f"popapp-demo:///screenshot?id={video_id}"],
         check=True,
@@ -112,11 +122,13 @@ def capture_video(video_id: str, filename: str, duration: float):
         print(f"  ✗ {filename} — recording failed")
         return
 
-    # Crop video with ffmpeg: remove status bar and home indicator area
-    # The simulator records at device resolution, same as screenshots
+    # Crop video with ffmpeg: remove status bar and home indicator area.
+    # Trim the first 0.8s to skip the card→entry navigation transition.
+    # The simulator records at device resolution, same as screenshots.
     subprocess.run(
         [
             "ffmpeg", "-y",
+            "-ss", "0.8",
             "-i", str(raw_video),
             "-vf", f"crop={w}:{crop_h}:0:{top}",
             "-c:v", "libx264",

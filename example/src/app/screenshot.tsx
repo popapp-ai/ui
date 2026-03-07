@@ -419,7 +419,7 @@ const SCREENSHOTS: Record<string, React.FC> = {
     <DatePicker value={new Date(2000, 5, 15)} onChange={() => {}} />
   ),
 
-  // SliderBar
+  // SliderBar: thumb variant with labels
   "slider-bar": () => (
     <View style={styles.list}>
       <SliderBar value={0.7} onValueChange={() => {}} min={0} max={1} step={0.01} />
@@ -435,6 +435,14 @@ const SCREENSHOTS: Record<string, React.FC> = {
           { text: "High", position: 1 },
         ]}
       />
+    </View>
+  ),
+
+  // SliderBar: thick track variant
+  "slider-bar-track": () => (
+    <View style={styles.list}>
+      <SliderBar value={0.6} onValueChange={() => {}} min={0} max={1} step={0.01} variant="track" />
+      <SliderBar value={0.35} onValueChange={() => {}} min={0} max={1} step={0.01} variant="track" progressColor="#FF9500" backgroundColor="#1C1C1E" />
     </View>
   ),
 
@@ -500,6 +508,182 @@ const SCREENSHOTS: Record<string, React.FC> = {
             <Ticker value={price} decimals={2} fontSize={32} unit="$" />
           </View>
         </View>
+      </View>
+    );
+  },
+
+  // SliderBar: animated drag gesture with finger cursor
+  "anim-slider-bar": () => {
+    const [value, setValue] = useState(0.3);
+    const [fingerVisible, setFingerVisible] = useState(false);
+    const [containerWidth, setContainerWidth] = useState(0);
+    const valueRef = useRef(0.3);
+
+    useEffect(() => {
+      const ease = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+
+      const animateTo = (target: number, durationMs: number): Promise<void> =>
+        new Promise((resolve) => {
+          const from = valueRef.current;
+          const start = Date.now();
+          const tick = () => {
+            const elapsed = Date.now() - start;
+            const t = Math.min(1, elapsed / durationMs);
+            const v = from + (target - from) * ease(t);
+            valueRef.current = v;
+            setValue(v);
+            if (t < 1) requestAnimationFrame(tick);
+            else resolve();
+          };
+          requestAnimationFrame(tick);
+        });
+      const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+      const run = async () => {
+        await wait(500);
+        setFingerVisible(true);
+        await wait(200);
+        await animateTo(0.75, 1500);
+        await wait(300);
+        await animateTo(0.3, 1500);
+        await wait(200);
+        setFingerVisible(false);
+      };
+      run();
+    }, []);
+
+    const FINGER = 54;
+    const fingerLeft = value * containerWidth - FINGER / 2;
+    // SliderBar thumb variant: trackWrapper height=44, thumb centered at y=22
+    const fingerTop = 22 - FINGER / 2;
+
+    return (
+      <View
+        style={[styles.list, { position: "relative" }]}
+        onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+      >
+        <SliderBar value={value} onValueChange={() => {}} min={0} max={1} step={0.01} />
+        {fingerVisible && containerWidth > 0 && (
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              left: fingerLeft,
+              top: 22 - FINGER / 2,
+              width: FINGER,
+              height: FINGER,
+              borderRadius: FINGER / 2,
+              backgroundColor: "rgba(90, 90, 90, 0.25)",
+              borderWidth: 2,
+              borderColor: "rgba(60, 60, 60, 0.3)",
+              zIndex: 999,
+            }}
+          />
+        )}
+      </View>
+    );
+  },
+
+  // RulerSlider: animated scroll gesture with finger cursor
+  "anim-ruler-slider": () => {
+    const [value, setValue] = useState(170);
+    const [fingerVisible, setFingerVisible] = useState(false);
+    const [containerWidth, setContainerWidth] = useState(0);
+    const [fingerOffset, setFingerOffset] = useState(0);
+    const valueRef = useRef(170);
+    const offsetRef = useRef(0);
+    const lastRounded = useRef(170);
+
+    useEffect(() => {
+      const ease = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+
+      // Animate value in discrete integer steps to avoid spring pile-ups
+      // in RulerSlider's sync mechanism. Finger offset updates independently.
+      const animateTo = (
+        targetValue: number,
+        targetOffset: number,
+        durationMs: number,
+      ): Promise<void> =>
+        new Promise((resolve) => {
+          const fromValue = valueRef.current;
+          const fromOffset = offsetRef.current;
+          const startTime = Date.now();
+          const stepInterval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const t = Math.min(1, elapsed / durationMs);
+            const e = ease(t);
+            const v = fromValue + (targetValue - fromValue) * e;
+            const o = fromOffset + (targetOffset - fromOffset) * e;
+            valueRef.current = v;
+            offsetRef.current = o;
+            setFingerOffset(o);
+            const rounded = Math.round(v);
+            if (rounded !== lastRounded.current) {
+              lastRounded.current = rounded;
+              setValue(rounded);
+            }
+            if (t >= 1) {
+              clearInterval(stepInterval);
+              resolve();
+            }
+          }, 80); // ~12fps for value updates, lets each spring settle
+        });
+      const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+      const run = async () => {
+        await wait(500);
+        setFingerVisible(true);
+        await wait(200);
+        // Drag left → value increases, finger moves left
+        await animateTo(188, -90, 1800);
+        await wait(300);
+        // Drag back to start → finger returns to center
+        await animateTo(170, 0, 1800);
+        await wait(200);
+        setFingerVisible(false);
+      };
+      run();
+    }, []);
+
+    const FINGER = 54;
+    // Finger positioned in the ruler area
+    // Display: ~55px, marginTop 16px, ruler height 88px → ruler center ≈ 55+16+44 = 115
+    const fingerCenterX = containerWidth / 2 + fingerOffset;
+    const fingerLeft = fingerCenterX - FINGER / 2;
+    const fingerTop = 55 + 16 + 30 - FINGER / 2; // roughly mid-ruler area
+
+    return (
+      <View
+        style={{ position: "relative" }}
+        onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+      >
+        <RulerSlider
+          value={value}
+          onValueChange={() => {}}
+          min={100}
+          max={220}
+          step={1}
+          majorStep={10}
+          midStep={5}
+          unit="cm"
+        />
+        {fingerVisible && containerWidth > 0 && (
+          <View
+            pointerEvents="none"
+            style={{
+              position: "absolute",
+              left: fingerLeft,
+              top: fingerTop,
+              width: FINGER,
+              height: FINGER,
+              borderRadius: FINGER / 2,
+              backgroundColor: "rgba(90, 90, 90, 0.25)",
+              borderWidth: 2,
+              borderColor: "rgba(60, 60, 60, 0.3)",
+              zIndex: 999,
+            }}
+          />
+        )}
       </View>
     );
   },

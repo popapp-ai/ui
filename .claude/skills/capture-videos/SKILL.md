@@ -54,6 +54,8 @@ python3 -m venv /tmp/imgtools && /tmp/imgtools/bin/pip install Pillow
 | `anim-progress-ring` | `progress-ring.mp4` | 3s | Ring fills 0→73% with ticker counting up |
 | `anim-ticker` | `ticker.mp4` | 5s | Numbers cycle through 3 value sets |
 | `anim-skeleton` | `skeleton.mp4` | 3s | Shimmer loading effect on cards |
+| `anim-slider-bar` | `slider-bar.mp4` | 5s | Thumb dragged and returned (loopable) with finger cursor |
+| `anim-ruler-slider` | `ruler-slider.mp4` | 5s | Ruler scrolled and returned (loopable) with finger cursor |
 
 ---
 
