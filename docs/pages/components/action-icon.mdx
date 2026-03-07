@@ -1,0 +1,51 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# ActionIcon
+
+Circular icon button with Liquid Glass support and size/variant options.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [Theme](/theme), [Glass](/utils/glass), [IconSymbol](/components/icon-symbol)
+
+```bash [Terminal]
+npx popapp add action-icon
+```
+
+## Variants
+
+<PreviewImage src="/images/action-icon-variants.png" alt="ActionIcon variants" />
+
+```tsx
+import { ActionIcon } from "@/components/ui/action-icon";
+
+<ActionIcon name="plus" variant="solid" onPress={handleAdd} />
+<ActionIcon name="plus" variant="subtle" onPress={handleFavorite} />
+<ActionIcon name="plus" variant="outline" onPress={handleDelete} />
+<ActionIcon name="plus" variant="ghost" onPress={handleShare} />
+<ActionIcon name="plus" variant="destructive" onPress={handleRemove} />
+```
+
+## Sizes
+
+<PreviewImage src="/images/action-icon-sizes.png" alt="ActionIcon sizes" />
+
+```tsx
+<ActionIcon name="heart.fill" size="xs" />  {/* 32px */}
+<ActionIcon name="heart.fill" size="sm" />  {/* 38px */}
+<ActionIcon name="heart.fill" size="md" />  {/* 44px */}
+<ActionIcon name="heart.fill" size="lg" />  {/* 56px */}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `IconSymbolName` | — | SF Symbol name |
+| `variant` | `"solid" \| "outline" \| "ghost" \| "subtle" \| "destructive"` | `"ghost"` | Visual style |
+| `size` | `"xs" \| "sm" \| "md" \| "lg"` | `"md"` | Button size |
+| `disabled` | `boolean` | `false` | Disable interaction |
+| `isLoading` | `boolean` | `false` | Show loading spinner |
+| `haptic` | `boolean` | `true` | Haptic feedback |
+| `glass` | `boolean` | `true` | Liquid Glass (iOS 26+) |
+
+Extends `TouchableOpacityProps`.

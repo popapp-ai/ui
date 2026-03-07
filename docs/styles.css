@@ -1,0 +1,231 @@
+/* Code blocks: rounded corners, no border, just background */
+.vocs_CodeBlock, .vocs_Callout, .vocs_Tabs {
+  border-radius: 16px !important;
+}
+
+.vocs_Pre_wrapper pre {
+  border-radius: 15px !important;
+}
+
+.vocs_CodeTitle {
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+
+.vocs_CodeTitle + .vocs_Pre_wrapper pre {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.vocs_Tabs_list {
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+
+.vocs_Tabs_content {
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+}
+
+.vocs_Code {
+  color: var(--vocs-color_foreground) !important;
+  border-radius: 8px !important;
+}
+
+/* Content & Footer: side borders */
+.vocs_Content,
+.vocs_Footer {
+  border-left: 1px solid var(--vocs-color_border);
+  border-right: 1px solid var(--vocs-color_border);
+}
+
+/* Top nav & Sidebar: left border */
+.vocs_DesktopTopNav,
+.vocs_Sidebar {
+  border-left: 1px solid var(--vocs-color_border);
+}
+
+.vocs_DocsLayout_gutterLeft {
+  background-color: transparent !important;
+}
+
+.vocs_Sidebar {
+  background-color: var(--vocs-color_backgroundDark);
+}
+
+.vocs_Sidebar_footer {
+  margin-left: calc(0px - var(--vocs-sidebar_horizontalPadding));
+  margin-right: calc(0px - var(--vocs-sidebar_horizontalPadding));
+  padding-left: var(--vocs-sidebar_horizontalPadding);
+  padding-right: var(--vocs-sidebar_horizontalPadding);
+}
+
+.vocs_Popover {
+  border-radius: 24px !important;
+}
+
+.vocs_Sidebar_divider {
+  margin-left: calc(0px - var(--vocs-sidebar_horizontalPadding));
+  margin-right: calc(0px - var(--vocs-sidebar_horizontalPadding));
+  padding-left: var(--vocs-sidebar_horizontalPadding);
+  padding-right: var(--vocs-sidebar_horizontalPadding);
+  width: auto !important;
+  margin-top: -1px !important;
+}
+
+.vocs_Sidebar_section {
+  margin-left: calc(0px - var(--vocs-sidebar_horizontalPadding));
+  margin-right: calc(0px - var(--vocs-sidebar_horizontalPadding));
+  padding-left: var(--vocs-sidebar_horizontalPadding);
+  padding-right: var(--vocs-sidebar_horizontalPadding);
+}
+
+
+.vocs_DocsLayout_gutterTop {
+  border-bottom: 1px solid var(--vocs-color_border);
+}
+
+/* Content children: extend to edges with padding for border-to-border feel */
+.vocs_Header, :not(.vocs_Header) + .vocs_H2:not(:only-child), .vocs_Footer_container {
+  margin-left: calc(0px - var(--vocs-content_horizontalPadding));
+  margin-right: calc(0px - var(--vocs-content_horizontalPadding));
+  padding-left: var(--vocs-content_horizontalPadding);
+  padding-right: var(--vocs-content_horizontalPadding);
+}
+
+.vocs_DesktopTopNav_curtain {
+  display: none;
+}
+
+.vocs_Header:not(:last-child) {
+  padding-bottom: 1.85rem !important;
+}
+
+.vocs_AiCtaDropdown {
+  padding-left: 12px !important;
+}
+
+.vocs_Outline_nav {
+  border-left: none !important;
+  padding-left: 24px !important;
+}
+
+.vocs_SearchDialog {
+  border-radius: 24px !important;
+}
+
+.vocs_SearchDialog_searchBox {
+  border-radius: 14px !important;
+}
+
+.vocs_DesktopSearch_search {
+  border-radius: 14px !important;
+}
+
+.vocs_SearchDialog_result {
+  border-radius: 14px !important;
+}
+
+.vocs_SearchDialog_searchShortcuts {
+  justify-content: center !important;
+}
+
+.vocs_CopyButton {
+  top: 12px !important;
+  right: 12px !important;
+  border-radius: 8px !important;
+}
+
+/* Tables: rounded corners (override vocs border-collapse: collapse) */
+.vocs_Table {
+  border-collapse: separate !important;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Single-width borders: each cell gets right+bottom; first col gets left; first row gets top */
+.vocs_Table .vocs_TableHeader,
+.vocs_Table .vocs_TableCell {
+  border: none !important;
+  border-right: 1px solid var(--vocs-color_tableBorder) !important;
+  border-bottom: 1px solid var(--vocs-color_tableBorder) !important;
+}
+
+.vocs_Table .vocs_TableHeader:first-child,
+.vocs_Table .vocs_TableCell:first-child {
+  border-left: 1px solid var(--vocs-color_tableBorder) !important;
+}
+
+.vocs_Table thead .vocs_TableHeader {
+  border-top: 1px solid var(--vocs-color_tableBorder) !important;
+}
+
+.vocs_Table .vocs_TableRow {
+  border-top: none !important;
+}
+
+.vocs_Table thead tr:first-child .vocs_TableHeader:first-child {
+  border-top-left-radius: 12px !important;
+}
+
+.vocs_Table thead tr:first-child .vocs_TableHeader:last-child {
+  border-top-right-radius: 12px !important;
+}
+
+.vocs_Table tbody tr:last-child .vocs_TableCell:first-child {
+  border-bottom-left-radius: 12px !important;
+}
+
+.vocs_Table tbody tr:last-child .vocs_TableCell:last-child {
+  border-bottom-right-radius: 12px !important;
+}
+
+.custom_Preview {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border: 1px solid var(--vocs-color_border);
+}
+
+/* Union block: Preview + CodeBlock when adjacent */
+.custom_Preview:has(+ .vocs_CodeBlock) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0 !important;
+}
+
+.custom_Preview + .vocs_CodeBlock {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  margin-top: 0 !important;
+  border-top: none !important;
+}
+
+.custom_Preview + .vocs_CodeBlock pre {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+@media screen and (max-width: 1080px) {
+  .vocs_Sidebar {
+    border-left: 0 !important;
+    background-color: transparent !important;
+    overflow: visible
+  }
+}
+@media screen and (max-width: 720px) {
+  .vocs_CodeBlock, .vocs_Callout, .vocs_Tabs, .vocs_Pre_wrapper pre, .vocs_CodeTitle, .vocs_Tabs_list, .vocs_Tabs_content {
+    border-radius: 0 !important;
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid var(--vocs-color_border2);
+  outline-offset: 2px;
+}

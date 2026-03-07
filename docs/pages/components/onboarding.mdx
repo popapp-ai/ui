@@ -1,0 +1,215 @@
+# Onboarding
+
+Step-based onboarding engine with animated layout, progress bar, skip logic, and lifecycle hooks.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **npm deps:** `zustand`, `react-native-keyboard-controller`, `react-native-safe-area-context`, `expo-linear-gradient`
+- **Registry deps:** [Theme](/theme), [Button](/components/button), [IconSymbol](/components/icon-symbol), [Gradient Tint](/utils/gradient-tint), [Screen](/components/screen), [AnimatedContent](/components/animated-content)
+
+```bash [Terminal]
+npx popapp add onboarding
+```
+
+**Installs 9 files** into `components/ui/onboarding/`:
+`types.ts`, `engine.ts`, `store.ts`, `context.ts`, `use-onboarding.ts`, `layout.tsx`, `screen.tsx`, `progress-bar.tsx`, `index.ts`
+
+## Quick Start
+
+::::steps
+
+### Define your data type and steps
+
+```tsx
+import { createOnboarding, type StepConfig } from "@/components/ui/onboarding";
+
+type OnboardingData = {
+  goal: string | null;
+  name: string;
+  notifications: boolean;
+};
+
+const steps: StepConfig<OnboardingData>[] = [
+  { id: "goal", route: "/onboarding/goal", title: "Your Goal" },
+  { id: "name", route: "/onboarding/name", title: "Your Name" },
+  {
+    id: "notifications",
+    route: "/onboarding/notifications",
+    title: "Notifications",
+    skipWhen: (data) => data.goal === "casual",
+  },
+];
+```
+
+### Create the onboarding instance
+
+```tsx
+const onboarding = createOnboarding<OnboardingData>({
+  steps,
+  initialData: { goal: null, name: "", notifications: false },
+  hooks: {
+    onStepComplete: (stepId, data) => {
+      console.log(`Completed ${stepId}`, data);
+    },
+    onFlowComplete: (data) => {
+      saveProfile(data);
+      router.replace("/home");
+    },
+  },
+});
+```
+
+### Wrap your layout
+
+```tsx
+import { OnboardingProvider, OnboardingLayout } from "@/components/ui/onboarding";
+
+function OnboardingRoot() {
+  const adapter = {
+    push: (route) => router.push(route),
+    replace: (route) => router.replace(route),
+    back: () => router.back(),
+    getCurrentRoute: () => /* current route */,
+  };
+
+  return (
+    <OnboardingProvider instance={onboarding} adapter={adapter}>
+      <OnboardingLayout>
+        <Slot />
+      </OnboardingLayout>
+    </OnboardingProvider>
+  );
+}
+```
+
+### Build each screen
+
+```tsx
+import { OnboardingScreen, useOnboarding } from "@/components/ui/onboarding";
+
+function GoalScreen() {
+  const { data, setData } = useOnboarding<OnboardingData>();
+
+  return (
+    <OnboardingScreen options={{ title: "Choose your goal", disabled: !data.goal }}>
+      <OptionGroup
+        mode="single"
+        value={data.goal}
+        onChange={(goal) => setData({ goal })}
+        options={[
+          { value: "fitness", label: "Get Fit" },
+          { value: "health", label: "Stay Healthy" },
+          { value: "casual", label: "Just Exploring" },
+        ]}
+      />
+    </OnboardingScreen>
+  );
+}
+```
+
+::::
+
+## Step Configuration
+
+```tsx
+interface StepConfig<TData> {
+  id: string;           // Unique step identifier
+  route: string;        // Navigation route
+  title?: string;       // Display title
+  subtitle?: string;    // Display subtitle
+  backable?: boolean;   // Allow going back (default: true)
+  group?: string;       // Group identifier for progress
+  skipWhen?: (data: TData) => boolean;  // Conditional skip
+}
+```
+
+## Screen Options
+
+Each `OnboardingScreen` accepts options to customize its behavior:
+
+```tsx
+<OnboardingScreen
+  options={{
+    title: "Step Title",
+    subtitle: "Optional subtitle",
+    disabled: !isValid,           // Disable continue button
+    loading: isSubmitting,        // Show loading state
+    continueLabel: "Next Step",   // Custom button label
+    continueHidden: false,        // Hide continue button
+    continueHandler: async () => {
+      await saveData();           // Custom continue logic
+    },
+    secondaryAction: {
+      label: "Skip",
+      onPress: () => skipStep(),
+    },
+    hideProgressBar: false,
+    customFooter: <MyFooter />,
+    headerRight: <HelpButton />,
+  }}
+>
+```
+
+## Lifecycle Hooks
+
+```tsx
+const onboarding = createOnboarding({
+  hooks: {
+    onStepComplete: (stepId, data) => {
+      // Called after each step completes
+    },
+    onFlowComplete: (data) => {
+      // Called when the last step completes
+    },
+    beforeStepChange: async (from, to, direction, data) => {
+      // Return false to prevent navigation
+      return true;
+    },
+    onStepSkipped: (stepId, data) => {
+      // Called when a step is skipped via skipWhen
+    },
+  },
+});
+```
+
+## The useOnboarding Hook
+
+```tsx
+const {
+  // State
+  data,                  // Current data object
+  currentStepId,         // Current step ID
+  progress,              // 0-1 progress value
+  isFirstStep,
+  isLastStep,
+
+  // Actions
+  setData,               // Merge partial data
+  goNext,                // Navigate forward
+  goBack,                // Navigate backward
+  goToStep,              // Jump to specific step
+} = useOnboarding<OnboardingData>();
+```
+
+## Skip Logic
+
+Steps with `skipWhen` are automatically skipped when the condition is true. The progress bar adjusts to show only active steps:
+
+```tsx
+{
+  id: "premium-features",
+  route: "/onboarding/premium",
+  skipWhen: (data) => data.plan === "free",
+}
+```
+
+## Exports
+
+**Types:** `StepConfig`, `OnboardingHooks`, `NavigationAdapter`, `ScreenOptions`, `SecondaryAction`, `OnboardingState`, `OnboardingConfig`, `OnboardingInstance`
+
+**Engine:** `shouldSkipStep`, `computeActiveSteps`, `findNextStepIndex`, `findPrevStepIndex`, `computeEffectiveTotal`, `computeEffectiveIndex`, `computeProgress`
+
+**Store:** `createOnboardingStore`, `createOnboarding`
+
+**Hooks:** `useOnboarding`, `useOnboardingContext`
+
+**UI:** `OnboardingProvider`, `OnboardingLayout`, `OnboardingScreen`, `OnboardingProgressBar`

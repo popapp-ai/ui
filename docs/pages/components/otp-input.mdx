@@ -1,0 +1,47 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# OTP Input
+
+One-time password input with individual digit boxes.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add otp-input
+```
+
+## Usage
+
+<PreviewImage src="/images/input-otp.png" alt="OTP Input" />
+
+```tsx
+import { OTPInput } from "@/components/ui/otp-input";
+
+const [code, setCode] = useState("");
+
+<OTPInput
+  value={code}
+  onChange={setCode}
+  length={6}
+/>
+```
+
+## Four-digit code
+
+```tsx
+<OTPInput value={code} onChange={setCode} length={4} />
+```
+
+::::tip
+Supports **iOS autofill** from SMS and Mail verification codes, and **long-press to paste** for quick input.
+::::
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | Current input value |
+| `onChange` | `(value: string) => void` | — | Called on each digit change |
+| `length` | `number` | `6` | Number of digit boxes |
+| `autoFocus` | `boolean` | `true` | Focus on mount |

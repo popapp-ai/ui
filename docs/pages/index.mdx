@@ -1,0 +1,127 @@
+import { PreviewVideo } from '../components/preview-video'
+
+# PopApp UI [Native StyleSheet. Native gestures. Native haptics. No Tailwind required.]
+
+PopApp UI is a **shadcn-style component registry** for React Native and Expo. Copy beautiful, production-ready components into your project with a single command.
+
+<PreviewVideo
+  sources={[
+    { src: '/videos/intro-demo.mov', type: 'video/quicktime' },
+    { src: '/videos/intro-demo.mp4', type: 'video/mp4' },
+  ]}
+/>
+
+## Why PopApp UI?
+
+:::success[Own Your Code]
+PopApp follows the copy-and-own model — every component lives in your project, fully customizable. No opaque `node_modules`.
+:::
+
+- **StyleSheet-native** — no NativeWind, no Tailwind, no className resolution
+- **Gesture-first** — spring physics and UI-thread animations via Reanimated
+- **Haptic feedback** — built into every interactive component
+- **Liquid Glass** — iOS 26+ glass effects where supported
+- **TypeScript-first** — full type safety with exported interfaces
+- **Expo-optimized** — works out of the box with Expo, compatible with bare RN
+
+## Quick Start
+
+::::steps
+
+##### Initialize your project
+
+```bash [Terminal]
+npx popapp init
+```
+
+This scaffolds the directory structure and installs the theme system.
+
+##### Add components
+
+```bash [Terminal]
+npx popapp add button card text-input
+```
+
+Dependencies are resolved automatically — adding `button` also installs `theme`, `haptics`, `glass`, and `touchable`.
+
+##### Use in your app
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+
+export function MyScreen() {
+  return (
+    <Card>
+      <Button title="Get Started" onPress={() => {}} />
+    </Card>
+  );
+}
+```
+
+::::
+
+## Animation Tiers
+
+Every component declares an animation tier so you know exactly what native dependencies are required.
+
+| Tier | Dependencies | Description |
+|------|-------------|-------------|
+| **Tier 1** | None | Pure React Native. Zero animation dependencies. |
+| **Tier 2** | `react-native-reanimated` | Spring animations on the UI thread. Included in Expo by default. |
+| **Tier 3** | `reanimated` + `gesture-handler` | Full gesture control with pan, pinch, and swipe support. |
+
+## Component Registry
+
+### UI Components
+
+| Component | Description | Tier |
+|-----------|-------------|------|
+| [`button`](/components/button) | Pressable button with variants, sizes, loading state, and haptic feedback | 1 |
+| [`card`](/components/card) | Composable card container with header, content, and footer | 1 |
+| [`text-input`](/components/text-input) | Native text input with filled/outline variants, label, error, and icon slots | 1 |
+| [`text-area`](/components/text-area) | Native multiline input with filled/outline variants and configurable height | 1 |
+| [`badge`](/components/badge) | Status badge with color variants | 1 |
+| [`separator`](/components/separator) | Horizontal or vertical divider line | 1 |
+| [`icon-symbol`](/components/icon-symbol) | Cross-platform icon: SF Symbols on iOS, Material Icons on Android/web | 1 |
+| [`svg-icons`](/components/svg-icons) | Custom SVG icon extension for `icon-symbol` | 1 |
+| [`action-icon`](/components/action-icon) | Circular icon button with Liquid Glass support | 1 |
+| [`theme-icon`](/components/theme-icon) | Icon wrapped in a tinted circle background | 1 |
+| [`otp-input`](/components/otp-input) | One-time password input with individual digit boxes | 1 |
+| [`date-picker`](/components/date-picker) | Three-column month/day/year picker with native scroll wheels | 1 |
+| [`list`](/components/list) | iOS Settings-style grouped list with navigation, toggle, and action cells | 1 |
+| [`markdown`](/components/markdown) | Themed markdown renderer with code block copy button | 1 |
+| [`touchable`](/components/touchable) | Animated pressable with spring scale and opacity | 2 |
+| [`skeleton`](/components/skeleton) | Pulsing loading placeholder | 2 |
+| [`option-card`](/components/option-card) | Selectable option card with checkbox, icon, and left/center alignment | 2 |
+| [`option-group`](/components/option-group) | Single or multi-select option group with vertical/horizontal layout | 2 |
+| [`progress-ring`](/components/progress-ring) | Animated circular progress indicator | 2 |
+| [`ticker`](/components/ticker) | Animated number ticker with staggered digit rolls | 2 |
+| [`input-stepper`](/components/input-stepper) | Numeric stepper with animated ticker display | 2 |
+| [`animated-content`](/components/animated-content) | Spring-based enter/exit content transitions | 2 |
+| [`screen`](/components/screen) | Composable screen layout with keyboard-aware content | 2 |
+| [`carousel`](/components/carousel) | Swipeable pager carousel with animated page dots | 2 |
+| [`onboarding`](/components/onboarding) | Step-based onboarding engine with progress and skip logic | 2 |
+| [`slider-bar`](/components/slider-bar) | Gesture-controlled slider with step snapping and haptics | 3 |
+| [`ruler-slider`](/components/ruler-slider) | iOS-style ruler picker with Skia rendering and momentum scrolling | 3 |
+| [`bottom-sheet`](/components/bottom-sheet) | Modal bottom sheet with pan-to-dismiss gesture | 3 |
+
+### Libraries & Utilities
+
+| Item | Type | Description |
+|------|------|-------------|
+| [`theme`](/theme) | Library | Token-based theme system with light/dark mode |
+| [`haptics`](/utils/haptics) | Library | Safe haptics wrapper (never crashes without `expo-haptics`) |
+| [`glass`](/utils/glass) | Library | Liquid Glass wrapper (graceful fallback on non-iOS 26) |
+| [`gradient-tint`](/utils/gradient-tint) | Library | Gradient fade for headers, footers, and scroll edges |
+| [`use-color-scheme`](/hooks/use-color-scheme) | Hook | Color scheme hook with safe default |
+
+### Templates
+
+| Template | Description |
+|----------|-------------|
+| [`auth-supabase`](/templates/auth-supabase) | Supabase auth with MMKV persistence, Zustand store, and React Query |
+
+:::tip
+Run `npx popapp list` to see all available items directly in your terminal.
+:::

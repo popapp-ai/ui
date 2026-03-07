@@ -1,0 +1,59 @@
+# Haptics
+
+Safe haptics wrapper that never crashes if `expo-haptics` is not installed. All functions are no-ops when the module is unavailable.
+
+```bash [Terminal]
+npx popapp add haptics
+```
+
+## Usage
+
+```tsx
+import {
+  impactLight,
+  impactMedium,
+  impactHeavy,
+  selectionChanged,
+  notificationSuccess,
+  notificationWarning,
+  notificationError,
+} from "@/lib/haptics";
+
+// In a press handler
+function handlePress() {
+  impactLight();
+  doSomething();
+}
+
+// Selection feedback
+function handleSelect(item) {
+  selectionChanged();
+  setSelected(item);
+}
+
+// After an operation
+async function handleSubmit() {
+  try {
+    await save();
+    notificationSuccess();
+  } catch {
+    notificationError();
+  }
+}
+```
+
+## Functions
+
+| Function | Description |
+|----------|-------------|
+| `impactLight()` | Light impact feedback |
+| `impactMedium()` | Medium impact feedback |
+| `impactHeavy()` | Heavy impact feedback |
+| `selectionChanged()` | Selection change feedback |
+| `notificationSuccess()` | Success notification feedback |
+| `notificationWarning()` | Warning notification feedback |
+| `notificationError()` | Error notification feedback |
+
+:::note
+Install `expo-haptics` for actual haptic feedback. Without it, all functions silently no-op — your app won't crash.
+:::

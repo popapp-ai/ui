@@ -1,0 +1,230 @@
+# Getting Started [Set up PopApp UI in your Expo project]
+
+## Prerequisites
+
+:::info
+PopApp UI is designed for **Expo** projects. It also works with bare React Native, but Expo is recommended for the best experience.
+:::
+
+- Node.js 18+
+- An existing Expo project (or create one with `npx create-expo-app`)
+
+## Installation
+
+::::steps
+
+##### Initialize PopApp UI
+
+Run the `init` command in your Expo project root:
+
+```bash [Terminal]
+npx popapp init
+```
+
+This creates the following directory structure:
+
+```bash
+├── components/
+│   └── ui/           # UI components land here
+├── hooks/            # Hook utilities
+└── lib/
+    └── theme/        # Theme tokens, provider, and hook
+```
+
+##### Wrap your app in ThemeProvider
+
+Add the `ThemeProvider` to your root layout so all components can access color tokens:
+
+```tsx [app/_layout.tsx]
+import { ThemeProvider } from "@/lib/theme/provider";
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
+}
+```
+
+:::warning
+Components will crash without `ThemeProvider` — they rely on `useTheme()` to resolve color tokens.
+:::
+
+##### Add your first component
+
+```bash [Terminal]
+npx popapp add button
+```
+
+Dependencies are resolved automatically. For example, `button` also installs `theme`, `haptics`, `glass`, and `touchable`.
+
+##### Use it
+
+```tsx [app/index.tsx]
+import { Button } from "@/components/ui/button";
+
+export default function HomeScreen() {
+  return (
+    <Button
+      title="Get Started"
+      onPress={() => console.log("pressed")}
+    />
+  );
+}
+```
+
+::::
+
+## CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `npx popapp init` | Initialize project structure and install theme system |
+| `npx popapp add <name>` | Add a component (with auto-resolved dependencies) |
+| `npx popapp add <a> <b> <c>` | Add multiple components at once |
+| `npx popapp list` | List all available registry items |
+
+:::code-group
+
+```bash [Add a single component]
+npx popapp add button
+```
+
+```bash [Add multiple components]
+npx popapp add button card text-input
+```
+
+```bash [List all available]
+npx popapp list
+```
+
+:::
+
+## Customizing the Theme
+
+Override default colors by passing token overrides to `ThemeProvider`:
+
+```tsx [app/_layout.tsx]
+<ThemeProvider
+  light={{ primary: "#6366F1", primaryForeground: "#fff" }}
+  dark={{ primary: "#818CF8", primaryForeground: "#000" }}
+>
+  <App />
+</ThemeProvider>
+```
+
+:::tip
+You can override any individual token — unspecified tokens keep their defaults.
+:::
+
+### Available Tokens
+
+| Category | Tokens |
+|----------|--------|
+| **Primary** | `primary`, `primaryForeground` |
+| **Accent** | `accent` |
+| **Background** | `background`, `backgroundSecondary`, `backgroundTertiary` |
+| **Card** | `card`, `cardForeground` |
+| **Text** | `foreground`, `foregroundSecondary` |
+| **Muted** | `muted`, `mutedForeground` |
+| **Border** | `border` |
+| **Icon** | `icon` |
+| **Status** | `destructive`, `success`, `warning`, `info` |
+
+:::details[Full token list]
+`primary`, `primaryForeground`, `accent`, `background`, `backgroundSecondary`, `backgroundTertiary`, `card`, `cardForeground`, `foreground`, `foregroundSecondary`, `muted`, `mutedForeground`, `border`, `icon`, `destructive`, `destructiveForeground`, `success`, `warning`, `info`
+:::
+
+## Icon System
+
+PopApp uses **SF Symbol names** as the canonical icon API. On iOS, icons render natively via `expo-symbols`. On Android and web, they map to Material Icons automatically.
+
+```bash [Terminal]
+npx popapp add icon-symbol
+```
+
+```tsx
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useTheme } from "@/lib/theme/use-theme";
+
+export function MyComponent() {
+  const { colors } = useTheme();
+
+  return <IconSymbol name="heart.fill" size={24} color={colors.primary} />;
+}
+```
+
+:::note
+For custom SVG icons, add the `svg-icons` extension: `npx popapp add svg-icons`
+:::
+
+## Animation Tiers
+
+Components declare their animation tier so you know what native dependencies are needed:
+
+| Tier | What it means | Dependencies |
+|------|---------------|-------------|
+| **1** | Pure React Native — no extra deps | — |
+| **2** | Smooth UI-thread animations | `react-native-reanimated` (included in Expo) |
+| **3** | Full gesture support | `reanimated` + `react-native-gesture-handler` |
+
+:::info
+Tier 2 dependencies (`react-native-reanimated`) ship with Expo by default — no extra install needed. Tier 3 components require `react-native-gesture-handler`, which is also included in Expo but may need linking in bare RN.
+:::
+
+## Templates
+
+Templates are scaffold files that give you a head start on common patterns. They use the `registry:template` type and install into `lib/`.
+
+```bash [Terminal]
+npx popapp add auth-supabase
+```
+
+::::steps
+
+##### Install the template
+
+```bash [Terminal]
+npx popapp add auth-supabase
+```
+
+This creates five files under `lib/auth/`:
+- `supabase.ts` — Supabase client configuration
+- `auth-store.ts` — Zustand auth state store
+- `auth-provider.tsx` — Session listener and auto-refresh
+- `query-provider.tsx` — React Query provider with defaults
+- `query-keys.ts` — Centralized query key factory
+
+##### Configure your credentials
+
+Update `lib/auth/supabase.ts` with your Supabase project URL and anon key.
+
+##### Wire up providers
+
+```tsx [app/_layout.tsx]
+import { QueryProvider } from "@/lib/auth/query-provider";
+import { AuthProvider } from "@/lib/auth/auth-provider";
+
+export default function RootLayout() {
+  return (
+    <QueryProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </QueryProvider>
+  );
+}
+```
+
+::::
+
+:::danger
+Never commit your Supabase creds to version control. 
+Use environment vars or a `.env` file.
+:::
+
+## What's Next?
+
+- Browse the [Component Registry](/) to see all available components
+- Check out the [Button](/components/button) docs for a detailed component reference

@@ -1,0 +1,44 @@
+# Glass
+
+Safe wrapper for `expo-glass-effect` Liquid Glass. Falls back gracefully when the module is unavailable or unsupported.
+
+```bash [Terminal]
+npx popapp add glass
+```
+
+## Usage
+
+```tsx
+import { SafeGlassView, isGlassAvailable } from "@/lib/glass";
+
+<SafeGlassView tintColor={colors.primary} style={styles.container}>
+  <Text>Frosted glass content</Text>
+</SafeGlassView>
+```
+
+## Check availability
+
+```tsx
+if (isGlassAvailable()) {
+  // Glass effect is available (iOS 26+)
+}
+```
+
+## API
+
+### `SafeGlassView`
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Content to render |
+| `tintColor` | `string` | — | Glass tint color |
+| `isInteractive` | `boolean` | — | Interactive glass mode |
+| `style` | `ViewStyle` | — | Container style |
+
+### `isGlassAvailable()`
+
+Returns `boolean` — whether the glass effect module is loaded and available.
+
+:::note
+Install `expo-glass-effect` to enable Liquid Glass on iOS 26+. Without it, `SafeGlassView` renders a plain `View` — no crashes, no visual artifact.
+:::

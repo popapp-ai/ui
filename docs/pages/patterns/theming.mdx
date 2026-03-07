@@ -1,0 +1,91 @@
+# Theming Patterns
+
+How PopApp components consume and apply theme tokens.
+
+## Every component uses useTheme
+
+Components access colors through the `useTheme` hook, never through hardcoded values:
+
+```tsx
+function MyComponent() {
+  const { colors } = useTheme();
+
+  return (
+    <View style={{ backgroundColor: colors.card, borderColor: colors.border }}>
+      <Text style={{ color: colors.cardForeground }}>Content</Text>
+    </View>
+  );
+}
+```
+
+This means every component automatically responds to:
+- Light/dark mode changes
+- Custom theme overrides
+- Named theme switching
+
+## Token naming convention
+
+Tokens follow a `surface` + `foreground` pattern:
+
+```tsx
+// Background + text on that background
+colors.primary         // Button background
+colors.primaryForeground  // Text on primary
+
+colors.card            // Card background
+colors.cardForeground  // Text on card
+
+colors.destructive         // Destructive background
+colors.destructiveForeground  // Text on destructive
+```
+
+## Extending tokens
+
+Add project-specific tokens via the index signature:
+
+```tsx
+<ThemeProvider
+  light={{
+    primary: "#6366F1",
+    // Custom tokens
+    "chart-1": "#3B82F6",
+    "chart-2": "#22C55E",
+    "chart-3": "#F59E0B",
+  }}
+>
+```
+
+Access them with bracket notation:
+
+```tsx
+const { colors } = useTheme();
+<View style={{ backgroundColor: colors["chart-1"] }} />
+```
+
+## Dark mode strategy
+
+PopApp's theme system follows the **system preference** by default. Components don't need conditional logic — they just read tokens:
+
+```tsx
+// This automatically works in both light and dark mode
+<View style={{ backgroundColor: colors.background }}>
+  <Text style={{ color: colors.foreground }}>Always readable</Text>
+</View>
+```
+
+## Semantic colors
+
+Use semantic tokens for consistent meaning across your app:
+
+```tsx
+// Destructive action
+<Text style={{ color: colors.destructive }}>Delete</Text>
+
+// Success state
+<Badge variant="success">Verified</Badge>
+
+// Info callout
+<View style={{ backgroundColor: colors.info }}>
+  <Text style={{ color: colors.infoForeground }}>Note</Text>
+</View>
+```

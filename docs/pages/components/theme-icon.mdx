@@ -1,0 +1,34 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# ThemeIcon
+
+Icon wrapped in a tinted circle background. Ideal for category icons and settings.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [IconSymbol](/components/icon-symbol)
+
+```bash [Terminal]
+npx popapp add theme-icon
+```
+
+## Usage
+
+<PreviewImage src="/images/theme-icons-variations.png" alt="ThemeIcon variations" />
+
+```tsx
+import { ThemeIcon } from "@/components/ui/theme-icon";
+
+<ThemeIcon name="star.fill" color="#F59E0B" />
+<ThemeIcon name="heart.fill" color="#EF4444" />
+<ThemeIcon name="bell.fill" color="#3B82F6" />
+<ThemeIcon name="leaf.fill" color="#22C55E" square />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `IconSymbolName` | — | SF Symbol name |
+| `color` | `string` | — | Icon and tint color |
+| `size` | `number` | `52` | Container size |
+| `square` | `boolean` | `false` | Square corners instead of circle |

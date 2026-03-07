@@ -1,0 +1,168 @@
+# Theme
+
+PopApp UI uses a token-based theme system with built-in light and dark mode support. The theme is the foundation — every component reads colors from it.
+
+## Installation
+
+The theme is installed automatically with `npx popapp init`. To add it manually:
+
+```bash [Terminal]
+npx popapp add theme
+```
+
+**Files installed:**
+- `lib/theme/tokens.ts` — color token definitions
+- `lib/theme/provider.tsx` — ThemeProvider component
+- `lib/theme/use-theme.ts` — useTheme hook
+
+## Setup
+
+Wrap your root layout:
+
+```tsx
+import { ThemeProvider } from "@/lib/theme/provider";
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <Slot />
+    </ThemeProvider>
+  );
+}
+```
+
+## Using the theme
+
+Access colors anywhere with the `useTheme` hook:
+
+```tsx
+import { useTheme } from "@/lib/theme/use-theme";
+
+function MyComponent() {
+  const { colors, colorScheme } = useTheme();
+
+  return (
+    <View style={{ backgroundColor: colors.background }}>
+      <Text style={{ color: colors.foreground }}>
+        Current scheme: {colorScheme}
+      </Text>
+    </View>
+  );
+}
+```
+
+## Color Tokens
+
+The full set of tokens available on `colors`:
+
+### Brand
+
+| Token | Description |
+|-------|-------------|
+| `primary` | Primary brand color |
+| `primaryForeground` | Text on primary backgrounds |
+| `accent` | Secondary brand color |
+| `accentForeground` | Text on accent backgrounds |
+
+### Surfaces
+
+| Token | Description |
+|-------|-------------|
+| `background` | Main app background |
+| `backgroundSecondary` | Secondary surfaces |
+| `backgroundTertiary` | Tertiary surfaces |
+| `card` | Card background |
+| `cardForeground` | Text on cards |
+| `cardSecondary` | Secondary card variant |
+
+### Text
+
+| Token | Description |
+|-------|-------------|
+| `foreground` | Primary text color |
+| `foregroundSecondary` | Secondary text |
+| `muted` | Muted backgrounds |
+| `mutedForeground` | Text on muted backgrounds |
+
+### UI
+
+| Token | Description |
+|-------|-------------|
+| `border` | Border color |
+| `icon` | Default icon color |
+
+### Semantic
+
+| Token | Description |
+|-------|-------------|
+| `destructive` / `destructiveForeground` | Destructive actions |
+| `success` / `successForeground` | Success states |
+| `warning` / `warningForeground` | Warning states |
+| `info` / `infoForeground` | Informational states |
+
+### Custom tokens
+
+The `ColorTokens` interface accepts additional string keys via index signature, so you can extend it with project-specific tokens.
+
+## Customization
+
+### Override tokens
+
+Pass partial overrides for light and dark mode:
+
+```tsx
+<ThemeProvider
+  light={{
+    primary: "#6366F1",
+    primaryForeground: "#ffffff",
+    accent: "#F59E0B",
+  }}
+  dark={{
+    primary: "#818CF8",
+    primaryForeground: "#000000",
+    accent: "#FBBF24",
+  }}
+>
+  <App />
+</ThemeProvider>
+```
+
+### Custom named themes
+
+Register multiple themes and switch between them:
+
+```tsx
+<ThemeProvider
+  themes={{
+    ocean: { primary: "#0EA5E9", background: "#0C4A6E", /* ... */ },
+    forest: { primary: "#22C55E", background: "#14532D", /* ... */ },
+  }}
+  activeTheme="ocean"
+>
+  <App />
+</ThemeProvider>
+```
+
+### Force color scheme
+
+```tsx
+// Always light mode
+<ThemeProvider colorScheme="light">
+
+// Always dark mode
+<ThemeProvider colorScheme="dark">
+
+// Follow system (default)
+<ThemeProvider colorScheme="system">
+```
+
+## ThemeProvider Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | App content |
+| `colorScheme` | `"light" \| "dark" \| "system"` | `"system"` | Color scheme mode |
+| `light` | `Partial<ColorTokens>` | — | Light mode overrides |
+| `dark` | `Partial<ColorTokens>` | — | Dark mode overrides |
+| `themes` | `Record<string, ColorTokens>` | — | Named theme map |
+| `activeTheme` | `string` | — | Active named theme |

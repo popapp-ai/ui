@@ -1,0 +1,56 @@
+# OptionCard
+
+Selectable option card with checkbox, icon, description, and left/center alignment.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **Registry deps:** [Theme](/theme), [Haptics](/utils/haptics), [Touchable](/components/touchable), [IconSymbol](/components/icon-symbol)
+
+```bash [Terminal]
+npx popapp add option-card
+```
+
+## Usage
+
+```tsx
+import { OptionCard } from "@/components/ui/option-card";
+
+<OptionCard
+  label="Push Notifications"
+  description="Get notified about updates"
+  selected={pushEnabled}
+  onPress={() => setPushEnabled(!pushEnabled)}
+  showCheckbox
+/>
+```
+
+## Center alignment
+
+Use `align="center"` for card-style selection with vertically stacked content:
+
+```tsx
+<OptionCard
+  label="Pro"
+  description="Unlimited projects, 100 GB storage"
+  icon={<IconSymbol name="bolt.fill" size={24} color={colors.foreground} />}
+  align="center"
+  selected={plan === "pro"}
+  onPress={() => setPlan("pro")}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Option label |
+| `description` | `string` | — | Description text |
+| `icon` | `ReactNode` | — | Icon element |
+| `selected` | `boolean` | — | Selection state |
+| `onPress` | `() => void` | — | Press handler |
+| `showCheckbox` | `boolean` | `false` | Show a checkbox indicator |
+| `align` | `"left" \| "center"` | `"left"` | Layout alignment |
+| `haptic` | `boolean` | `true` | Haptic feedback |
+
+:::tip
+For managing groups of options with single/multi select, use [OptionGroup](/components/option-group).
+:::

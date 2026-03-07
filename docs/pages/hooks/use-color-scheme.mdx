@@ -1,0 +1,37 @@
+# useColorScheme
+
+Color scheme hook with a safe default. Returns `"light"` or `"dark"`.
+
+```bash [Terminal]
+npx popapp add use-color-scheme
+```
+
+## Usage
+
+```tsx
+import { useColorScheme } from "@/hooks/use-color-scheme";
+
+function MyComponent() {
+  const colorScheme = useColorScheme(); // "light" | "dark"
+
+  return (
+    <View style={{
+      backgroundColor: colorScheme === "dark" ? "#000" : "#fff"
+    }}>
+      <Text>Current: {colorScheme}</Text>
+    </View>
+  );
+}
+```
+
+## Returns
+
+| Value | Type | Description |
+|-------|------|-------------|
+| `colorScheme` | `"light" \| "dark"` | Current system color scheme |
+
+Falls back to `"light"` when the system value is unavailable.
+
+:::tip
+In most cases, use [useTheme](/hooks/use-theme) instead — it provides color tokens directly, so you don't need to branch on the scheme yourself.
+:::

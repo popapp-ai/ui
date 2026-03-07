@@ -1,0 +1,92 @@
+# Composition Patterns
+
+PopApp UI follows consistent composition patterns across all components. Understanding these patterns will help you use and customize components effectively.
+
+## Named exports over compounds
+
+PopApp uses **named exports** instead of compound components:
+
+```tsx
+// PopApp style
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+<Card>
+  <CardHeader>
+    <CardTitle>Settings</CardTitle>
+  </CardHeader>
+  <CardContent>{/* ... */}</CardContent>
+</Card>
+```
+
+```tsx
+// NOT this (compound style)
+<Card>
+  <Card.Header>
+    <Card.Title>Settings</Card.Title>
+  </Card.Header>
+</Card>
+```
+
+**Why?** Named exports enable better tree-shaking and play nicely with React Native's bundler. You import only what you use.
+
+## Slot pattern
+
+Many components provide **slots** for customization without wrapping:
+
+```tsx
+<TextInput
+  label="Search"
+  leftSection={<IconSymbol name="magnifyingglass" />}
+  rightSection={<ActionIcon name="xmark" onPress={clear} />}
+/>
+
+<ScreenHeader
+  title="Profile"
+  leftSection={<ActionIcon name="arrow.left" onPress={goBack} />}
+  rightSection={<ActionIcon name="gear" onPress={settings} />}
+  bottomSection={<TabBar />}
+/>
+```
+
+## Controlled components
+
+All form components are **controlled** — you manage the state:
+
+```tsx
+const [value, setValue] = useState("");
+
+<TextInput value={value} onChangeText={setValue} />
+<OptionCard label="Option A" selected={value === "a"} onPress={() => setValue("a")} />
+<OptionGroup mode="single" value={value} onChange={setValue} options={[...]} />
+```
+
+## Style overrides
+
+Every component accepts a `style` prop for layout adjustments. Internal styles use `StyleSheet.create` and are composed with your overrides:
+
+```tsx
+<Card style={{ marginBottom: 16 }}>
+<Button title="Save" style={{ alignSelf: "flex-end" }} />
+```
+
+## Haptic feedback
+
+Interactive components have haptics enabled by default. Disable per-component:
+
+```tsx
+<Button title="Save" haptic={false} />
+<OptionCard label="Option" selected={false} onPress={() => {}} haptic={false} />
+<Touchable haptic={false}>{/* ... */}</Touchable>
+```
+
+## Safe fallbacks
+
+PopApp components gracefully degrade when optional native modules are missing:
+
+| Module | Without it |
+|--------|-----------|
+| `expo-haptics` | All haptic calls become no-ops |
+| `expo-glass-effect` | Glass views render as plain Views |
+| `expo-symbols` | Falls back to Material Icons |
+
+This means you can adopt components without installing every optional dependency upfront.

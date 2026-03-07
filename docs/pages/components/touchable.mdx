@@ -1,0 +1,65 @@
+# Touchable
+
+Animated pressable with spring scale, opacity animations, and haptics.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **Registry deps:** [Haptics](/utils/haptics)
+
+```bash [Terminal]
+npx popapp add touchable
+```
+
+## Usage
+
+```tsx
+import { Touchable } from "@/components/ui/touchable";
+
+<Touchable onPress={handlePress}>
+  <Card>
+    <CardContent>
+      <Text>Tap me</Text>
+    </CardContent>
+  </Card>
+</Touchable>
+```
+
+## Scale effect (default)
+
+The default effect scales the element down on press with a spring animation:
+
+```tsx
+<Touchable effect="scale" scaleTo={0.95} onPress={handlePress}>
+  <MyContent />
+</Touchable>
+```
+
+## Opacity effect
+
+A simpler fade effect without scale:
+
+```tsx
+<Touchable effect="opacity" onPress={handlePress}>
+  <MyContent />
+</Touchable>
+```
+
+## Props (Scale effect)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `effect` | `"scale"` | `"scale"` | Animation type |
+| `scaleTo` | `number` | `0.97` | Scale on press |
+| `opacityTo` | `number` | `0.7` | Opacity on press |
+| `pressInDuration` | `number` | — | Press-in animation duration |
+| `pressOutDuration` | `number` | — | Press-out animation duration |
+| `haptic` | `boolean` | — | Enable haptic feedback |
+| `disabled` | `boolean` | `false` | Disable interaction |
+| `muted` | `boolean` | `false` | Muted feedback |
+
+## Props (Opacity effect)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `effect` | `"opacity"` | — | Animation type |
+
+Extends standard `TouchableOpacityProps`.

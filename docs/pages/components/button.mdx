@@ -1,0 +1,218 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# Button
+
+Pressable button with variants, sizes, loading state, icons, haptic feedback, and Liquid Glass support.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [Theme](/theme), [Haptics](/utils/haptics), [Glass](/utils/glass), [Touchable](/components/touchable)
+
+
+```bash [Terminal]
+npx popapp add button
+```
+
+:::info
+This also installs: `theme`, `haptics`, `glass`, `touchable`.
+:::
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+<Button title="Get Started" onPress={() => console.log("pressed")} />
+```
+
+:::tip
+The `title` prop sets the button label. All standard `TouchableOpacityProps` are also supported.
+:::
+
+## Variants
+
+Five built-in variants control the button's visual style.
+
+<PreviewImage src="/images/button-variants.png" alt="Button variants" />
+
+```tsx
+// Solid (default) — filled primary background
+<Button variant="solid" title="Solid" />
+
+// Outline — transparent with primary border
+<Button variant="outline" title="Outline" />
+
+// Ghost — transparent, no border
+<Button variant="ghost" title="Ghost" />
+
+// Subtle — muted background with foreground text
+<Button variant="subtle" title="Subtle" />
+
+// Destructive — danger/delete actions
+<Button variant="destructive" title="Destructive" />
+```
+
+| Variant | Background | Text Color | Border |
+|-------------|-------------------|---------------------|----------------|
+| `solid` | `primary` | `primaryForeground` | `primary` |
+| `outline` | transparent | `primary` | `primary` |
+| `ghost` | transparent | `primary` | transparent |
+| `subtle` | `cardSecondary` | `foreground` | `cardSecondary` |
+| `destructive` | `destructive` | `destructiveForeground` | `destructive` |
+
+:::note
+When the button is `disabled`, the `solid` variant uses `muted` background and `background` text color.
+:::
+
+## Sizes
+
+Four sizes are available via the `size` prop. Default is `lg`.
+
+<PreviewImage src="/images/button-sizes.png" alt="Button sizes" />
+
+```tsx
+<Button size="xs" title="XS" />
+<Button size="sm" title="SM" />
+<Button size="md" title="MD" />
+<Button size="lg" title="LG" />
+```
+
+| Size | Height | Border Radius | Font Size | Horizontal Padding |
+|------|--------|---------------|-----------|-------------------|
+| `xs` | 36 | 18 | 14 | 12 |
+| `sm` | 44 | 22 | 14 | 12 |
+| `md` | 48 | 24 | 16 | 16 |
+| `lg` | 56 | 28 | 16 | 24 |
+
+## Loading State
+
+When `isLoading` is `true`, the label is replaced with an `ActivityIndicator` and the button becomes non-interactive. Icons are also hidden during loading.
+
+```tsx
+<Button isLoading title="Submitting..." />
+```
+
+:::warning
+The button is automatically disabled while loading — no need to pass `disabled` separately.
+:::
+
+## Icons
+
+Add icons to either side of the label with `leftIcon` and `rightIcon`. Icons are hidden when `isLoading` is `true`.
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useTheme } from "@/lib/theme/use-theme";
+
+const { colors } = useTheme();
+
+// Left icon
+<Button
+  title="Continue"
+  leftIcon={<IconSymbol name="chevron.right" size={18} color={colors.primaryForeground} />}
+/>
+
+// Right icon
+<Button
+  title="Send"
+  rightIcon={<IconSymbol name="paperplane.fill" size={18} color={colors.primaryForeground} />}
+/>
+
+// Both icons
+<Button
+  title="Search"
+  leftIcon={<IconSymbol name="magnifyingglass" size={18} color={colors.primaryForeground} />}
+  rightIcon={<IconSymbol name="chevron.right" size={18} color={colors.primaryForeground} />}
+/>
+```
+
+:::tip
+Use `colors.primaryForeground` for icons in `solid` buttons, `colors.primary` for `outline`/`ghost`, and `colors.foreground` for `subtle`.
+:::
+
+## Full Width
+
+Set `fullWidth` to stretch the button to fill its container.
+
+<PreviewImage src="/images/button-variants-full-width.png" alt="Full width button variants" />
+
+```tsx
+{/* Glass variant (default) */}
+<Button fullWidth title="Full Width Button" />
+
+{/* Without glass */}
+<Button fullWidth glass={false} title="Not Glass Button" />
+
+{/* Subtle without glass */}
+<Button fullWidth glass={false} variant="subtle" title="Not Glass Subtle Button" />
+
+{/* Disabled */}
+<Button fullWidth disabled title="Disabled" />
+```
+
+## Haptic Feedback
+
+Haptic feedback is **enabled by default**. Set `haptic={false}` to disable it.
+
+```tsx
+// Haptics on (default)
+<Button title="Tap Me" />
+
+// Haptics off
+<Button haptic={false} title="Silent Press" />
+```
+
+## Liquid Glass
+
+On iOS 26+, the button renders with a Liquid Glass effect via `SafeGlassView`. Glass is **enabled by default** but only applies when:
+
+- `glass` prop is `true` (default)
+- The device supports Liquid Glass (`isGlassAvailable()`)
+- The variant is **not** `ghost` or `outline`
+
+```tsx
+// Glass enabled (default)
+<Button title="Glassy" />
+
+// Glass explicitly disabled
+<Button glass={false} title="No Glass" />
+```
+
+:::note
+When glass is active, the background becomes transparent and the `SafeGlassView` wrapper provides the tinted glass appearance using the variant's background color.
+:::
+
+## Disabled State
+
+Pass `disabled` to prevent interaction. The `solid` variant adjusts its colors automatically.
+
+```tsx
+<Button disabled title="Unavailable" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | **Required.** Button label text. |
+| `variant` | `"solid" \| "outline" \| "ghost" \| "subtle" \| "destructive"` | `"solid"` | Visual style of the button. |
+| `size` | `"xs" \| "sm" \| "md" \| "lg"` | `"lg"` | Controls height, border radius, font size, and padding. |
+| `isLoading` | `boolean` | `false` | Replaces label with a spinner and disables the button. |
+| `leftIcon` | `ReactNode` | — | Icon rendered to the left of the label. |
+| `rightIcon` | `ReactNode` | — | Icon rendered to the right of the label. |
+| `haptic` | `boolean` | `true` | Trigger haptic feedback on press. |
+| `fullWidth` | `boolean` | `false` | Stretch to fill container width. |
+| `glass` | `boolean` | `true` | Enable Liquid Glass effect (iOS 26+). |
+| `disabled` | `boolean` | `false` | Prevent interaction. |
+
+:::tip
+`Button` extends `TouchableOpacityProps`, so all standard props like `onPress`, `style`, `activeOpacity`, `testID`, etc. are supported.
+:::
+
+## Platforms
+
+| Platform | Supported | Glass Effect |
+|----------|-----------|-------------|
+| iOS | Yes | Yes (iOS 26+) |
+| Android | Yes | No |
+| Web | Yes | No |

@@ -1,0 +1,128 @@
+# Project Structure
+
+After running `npx popapp init` and adding components, here's how PopApp UI organizes files in your Expo project.
+
+## Directory Layout
+
+```bash
+your-app/
+├── components/
+│   └── ui/                        # ← UI components land here
+│       ├── button.tsx
+│       ├── card.tsx
+│       ├── screen.tsx
+│       ├── list.tsx
+│       ├── touchable.tsx
+│       ├── icon-symbol.tsx
+│       ├── icon-symbol.ios.tsx
+│       ├── icon-symbol.types.ts
+│       ├── onboarding/            # Multi-file components get a folder
+│       │   ├── types.ts
+│       │   ├── engine.ts
+│       │   ├── store.ts
+│       │   ├── context.ts
+│       │   ├── use-onboarding.ts
+│       │   ├── layout.tsx
+│       │   ├── screen.tsx
+│       │   ├── progress-bar.tsx
+│       │   └── index.ts
+│       └── svg-icons/             # Icon extension folder
+│           ├── base-icon.tsx
+│           ├── icon-svg.tsx
+│           └── index.ts
+├── lib/                           # ← Utilities, libs, and templates
+│   ├── theme/                     # Theme system (installed with init)
+│   │   ├── tokens.ts              #   Color token definitions
+│   │   ├── provider.tsx           #   ThemeProvider component
+│   │   └── use-theme.ts           #   useTheme hook
+│   ├── haptics.ts                 # Safe haptics wrapper
+│   ├── glass.tsx                  # Liquid Glass wrapper
+│   ├── gradient-tint.tsx          # Gradient fade utility
+│   └── auth/                      # Template: Supabase Auth
+│       ├── supabase.ts
+│       ├── auth-store.ts
+│       ├── auth-provider.tsx
+│       ├── query-provider.tsx
+│       └── query-keys.ts
+├── hooks/                         # ← React hooks
+│   └── use-color-scheme.ts
+└── popapp.json                    # CLI configuration
+```
+
+## Where things go
+
+### `components/ui/` — UI Components
+
+All visual components install here. This is the `registry:ui` target.
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Screen, ScreenHeader, ScreenContent } from "@/components/ui/screen";
+```
+
+Components that consist of multiple files (like [Onboarding](/components/onboarding) or [SVG Icons](/components/svg-icons)) get their own subdirectory inside `components/ui/`.
+
+### `lib/` — Utilities and Libraries
+
+Shared utilities, the theme system, and templates install here. This is the target for `registry:lib` and `registry:template` types.
+
+```tsx
+import { useTheme } from "@/lib/theme/use-theme";
+import { impactLight } from "@/lib/haptics";
+import { SafeGlassView } from "@/lib/glass";
+import { GradientTint } from "@/lib/gradient-tint";
+```
+
+Templates like [Supabase Auth](/templates/auth-supabase) create a subfolder (e.g. `lib/auth/`) with all their files.
+
+### `hooks/` — React Hooks
+
+Standalone hooks install here. This is the `registry:hook` target.
+
+```tsx
+import { useColorScheme } from "@/hooks/use-color-scheme";
+```
+
+:::info
+The [useTheme](/hooks/use-theme) hook lives in `lib/theme/` rather than `hooks/` because it's part of the theme system package.
+:::
+
+### `popapp.json` — CLI Configuration
+
+Created by `npx popapp init`. Stores your project's path settings so the CLI knows where to write files:
+
+```json
+{
+  "components": "components/ui",
+  "lib": "lib",
+  "hooks": "hooks",
+  "registryUrl": "https://popapp.dev/r"
+}
+```
+
+## Import Aliases
+
+PopApp components use `@/` imports (Expo's default alias for the project root). All internal cross-references between components are resolved during installation:
+
+| What you import | From |
+|----------------|------|
+| UI components | `@/components/ui/*` |
+| Theme & utils | `@/lib/*` |
+| Hooks | `@/hooks/*` |
+
+:::tip
+If your project uses a different alias (e.g. `~/`), update the paths in `popapp.json` and the CLI will transform imports accordingly.
+:::
+
+## Adding components over time
+
+Every time you run `npx popapp add`, new files are written to the appropriate directory. Dependencies are resolved automatically — if a component needs `theme` or `haptics` and they're not installed yet, the CLI adds them too.
+
+```bash [Terminal]
+# Adds screen.tsx to components/ui/
+# Also installs theme, button, and gradient-tint if missing
+npx popapp add screen
+```
+
+Since you own the code, you can freely move, rename, or refactor any file after installation. The CLI won't overwrite existing files.

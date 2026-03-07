@@ -1,0 +1,43 @@
+# Animation Tiers
+
+Every PopApp component declares its **animation tier** — the level of native dependencies required for its animations. This helps you understand the dependency cost before adding a component.
+
+## The tiers
+
+### Tier 1 — Pure React Native
+
+No animation dependencies at all. Uses only built-in React Native APIs.
+
+**Components:** [Button](/components/button), [Card](/components/card), [TextInput](/components/text-input), [TextArea](/components/text-area), [Badge](/components/badge), [Separator](/components/separator), [OTPInput](/components/otp-input), [DatePicker](/components/date-picker), [Markdown](/components/markdown), [ActionIcon](/components/action-icon), [ThemeIcon](/components/theme-icon), [List](/components/list)
+
+### Tier 2 — Reanimated
+
+Requires `react-native-reanimated` for smooth, UI-thread animations. This dependency is **included by default in Expo**.
+
+**Components:** [Touchable](/components/touchable), [Skeleton](/components/skeleton), [OptionCard](/components/option-card), [OptionGroup](/components/option-group), [ProgressRing](/components/progress-ring), [Ticker](/components/ticker), [InputStepper](/components/input-stepper), [AnimatedContent](/components/animated-content), [Screen](/components/screen), [Onboarding](/components/onboarding)
+
+### Tier 3 — Reanimated + Gesture Handler
+
+Requires both `react-native-reanimated` and `react-native-gesture-handler` for gesture-driven interactions with physics-based responses.
+
+**Components:** [SliderBar](/components/slider-bar), [RulerSlider](/components/ruler-slider), [BottomSheet](/components/bottom-sheet)
+
+## Choosing components
+
+If you want to minimize dependencies:
+- Start with **Tier 1** components — they work everywhere with zero setup
+- **Tier 2** is effectively free in Expo projects (Reanimated is pre-installed)
+- **Tier 3** components add gesture handling for rich interactions
+
+## Checking a component's tier
+
+Every component page shows its tier at the top. You can also check the `animationTier` field in `registry.json`:
+
+```json
+{
+  "name": "bottom-sheet",
+  "meta": { "animationTier": 3 }
+}
+```
+
+Or use `npx popapp list` to see all components with their dependencies.

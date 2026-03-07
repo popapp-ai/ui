@@ -1,0 +1,69 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# Card
+
+Composable card container with header, content, and footer sections.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add card
+```
+
+## Usage
+
+<PreviewImage src="/images/card.png" alt="Card component" />
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+
+<Card>
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>A brief description of the card content.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <Text>This is the main content area of the card component.</Text>
+  </CardContent>
+  <CardFooter>
+    <Button title="Action" onPress={() => {}} />
+  </CardFooter>
+</Card>
+```
+
+## Minimal card
+
+You don't need to use all sections:
+
+```tsx
+<Card>
+  <CardContent>
+    <Text>Simple content card</Text>
+  </CardContent>
+</Card>
+```
+
+## Exports
+
+| Component | Description |
+|-----------|-------------|
+| `Card` | Root container with themed background and border |
+| `CardHeader` | Top section with padding |
+| `CardTitle` | Bold title text |
+| `CardDescription` | Muted description text |
+| `CardContent` | Main content area |
+| `CardFooter` | Bottom section, typically for actions |
+
+All sub-components accept `children`, `style`, and standard `ViewProps`.
+
+:::info
+PopApp uses **named exports** over compound components — `CardTitle` not `Card.Title`. This keeps tree-shaking simple and matches common React Native conventions.
+:::

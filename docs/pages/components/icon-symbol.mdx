@@ -1,0 +1,52 @@
+# IconSymbol
+
+Cross-platform icon component: SF Symbols on iOS, Material Icons on Android/web.
+
+- **Tier 1** — no animation dependencies
+- **npm deps:** `expo-symbols`, `@expo/vector-icons`
+
+```bash [Terminal]
+npx popapp add icon-symbol
+```
+
+## Usage
+
+```tsx
+import { IconSymbol } from "@/components/ui/icon-symbol";
+
+<IconSymbol name="heart.fill" size={24} color={colors.primary} />
+```
+
+## How it works
+
+PopApp uses **SF Symbol names** as the canonical icon API:
+
+- On **iOS**, icons render natively via `expo-symbols` (Apple's SF Symbols)
+- On **Android/web**, they're automatically mapped to Material Icons via `@expo/vector-icons`
+
+This gives you native-quality icons on each platform from a single API.
+
+## Common icons
+
+```tsx
+<IconSymbol name="gear" />            {/* Settings */}
+<IconSymbol name="person.fill" />     {/* Profile */}
+<IconSymbol name="arrow.left" />      {/* Back */}
+<IconSymbol name="xmark" />           {/* Close */}
+<IconSymbol name="magnifyingglass" /> {/* Search */}
+<IconSymbol name="heart.fill" />      {/* Favorite */}
+<IconSymbol name="bell.fill" />       {/* Notifications */}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `IconSymbolName` | — | SF Symbol name |
+| `size` | `number` | `24` | Icon size |
+| `color` | `string` | — | Icon color |
+| `weight` | `SymbolWeight` | — | Symbol weight (iOS only) |
+
+## Custom SVG icons
+
+Need icons beyond SF Symbols? Install the [SVG Icons](/components/svg-icons) extension.

@@ -1,0 +1,75 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# BottomSheet
+
+Modal bottom sheet with pan-to-dismiss gesture, backdrop, and spring animations.
+
+- **Tier 3** — requires Reanimated + Gesture Handler
+- **npm deps:** `react-native-multiple-modals`, `react-native-keyboard-controller`, `react-native-safe-area-context`
+- **Registry deps:** [Theme](/theme)
+- **Platforms:** iOS, Android
+
+```bash [Terminal]
+npx popapp add bottom-sheet
+```
+
+## Usage
+
+<PreviewImage src="/images/bottom-sheet.png" alt="Bottom sheet" />
+
+```tsx
+import { BottomSheet } from "@/components/ui/bottom-sheet";
+
+const [visible, setVisible] = useState(false);
+
+<Button title="Open" onPress={() => setVisible(true)} />
+
+<BottomSheet visible={visible} onDismiss={() => setVisible(false)}>
+  <Text style={{ fontSize: 20, fontWeight: "bold" }}>Bottom Sheet</Text>
+  <Text style={{ color: colors.mutedForeground }}>
+    This is a pan-to-dismiss bottom sheet with spring animations.
+    Swipe down or tap the backdrop to dismiss.
+  </Text>
+  <RulerSlider value={50} onValueChange={setValue} min={0} max={100} unit="ML" />
+  <Button fullWidth title="Close" onPress={() => setVisible(false)} />
+</BottomSheet>
+```
+
+## Keyboard-aware
+
+For sheets containing inputs:
+
+```tsx
+<BottomSheet visible={visible} onDismiss={dismiss} keyboardAware>
+  <TextInput label="Name" value={name} onChangeText={setName} />
+</BottomSheet>
+```
+
+## Non-dismissible
+
+Disable backdrop and gesture dismissal:
+
+```tsx
+<BottomSheet
+  visible={visible}
+  onDismiss={dismiss}
+  dismissOnBackdrop={false}
+  panToDismiss={false}
+>
+  <Text>You must complete this form</Text>
+</BottomSheet>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `visible` | `boolean` | — | Show/hide the sheet |
+| `onDismiss` | `() => void` | — | Called when dismissed |
+| `children` | `ReactNode` | — | Sheet content |
+| `keyboardAware` | `boolean` | `false` | Adjust for keyboard |
+| `backdropOpacity` | `number` | `0.4` | Backdrop darkness |
+| `dismissOnBackdrop` | `boolean` | `true` | Tap backdrop to dismiss |
+| `panToDismiss` | `boolean` | `true` | Swipe down to dismiss |
+| `paddingBottom` | `number` | `16` | Bottom padding |
+| `bottomOverflowOffset` | `number` | `100` | Extra height for over-scroll |

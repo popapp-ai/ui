@@ -1,0 +1,46 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# Markdown
+
+Themed markdown renderer with code block copy button.
+
+- **Tier 1** — no animation dependencies
+- **npm deps:** `react-native-markdown-display`, `@react-native-clipboard/clipboard`
+- **Registry deps:** [Theme](/theme), [ActionIcon](/components/action-icon)
+
+```bash [Terminal]
+npx popapp add markdown
+```
+
+## Usage
+
+<PreviewImage src="/images/markdown.png" alt="Markdown renderer" />
+
+```tsx
+import { Markdown } from "@/components/ui/markdown";
+
+<Markdown>{`
+# Heading 1
+
+This is **bold** and *italic* text.
+
+- List item one
+- List item two
+- List item three
+
+Here is \`inline code\` and:
+
+\`\`\`
+code block
+with multiple lines
+\`\`\`
+`}</Markdown>
+```
+
+## Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `children` | `string` | Markdown string to render |
+
+The component automatically themes all markdown elements using your [Theme](/theme) tokens and adds a copy button to code blocks.

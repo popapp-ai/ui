@@ -1,0 +1,110 @@
+import { PreviewImage } from '../../components/preview-image'
+import { PreviewVideo } from '../../components/preview-video'
+
+# SliderBar
+
+Animated slider with gesture control, step snapping, labels, and haptic feedback.
+
+- **Tier 3** — requires `react-native-reanimated` + `react-native-gesture-handler`
+- **Registry deps:** [Theme](/theme), [Haptics](/utils/haptics), [IconSymbol](/components/icon-symbol)
+- **Platforms:** iOS, Android
+
+```bash [Terminal]
+npx popapp add slider-bar
+```
+
+## Usage
+
+<PreviewVideo src="/videos/slider-bar.mp4" />
+
+```tsx
+import { SliderBar } from "@/components/ui/slider-bar";
+
+<SliderBar
+  value={percentage}
+  onValueChange={setPercentage}
+  min={0}
+  max={100}
+  step={1}
+  labels={[
+    { text: "0%", position: 0 },
+    { text: "50%", position: 0.5 },
+    { text: "100%", position: 1 },
+  ]}
+/>
+```
+
+## Thick track variant
+
+A pill-shaped slider with no thumb — ideal for compact controls like volume or brightness.
+
+<PreviewImage src="/images/slider-bar-track.png" alt="Thick track variant" />
+
+```tsx
+<SliderBar
+  value={volume}
+  onValueChange={setVolume}
+  variant="track"
+/>
+```
+
+## With step snapping
+
+```tsx
+<SliderBar
+  value={rating}
+  onValueChange={setRating}
+  min={1}
+  max={5}
+  step={1}
+/>
+```
+
+## With labels
+
+Pressing a label jumps the slider to that position.
+
+```tsx
+<SliderBar
+  value={intensity}
+  onValueChange={setIntensity}
+  labels={[
+    { text: "Low", position: 0, icon: "tortoise.fill" },
+    { text: "Medium", position: 0.5 },
+    { text: "High", position: 1, icon: "hare.fill" },
+  ]}
+/>
+```
+
+## Custom styling
+
+Override track dimensions and colors to match your design.
+
+```tsx
+<SliderBar
+  value={brightness}
+  onValueChange={setBrightness}
+  trackSize={12}
+  trackRadius={4}
+  progressColor="#FFD60A"
+  backgroundColor="#1C1C1E"
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | — | Current value |
+| `onValueChange` | `(value: number) => void` | — | Change handler |
+| `min` | `number` | `0` | Minimum value |
+| `max` | `number` | `1` | Maximum value |
+| `step` | `number` | `0` | Step size (0 = continuous) |
+| `labels` | `SliderLabel[]` | — | Position labels with optional icons (tappable) |
+| `haptic` | `boolean` | `true` | Haptic feedback on step changes |
+| `variant` | `"thumb" \| "track"` | `"thumb"` | Visual style — thin track with thumb or thick pill track |
+| `trackSize` | `number` | `6` (thumb) / `28` (track) | Track height in px |
+| `trackRadius` | `number` | half of track height | Track border-radius in px |
+| `progressColor` | `string` | theme `primary` | Progress fill color |
+| `backgroundColor` | `string` | theme `border` | Track background color |
+| `style` | `StyleProp<ViewStyle>` | — | Container style |

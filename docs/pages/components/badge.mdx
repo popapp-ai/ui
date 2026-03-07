@@ -1,0 +1,32 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# Badge
+
+Status badge with color variants.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add badge
+```
+
+## Usage
+
+<PreviewImage src="/images/badge-variants.png" alt="Badge variants" />
+
+```tsx
+import { Badge } from "@/components/ui/badge";
+
+<Badge>Default</Badge>
+<Badge variant="secondary">Secondary</Badge>
+<Badge variant="destructive">Destructive</Badge>
+<Badge variant="success">Success</Badge>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `string` | — | Badge text |
+| `variant` | `"default" \| "secondary" \| "destructive" \| "success" \| "outline"` | `"default"` | Visual style |

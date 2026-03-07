@@ -1,0 +1,27 @@
+# Separator
+
+Horizontal or vertical divider line.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add separator
+```
+
+## Usage
+
+```tsx
+import { Separator } from "@/components/ui/separator";
+
+<Separator />
+
+<Separator orientation="vertical" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Divider direction |
+| `style` | `ViewStyle` | — | Custom style |

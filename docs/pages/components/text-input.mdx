@@ -1,0 +1,119 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# TextInput
+
+Native text input with filled/outline variants, label, error state, and icon slots.
+
+- **Tier 1** — no animation dependencies
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add text-input
+```
+
+## Usage
+
+```tsx
+import { TextInput } from "@/components/ui/text-input";
+
+<TextInput
+  label="Email"
+  placeholder="you@example.com"
+  value={email}
+  onChangeText={setEmail}
+/>
+```
+
+## Variants
+
+<PreviewImage src="/images/input-variants.png" alt="TextInput variants" />
+
+```tsx
+{/* Filled (default) — native iOS-style background fill */}
+<TextInput
+  label="Filled"
+  placeholder="Native filled input..."
+  variant="filled"
+/>
+
+{/* Outline — subtle border, no background */}
+<TextInput
+  label="Outline"
+  placeholder="Outline input..."
+  variant="outline"
+/>
+```
+
+## States
+
+<PreviewImage src="/images/input-states.png" alt="Input states" />
+
+```tsx
+{/* With error */}
+<TextInput
+  label="With Error"
+  placeholder="Required"
+  error="This field is required"
+  value={field}
+  onChangeText={setField}
+/>
+
+{/* Disabled */}
+<TextInput
+  label="Disabled"
+  placeholder="Can't edit"
+  disabled
+/>
+```
+
+## With Icons
+
+<PreviewImage src="/images/input-with-icons.png" alt="TextInput with icons and sections" />
+
+```tsx
+<TextInput
+  label="Search"
+  placeholder="Search products..."
+  leftSection={<IconSymbol name="magnifyingglass" size={18} color={colors.icon} />}
+/>
+
+<TextInput
+  label="Website"
+  placeholder="example.com"
+  variant="outline"
+  leftSection={<Text style={{ fontSize: 15, color: colors.foregroundSecondary }}>https://</Text>}
+/>
+
+<TextInput
+  label="Price"
+  placeholder="0.00"
+  leftSection={<Text style={{ fontSize: 15, color: colors.foregroundSecondary }}>$</Text>}
+  rightSection={<Text style={{ fontSize: 13, color: colors.foregroundSecondary }}>USD</Text>}
+/>
+```
+
+## Sizes
+
+<PreviewImage src="/images/input-sizes.png" alt="Input sizes" />
+
+```tsx
+<TextInput label="Small" placeholder="SM" size="sm" />
+<TextInput label="Medium" placeholder="MD" size="md" />
+<TextInput label="Large" placeholder="LG" size="lg" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Label above the input |
+| `error` | `string` | — | Error message below the input |
+| `variant` | `"filled" \| "outline"` | `"filled"` | Visual style variant |
+| `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"lg"` | Input height |
+| `leftSection` | `ReactNode` | — | Left icon/element |
+| `rightSection` | `ReactNode` | — | Right icon/element |
+| `disabled` | `boolean` | `false` | Disable interaction |
+| `containerStyle` | `ViewStyle` | — | Outer container style |
+| `inputStyle` | `TextStyle` | — | Inner input style |
+
+Extends `RNTextInputProps` — all standard TextInput props are supported.

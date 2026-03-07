@@ -1,0 +1,78 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# Carousel
+
+Swipeable pager carousel with animated page dots and active-page injection.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **npm deps:** `react-native-pager-view`
+- **Registry deps:** [Theme](/theme)
+- **Platforms:** iOS, Android
+
+```bash [Terminal]
+npx popapp add carousel
+```
+
+## Usage
+
+```tsx
+import { Carousel } from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+
+<Carousel>
+  <Card>
+    <CardContent>
+      <Text>Page 1</Text>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardContent>
+      <Text>Page 2</Text>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardContent>
+      <Text>Page 3</Text>
+    </CardContent>
+  </Card>
+</Carousel>
+```
+
+## Custom height
+
+```tsx
+<Carousel height={200}>
+  {items.map((item) => (
+    <MyCard key={item.id} {...item} />
+  ))}
+</Carousel>
+```
+
+## Active page injection
+
+Children automatically receive an `isActive` prop when they are the currently visible page. Use this to trigger animations or data fetching only for the active card.
+
+```tsx
+function StatCard({ isActive }: { isActive?: boolean }) {
+  // isActive is true only when this page is selected
+  return (
+    <Card>
+      <CardContent>
+        {isActive && <AnimatedChart />}
+      </CardContent>
+    </Card>
+  );
+}
+
+<Carousel>
+  <StatCard />
+  <StatCard />
+</Carousel>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode[]` | — | Pages to display |
+| `height` | `number` | `340` | Carousel height in pixels |

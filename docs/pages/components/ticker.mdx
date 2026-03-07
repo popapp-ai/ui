@@ -1,0 +1,51 @@
+import { PreviewImage } from '../../components/preview-image'
+import { PreviewVideo } from '../../components/preview-video'
+
+# Ticker
+
+Animated number ticker with staggered digit rolls, currency/locale formatting, and masked gradient edges.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **npm deps:** `@react-native-masked-view/masked-view`, `expo-linear-gradient`
+- **Registry deps:** [Theme](/theme)
+- **Platforms:** iOS, Android
+
+```bash [Terminal]
+npx popapp add ticker
+```
+
+## Usage
+
+<PreviewVideo src="/videos/ticker.mp4" />
+
+```tsx
+import { Ticker } from "@/components/ui/ticker";
+
+<Ticker value={1234} />
+```
+
+## Currency
+
+```tsx
+<Ticker value={49.99} currency="USD" decimals={2} />
+```
+
+## With unit
+
+```tsx
+<Ticker value={weight} unit="kg" decimals={1} fontSize={32} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number \| string` | — | Display value |
+| `decimals` | `number` | `0` | Decimal places |
+| `fontSize` | `number` | `50` | Text size |
+| `locale` | `string` | `"en-US"` | Number formatting locale |
+| `currency` | `string` | — | Currency code (e.g. `"USD"`) |
+| `unit` | `string` | — | Unit suffix |
+| `color` | `string` | — | Text color |
+| `animationDisabled` | `boolean` | `false` | Skip animation |
+| `layoutDisabled` | `boolean` | `false` | Disable layout animation |

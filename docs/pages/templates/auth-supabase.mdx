@@ -1,0 +1,123 @@
+# Supabase Auth Template
+
+Starter template for Supabase authentication with MMKV persistence, Zustand auth store, and React Query patterns.
+
+- **npm deps:** `@supabase/supabase-js`, `react-native-mmkv`, `zustand`, `@tanstack/react-query`
+- **Type:** `registry:template`
+
+```bash [Terminal]
+npx popapp add auth-supabase
+```
+
+**Installs 5 files** into `lib/auth/`:
+`supabase.ts`, `auth-store.ts`, `auth-provider.tsx`, `query-provider.tsx`, `query-keys.ts`
+
+## Setup
+
+::::steps
+
+### Configure Supabase
+
+Update `lib/auth/supabase.ts` with your project credentials:
+
+```tsx
+const supabaseUrl = "https://YOUR_PROJECT.supabase.co";
+const supabaseAnonKey = "YOUR_ANON_KEY";
+```
+
+### Wrap your root layout
+
+```tsx
+import { QueryProvider } from "@/lib/auth/query-provider";
+import { AuthProvider } from "@/lib/auth/auth-provider";
+
+export default function RootLayout() {
+  return (
+    <QueryProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <Slot />
+        </ThemeProvider>
+      </AuthProvider>
+    </QueryProvider>
+  );
+}
+```
+
+### Use the auth store
+
+```tsx
+import {
+  useUser,
+  useSession,
+  useIsAuthenticated,
+  useAccessToken,
+} from "@/lib/auth/auth-store";
+
+function ProfileScreen() {
+  const user = useUser();
+  const isAuth = useIsAuthenticated();
+
+  if (!isAuth) return <LoginScreen />;
+
+  return <Text>Welcome, {user?.email}</Text>;
+}
+```
+
+::::
+
+## What's included
+
+### `supabase.ts`
+
+Pre-configured Supabase client with MMKV storage adapter for persistent sessions.
+
+### `auth-store.ts`
+
+Zustand store with convenience hooks:
+
+| Hook | Returns | Description |
+|------|---------|-------------|
+| `useSession()` | `Session \| null` | Current Supabase session |
+| `useUser()` | `User \| null` | Current user object |
+| `useAuthLoading()` | `boolean` | Loading state |
+| `useAuthInitialized()` | `boolean` | Whether auth has been restored |
+| `useIsAuthenticated()` | `boolean` | Authentication status |
+| `useAccessToken()` | `string \| null` | Current access token |
+
+### `auth-provider.tsx`
+
+React component that:
+- Restores the session from MMKV on mount
+- Listens for auth state changes (sign in, sign out, token refresh)
+- Handles deep link OAuth redirects
+
+### `query-provider.tsx`
+
+React Query provider with sensible defaults:
+- 5-minute stale time
+- 2 retry attempts
+
+### `query-keys.ts`
+
+Query key factory for consistent cache management:
+
+```tsx
+import { queryKeys } from "@/lib/auth/query-keys";
+
+// Use in queries
+useQuery({
+  queryKey: queryKeys.profile(userId),
+  queryFn: () => fetchProfile(userId),
+});
+```
+
+Extend with your own keys:
+
+```tsx
+export const queryKeys = {
+  profile: (userId: string) => ["profile", userId] as const,
+  posts: (userId: string) => ["posts", userId] as const,
+  // Add more...
+} as const;
+```

@@ -1,0 +1,39 @@
+# useTheme
+
+The primary hook for accessing theme colors and the current color scheme. Part of the [Theme](/theme) system.
+
+```bash [Terminal]
+npx popapp add theme
+```
+
+## Usage
+
+```tsx
+import { useTheme } from "@/lib/theme/use-theme";
+
+function MyComponent() {
+  const { colors, colorScheme } = useTheme();
+
+  return (
+    <View style={{ backgroundColor: colors.card }}>
+      <Text style={{ color: colors.cardForeground }}>
+        Hello
+      </Text>
+      <Text style={{ color: colors.foregroundSecondary }}>
+        Scheme: {colorScheme}
+      </Text>
+    </View>
+  );
+}
+```
+
+## Returns
+
+```tsx
+interface Theme {
+  colors: ColorTokens;           // All color tokens
+  colorScheme: "light" | "dark"; // Current scheme
+}
+```
+
+See [Theme](/theme#color-tokens) for the full list of color tokens.

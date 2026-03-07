@@ -1,0 +1,203 @@
+import { PhoneFrame } from '../../components/phone-frame'
+
+# Screen
+
+Composable screen layout with absolute header/footer, keyboard-aware content, and configurable tint variants (gradient, solid, blur).
+
+- **Tier 2** — requires `react-native-reanimated`
+- **Registry deps:** [Theme](/theme), [Gradient Tint](/utils/gradient-tint)
+
+```bash [Terminal]
+npx popapp add screen
+```
+
+## Usage
+
+```tsx
+import {
+  Screen,
+  ScreenHeader,
+  ScreenContent,
+  ScreenFooter,
+  ScreenSubheader,
+  ScreenSubfooter,
+} from "@/components/ui/screen";
+
+<Screen>
+  <ScreenHeader title="Profile" />
+  <ScreenContent>
+    {/* Scrollable content */}
+  </ScreenContent>
+  <ScreenFooter>
+    <Button title="Save" onPress={handleSave} />
+  </ScreenFooter>
+</Screen>
+```
+
+## Tint variants
+
+Control how the header and footer areas blend with scrolling content via the `variant` prop on `Screen`.
+
+```tsx
+<Screen variant="gradient"> {/* Default — smooth gradient fade */}
+<Screen variant="solid">    {/* Opaque background + hairline border */}
+<Screen variant="blur">     {/* Background blur + hairline border */}
+<Screen variant="none">     {/* No tint — transparent headers */}
+```
+
+Tints are rendered as two overlay layers in Screen — one covering the top (header + subheader) and one covering the bottom (footer + subfooter). They only appear when at least one layer component is mounted.
+
+## Header with actions
+
+<PhoneFrame src="/images/screen-custom-header.png" alt="Custom header with search" />
+
+```tsx
+<ScreenHeader
+  title="Settings"
+  leftSection={<ActionIcon name="arrow.left" onPress={goBack} />}
+  rightSection={<ActionIcon name="gear" onPress={openSettings} />}
+  bottomSection={<SearchBar />}
+/>
+```
+
+## Subheader
+
+A layer that sits directly below the header. Use it for search bars, filters, or tabs that are controlled by the screen content rather than the navigation layout.
+
+<PhoneFrame src="/images/screen-subheader.png" alt="Subheader with blur variant" />
+
+```tsx
+<Screen variant="blur">
+  <ScreenHeader title="Team" />
+  <ScreenSubheader>
+    <TextInput placeholder="Search..." />
+  </ScreenSubheader>
+  <ScreenContent>
+    {/* Content is padded to clear both header and subheader */}
+  </ScreenContent>
+</Screen>
+```
+
+## Subfooter
+
+A layer that sits directly above the footer. Use it for action buttons or contextual controls that float between content and footer.
+
+<PhoneFrame src="/images/screen-subfooter.png" alt="Subfooter with solid variant" />
+
+```tsx
+<Screen variant="solid">
+  <ScreenHeader title="Shop" />
+  <ScreenContent>
+    {/* ... */}
+  </ScreenContent>
+  <ScreenSubfooter>
+    <Button title="Add to Cart" fullWidth />
+  </ScreenSubfooter>
+  <ScreenFooter>
+    <Text>Free shipping on orders over $50</Text>
+  </ScreenFooter>
+</Screen>
+```
+
+## Custom footer
+
+<PhoneFrame src="/images/screen-custom-footer.png" alt="Custom footer with two buttons" />
+
+```tsx
+<ScreenFooter>
+  <View style={{ flexDirection: "row", gap: 12 }}>
+    <Button title="Skip" variant="ghost" />
+    <Button title="Continue" />
+  </View>
+</ScreenFooter>
+```
+
+## Centered content
+
+Non-scrollable, vertically centered layout — ideal for success screens or modals.
+
+<PhoneFrame src="/images/screen-centered-content.png" alt="Centered content" />
+
+```tsx
+<Screen variant="none">
+  <ScreenHeader title="" rightSection={<ActionIcon name="xmark" />} />
+  <ScreenContent scroll={false} centerContent>
+    {/* Centered content */}
+  </ScreenContent>
+</Screen>
+```
+
+## Keyboard awareness
+
+`ScreenContent` automatically adjusts for the keyboard using `react-native-keyboard-controller`. Disable if needed:
+
+```tsx
+<Screen ignoreKeyboard>
+  {/* ... */}
+</Screen>
+```
+
+## Inside modals
+
+When used inside a modal, set `insideModal` to adjust safe area behavior:
+
+```tsx
+<Screen insideModal>
+  {/* ... */}
+</Screen>
+```
+
+## Screen Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Screen content |
+| `backgroundColor` | `string` | Theme background | Override background color |
+| `variant` | `"gradient" \| "solid" \| "blur" \| "none"` | `"gradient"` | Tint style for header/footer areas |
+| `insideModal` | `boolean` | `false` | Adjust for modal context |
+| `extraBottomOffset` | `number` | `0` | Additional bottom padding |
+| `ignoreKeyboard` | `boolean` | `false` | Disable keyboard avoidance |
+| `animateInsets` | `boolean` | — | Animate safe area changes |
+
+## ScreenHeader Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string \| ReactNode` | — | Header title |
+| `leftSection` | `ReactNode` | — | Left slot (e.g., back button) |
+| `rightSection` | `ReactNode` | — | Right slot (e.g., settings icon) |
+| `bottomSection` | `ReactNode` | — | Below the title row |
+
+## ScreenSubheader Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Subheader content |
+| `style` | `ViewStyle` | — | Custom styles |
+
+## ScreenContent Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `scroll` | `boolean` | `true` | Enable scrolling |
+| `padTop` | `boolean` | `true` | Add top padding for header clearance |
+| `centerContent` | `boolean` | `false` | Center content vertically |
+| `scaleInEntering` | `boolean` | `false` | Scale-in animation on mount |
+
+## ScreenSubfooter Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Subfooter content |
+| `style` | `ViewStyle` | — | Custom styles |
+
+## ScreenFooter Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | — | Footer content |
+| `style` | `ViewStyle` | — | Custom styles |
+
+## Exports
+
+`Screen`, `ScreenHeader`, `ScreenSubheader`, `ScreenContent`, `ScreenSubfooter`, `ScreenFooter`, `useScreenContext`, `ScreenVariant`

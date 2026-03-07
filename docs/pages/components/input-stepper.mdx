@@ -1,0 +1,58 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# InputStepper
+
+Numeric stepper with animated ticker display, increment/decrement buttons, and optional value tap action.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **npm deps:** `@react-native-masked-view/masked-view`, `expo-linear-gradient`
+- **Registry deps:** [Theme](/theme), [Ticker](/components/ticker), [ActionIcon](/components/action-icon), [Touchable](/components/touchable)
+- **Platforms:** iOS, Android
+
+```bash [Terminal]
+npx popapp add input-stepper
+```
+
+## Usage
+
+<PreviewImage src="/images/input-stepper.png" alt="Input stepper" />
+
+```tsx
+import { InputStepper } from "@/components/ui/input-stepper";
+
+<InputStepper
+  value={count}
+  onIncrement={() => setCount(c => c + 1)}
+  onDecrement={() => setCount(c => c - 1)}
+/>
+```
+
+## With unit and bounds
+
+```tsx
+<InputStepper
+  value={servings}
+  onIncrement={() => setServings(s => Math.min(s + 1, 10))}
+  onDecrement={() => setServings(s => Math.max(s - 1, 1))}
+  min={1}
+  max={10}
+  unit="servings"
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | — | Current value |
+| `onIncrement` | `() => void` | — | Increment handler |
+| `onDecrement` | `() => void` | — | Decrement handler |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Component size |
+| `min` | `number` | `0` | Minimum (disables decrement at this value) |
+| `max` | `number` | — | Maximum (disables increment) |
+| `unit` | `string` | — | Unit label |
+| `decimals` | `number` | `0` | Decimal places |
+| `valueFormatter` | `(value: number) => string` | — | Custom value formatter |
+| `onValuePress` | `() => void` | — | Tap on the value display |
+| `onDecrementLongPress` | `() => void` | — | Long press minus |
+| `onIncrementLongPress` | `() => void` | — | Long press plus |

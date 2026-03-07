@@ -1,0 +1,126 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# OptionGroup
+
+Single or multi-select option group with vertical/horizontal layout using [OptionCards](/components/option-card).
+
+- **Tier 2** — requires `react-native-reanimated`
+- **Registry deps:** [OptionCard](/components/option-card)
+
+```bash [Terminal]
+npx popapp add option-group
+```
+
+## Single select
+
+<PreviewImage src="/images/option-group-single-select.png" alt="Single select" />
+
+```tsx
+import { OptionGroup } from "@/components/ui/option-group";
+
+<OptionGroup
+  mode="single"
+  value={size}
+  onChange={setSize}
+  options={[
+    { value: "small", label: "Small", description: "640 x 480" },
+    { value: "medium", label: "Medium", description: "1280 x 720" },
+    { value: "large", label: "Large", description: "1920 x 1080" },
+  ]}
+/>
+```
+
+## Multi select
+
+<PreviewImage src="/images/option-group-multi-select.png" alt="Multi select" />
+
+```tsx
+const [features, setFeatures] = useState<string[]>([]);
+
+<OptionGroup
+  mode="multi"
+  value={features}
+  onChange={setFeatures}
+  options={[
+    { value: "notifications", label: "Notifications", description: "Enable notifications" },
+    { value: "dark-mode", label: "Dark Mode", description: "Enable dark mode" },
+    { value: "auto-save", label: "Auto-save", description: "Enable auto-save" },
+  ]}
+/>
+```
+
+## Horizontal layout
+
+Use `layout="horizontal"` for side-by-side selection (great for binary choices):
+
+```tsx
+<OptionGroup
+  mode="single"
+  layout="horizontal"
+  value={preference}
+  onChange={setPreference}
+  options={[
+    { value: "window", label: "Window", icon: <IconSymbol name="sun.max.fill" size={24} /> },
+    { value: "aisle", label: "Aisle", icon: <IconSymbol name="figure.walk" size={24} /> },
+  ]}
+/>
+```
+
+Horizontal layout automatically uses `align="center"` on each card, stacking icon and label vertically.
+
+## Simple multi select
+
+<PreviewImage src="/images/option-group-multi-select-simply.png" alt="Simple multi select" />
+
+```tsx
+const [connections, setConnections] = useState<string[]>([]);
+
+<OptionGroup
+  mode="multi"
+  value={connections}
+  onChange={setConnections}
+  options={[
+    { value: "wifi", label: "Wi-Fi" },
+    { value: "bluetooth", label: "Bluetooth" },
+    { value: "airdrop", label: "AirDrop" },
+    { value: "hotspot", label: "Personal Hotspot" },
+  ]}
+/>
+```
+
+## Types
+
+```tsx
+interface OptionGroupOption {
+  value: string;
+  label: string;
+  description?: string;
+  icon?: ReactNode;
+}
+```
+
+## Props
+
+The component uses a discriminated union based on `mode`:
+
+### Single select
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `mode` | `"single"` | Single selection mode |
+| `value` | `string \| null` | Selected value |
+| `onChange` | `(value: string) => void` | Change handler |
+| `options` | `OptionGroupOption[]` | Available options |
+| `layout` | `"vertical" \| "horizontal"` | Layout direction (default: `"vertical"`) |
+| `haptic` | `boolean` | Haptic feedback |
+
+### Multi select
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `mode` | `"multi"` | Multi-selection mode |
+| `value` | `string[]` | Selected values |
+| `onChange` | `(value: string[]) => void` | Change handler |
+| `options` | `OptionGroupOption[]` | Available options |
+| `layout` | `"vertical" \| "horizontal"` | Layout direction (default: `"vertical"`) |
+| `haptic` | `boolean` | Haptic feedback |

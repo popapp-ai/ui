@@ -1,0 +1,79 @@
+# CLI Reference
+
+The PopApp CLI (`@popapp-ai/cli`) is how you add components to your project. It handles dependency resolution, import transformation, and file installation.
+
+## Commands
+
+### `init`
+
+Initialize PopApp UI in your project:
+
+```bash [Terminal]
+npx popapp init
+```
+
+This command:
+1. Detects your project structure (Expo, bare RN)
+2. Creates a `popapp.json` configuration file
+3. Installs the [Theme](/theme) system
+4. Sets up directory paths (`components/ui/`, `lib/`, `hooks/`)
+
+**Flags:**
+- `--yes` — skip prompts, use defaults
+
+### `add`
+
+Add one or more components to your project:
+
+```bash [Terminal]
+npx popapp add button
+npx popapp add button card text-input screen
+```
+
+This command:
+1. Fetches the component from the registry
+2. Recursively resolves all `registryDependencies`
+3. Transforms `@popapp/*` import aliases to your project's paths
+4. Writes files to the correct directories
+5. Lists any npm packages you need to install
+
+**Flags:**
+- `--yes` — skip confirmation prompts
+
+:::info
+Dependencies are resolved automatically. Running `npx popapp add screen` will also install `theme`, `button`, and `gradient-tint` if they're not already in your project.
+:::
+
+### `list`
+
+List all available components in the registry:
+
+```bash [Terminal]
+npx popapp list
+```
+
+Shows every component with its name, description, type, and dependencies.
+
+## Configuration
+
+After `init`, a `popapp.json` file stores your project settings:
+
+```json
+{
+  "components": "components/ui",
+  "lib": "lib",
+  "hooks": "hooks",
+  "registryUrl": "https://popapp.dev/r"
+}
+```
+
+## Import Transformation
+
+The CLI transforms `@popapp/*` aliases to match your project:
+
+| Source Import | Becomes |
+|--------------|---------|
+| `@popapp/theme/tokens` | `@/lib/theme/tokens` |
+| `@popapp/components/button` | `@/components/ui/button` |
+| `@popapp/hooks/use-color-scheme` | `@/hooks/use-color-scheme` |
+| `@popapp/utils/haptics` | `@/lib/haptics` |

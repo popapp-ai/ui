@@ -1,0 +1,84 @@
+# Architecture
+
+PopApp UI follows the [shadcn/ui](https://ui.shadcn.com) model — a component registry, not a package. You copy components into your project and own the source code.
+
+## How It Works
+
+```
+registry.json          → Manifest of all components, deps, and files
+    ↓
+build-registry.ts      → Inlines file contents into JSON
+    ↓
+public/r/{name}.json   → Self-contained registry items
+    ↓
+CLI (npx popapp add)   → Fetches JSON, transforms imports, writes files
+```
+
+### The Registry Manifest
+
+`registry.json` at the root describes every component:
+
+```json
+{
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "Pressable button with variants...",
+  "dependencies": [],
+  "registryDependencies": ["theme", "haptics", "glass", "touchable"],
+  "files": [
+    {
+      "path": "registry/components/button.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/button.tsx"
+    }
+  ]
+}
+```
+
+**Key fields:**
+- `dependencies` — npm packages the component needs
+- `registryDependencies` — other registry items it depends on (resolved recursively)
+- `files[].target` — where the file lands in the user's project
+
+### Build Process
+
+`scripts/build-registry.ts` reads the manifest, inlines every file's source code, and outputs individual JSON files to `public/r/`. This makes each component fully self-contained for distribution.
+
+### CLI Pipeline
+
+When you run `npx popapp add button`:
+
+1. **Fetch** — downloads `public/r/button.json`
+2. **Resolve** — walks `registryDependencies` recursively
+3. **Transform** — rewrites `@popapp/*` import aliases to your project paths
+4. **Install** — writes files to the correct directories
+5. **Deps** — prompts to install any missing npm packages
+
+## Registry Types
+
+| Type | Alias | Target Directory | Purpose |
+|------|-------|-----------------|---------|
+| `registry:ui` | Components | `components/ui/` | UI components |
+| `registry:lib` | Utils | `lib/` | Utilities and helpers |
+| `registry:hook` | Hooks | `hooks/` | React hooks |
+| `registry:template` | Templates | `lib/` | Scaffold templates |
+
+## Import Aliases
+
+Source code uses `@popapp/*` aliases. The CLI transforms them to your project's paths:
+
+| Source Alias | Default Target |
+|-------------|---------------|
+| `@popapp/theme/*` | `{lib}/theme/*` |
+| `@popapp/components/*` | `{components}/*` |
+| `@popapp/hooks/*` | `{hooks}/*` |
+| `@popapp/utils/*` | `{lib}/*` |
+
+## Dependency Graph
+
+Components declare their dependencies explicitly. When you add `screen`, the CLI also installs `theme`, `button`, and `gradient-tint`. This means:
+
+- No hidden dependencies
+- You can inspect and modify any dependency
+- Removing a component won't break others (unless you remove a shared dependency)

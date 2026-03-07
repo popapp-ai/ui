@@ -1,0 +1,58 @@
+import { PreviewImage } from '../../components/preview-image'
+import { PreviewVideo } from '../../components/preview-video'
+
+# ProgressRing
+
+Animated circular progress indicator with spring animation and customizable colors.
+
+- **Tier 2** — requires `react-native-reanimated`, `react-native-svg`
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add progress-ring
+```
+
+## Usage
+
+<PreviewVideo src="/videos/progress-ring.mp4" />
+
+```tsx
+import { ProgressRing } from "@/components/ui/progress-ring";
+
+<ProgressRing value={62} maxValue={100} />
+```
+
+## With center label
+
+```tsx
+<ProgressRing
+  value={steps}
+  maxValue={10000}
+  size={120}
+  strokeWidth={10}
+  centerLabel={<Text>{steps}</Text>}
+/>
+```
+
+## Custom colors
+
+```tsx
+<ProgressRing
+  value={score}
+  maxValue={100}
+  activeColor={colors.success}
+  trackColor={colors.muted}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | — | Current progress value |
+| `maxValue` | `number` | — | Maximum value |
+| `size` | `number` | `100` | Ring diameter |
+| `strokeWidth` | `number` | `8` | Ring thickness |
+| `activeColor` | `string` | Theme primary | Progress color |
+| `trackColor` | `string` | Theme muted | Background track color |
+| `centerLabel` | `ReactNode` | — | Content inside the ring |

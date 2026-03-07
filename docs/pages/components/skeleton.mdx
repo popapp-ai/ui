@@ -1,0 +1,42 @@
+import { PreviewImage } from '../../components/preview-image'
+import { PreviewVideo } from '../../components/preview-video'
+
+# Skeleton
+
+Pulsing loading placeholder with configurable dimensions.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add skeleton
+```
+
+## Usage
+
+<PreviewVideo src="/videos/skeleton.mp4" />
+
+```tsx
+import { Skeleton } from "@/components/ui/skeleton";
+
+{/* Text line placeholders */}
+<Skeleton width="100%" height={16} />
+<Skeleton width="80%" height={16} />
+
+{/* Avatar with text lines */}
+<View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+  <Skeleton width={48} height={48} borderRadius={24} />
+  <View style={{ gap: 8 }}>
+    <Skeleton width={120} height={14} />
+    <Skeleton width={80} height={14} />
+  </View>
+</View>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | `number \| %` | — | Skeleton width |
+| `height` | `number` | — | Skeleton height |
+| `borderRadius` | `number` | `8` | Corner radius |

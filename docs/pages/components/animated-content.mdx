@@ -1,0 +1,59 @@
+# AnimatedContent
+
+Animate content transitions with spring-based enter/exit animations. Supports horizontal, vertical, and fade presets.
+
+- **Tier 2** — requires `react-native-reanimated`
+- **No registry dependencies**
+- **Platforms:** iOS, Android
+
+```bash [Terminal]
+npx popapp add animated-content
+```
+
+## Usage
+
+Change `contentKey` to trigger the transition:
+
+```tsx
+import { AnimatedContent } from "@/components/ui/animated-content";
+
+<AnimatedContent contentKey={currentStep} preset="horizontal-slide">
+  <StepContent step={currentStep} />
+</AnimatedContent>
+```
+
+## Presets
+
+```tsx
+{/* Slide horizontally (wizard/step flows) */}
+<AnimatedContent contentKey={step} preset="horizontal-slide">
+
+{/* Slide vertically */}
+<AnimatedContent contentKey={step} preset="vertical-slide">
+
+{/* Fade in/out */}
+<AnimatedContent contentKey={step} preset="fade">
+```
+
+## Direction control
+
+For step-based flows, set `direction` to animate the correct way:
+
+```tsx
+<AnimatedContent
+  contentKey={step}
+  preset="horizontal-slide"
+  direction={goingForward ? "forward" : "backward"}
+>
+  <StepContent />
+</AnimatedContent>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `contentKey` | `string \| number` | — | Change this to trigger transition |
+| `preset` | `"horizontal-slide" \| "vertical-slide" \| "fade"` | `"horizontal-slide"` | Animation style |
+| `direction` | `"forward" \| "backward"` | `"forward"` | Transition direction |
+| `children` | `ReactNode` | — | Content to animate |

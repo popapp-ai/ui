@@ -1,0 +1,56 @@
+import { PreviewImage } from '../../components/preview-image'
+
+# DatePicker
+
+Three-column month/day/year picker using native scroll wheels.
+
+- **Tier 1** — no animation dependencies
+- **npm deps:** `@react-native-picker/picker`
+- **Registry deps:** [Theme](/theme)
+- **Platforms:** iOS, Android
+
+```bash [Terminal]
+npx popapp add date-picker
+```
+
+## Usage
+
+<PreviewImage src="/images/date-picker-wheel.png" alt="Date picker" />
+
+```tsx
+import { DatePicker, type DatePickerValue } from "@/components/ui/date-picker";
+
+const [date, setDate] = useState<DatePickerValue | null>(null);
+
+<DatePicker value={date} onChange={setDate} />
+```
+
+## With year range
+
+```tsx
+<DatePicker
+  value={date}
+  onChange={setDate}
+  minYearOffset={50}   // 50 years back from current
+  maxYearOffset={0}    // Up to current year
+/>
+```
+
+## Types
+
+```tsx
+type DatePickerValue = {
+  month: number;  // 1-12
+  day: number;    // 1-31
+  year: number;   // Full year (e.g. 2024)
+};
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `DatePickerValue \| null` | — | Selected date |
+| `onChange` | `(value: DatePickerValue) => void` | — | Change handler |
+| `minYearOffset` | `number` | `100` | Years back from current |
+| `maxYearOffset` | `number` | `13` | Years forward from current |

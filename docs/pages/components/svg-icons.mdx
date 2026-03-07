@@ -1,0 +1,69 @@
+# SVG Icons
+
+Optional extension for [IconSymbol](/components/icon-symbol) that adds custom SVG icon support with a registry pattern.
+
+- **Tier 1** — no animation dependencies
+- **npm deps:** `react-native-svg`
+- **Registry deps:** [IconSymbol](/components/icon-symbol)
+
+```bash [Terminal]
+npx popapp add svg-icons
+```
+
+## Adding a custom icon
+
+::::steps
+
+### Create your SVG component
+
+Add a new file in `components/ui/svg-icons/`:
+
+```tsx
+// components/ui/svg-icons/my-logo.tsx
+import Svg, { Path } from "react-native-svg";
+import { BaseIcon, type IconProps } from "./base-icon";
+
+export function MyLogo(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      {(size, color) => (
+        <Svg width={size} height={size} viewBox="0 0 24 24">
+          <Path d="M12 2L2 22h20L12 2z" fill={color} />
+        </Svg>
+      )}
+    </BaseIcon>
+  );
+}
+```
+
+### Register it
+
+Add it to the `ICON_COMPONENTS` map in `icon-svg.tsx`:
+
+```tsx
+import { MyLogo } from "./my-logo";
+
+const ICON_COMPONENTS = {
+  myLogo: MyLogo,
+};
+```
+
+### Use it
+
+Reference it with the `svg-` prefix:
+
+```tsx
+<IconSymbol name="svg-myLogo" size={24} color={colors.primary} />
+```
+
+::::
+
+## Exports
+
+| Export | Description |
+|--------|-------------|
+| `BaseIcon` | Wrapper providing size/color to children |
+| `IconProps` | Props interface for custom icons |
+| `SVGIcon` | Renderer that looks up `ICON_COMPONENTS` |
+| `ICON_COMPONENTS` | Registry map of custom icons |
+| `getSVGIconName()` | Utility to strip `svg-` prefix |

@@ -1,0 +1,50 @@
+# Gradient Tint
+
+Gradient fade utility for headers, footers, and scroll edges. Creates a smooth transition where content scrolls behind fixed elements.
+
+- **npm deps:** `expo-linear-gradient`
+- **Registry deps:** [Theme](/theme)
+
+```bash [Terminal]
+npx popapp add gradient-tint
+```
+
+## Usage
+
+```tsx
+import { GradientTint } from "@/lib/gradient-tint";
+
+{/* Fade from top */}
+<GradientTint />
+
+{/* Fade from bottom */}
+<GradientTint invert />
+```
+
+## Custom configuration
+
+```tsx
+<GradientTint
+  backgroundColor={colors.background}
+  opacity={0.8}
+  totalHeight={60}
+  startPointY={0.5}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `backgroundColor` | `string` | Theme background | Gradient target color |
+| `opacity` | `number` | `1` | Gradient opacity |
+| `totalHeight` | `number` | `40` | Gradient height in pixels |
+| `startPointY` | `number` | `0.6` | Where solid color begins (0-1) |
+| `invert` | `boolean` | `false` | Flip direction (bottom-up) |
+| `zIndex` | `number` | — | Stack order |
+| `extraOuterHeight` | `number` | — | Extra height beyond gradient |
+| `easing` | `EasingFunction` | — | Custom easing curve |
+
+:::info
+[Screen](/components/screen) uses GradientTint internally for its header and footer fading. You typically don't need to use this directly unless building custom layouts.
+:::
