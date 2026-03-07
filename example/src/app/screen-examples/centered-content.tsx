@@ -11,14 +11,12 @@ export default function CenteredContentExample() {
   const router = useRouter();
 
   return (
-    <Screen>
+    <Screen variant="none">
       <ScreenHeader
         title=""
         rightSection={
           <ActionIcon name="xmark" onPress={() => router.back()} />
         }
-        gradient={false}
-        transparent
       />
       <ScreenContent
         scroll={false}

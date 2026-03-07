@@ -51,6 +51,18 @@ export default function ScreenExamplesIndex() {
               onPress={() => router.push("/screen-examples/custom-footer")}
             />
             <ListNavigationCell
+              icon="rectangle.topthird.inset.filled"
+              label="Subheader (blur)"
+              value="Search bar below header"
+              onPress={() => router.push("/screen-examples/subheader")}
+            />
+            <ListNavigationCell
+              icon="rectangle.bottomthird.inset.filled"
+              label="Subfooter (solid)"
+              value="Action button above footer"
+              onPress={() => router.push("/screen-examples/subfooter")}
+            />
+            <ListNavigationCell
               icon="scroll.fill"
               label="Scrollable Content"
               value="Long list with cards"

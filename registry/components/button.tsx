@@ -19,10 +19,11 @@ import { IconSymbol } from "./icon-symbol";
 // ---------------------------------------------------------------------------
 
 const SIZE_TOKENS = {
-  xs: { height: 36, borderRadius: 18, fontSize: 14, paddingHorizontal: 12 },
-  sm: { height: 44, borderRadius: 22, fontSize: 14, paddingHorizontal: 12 },
-  md: { height: 48, borderRadius: 24, fontSize: 16, paddingHorizontal: 16 },
-  lg: { height: 56, borderRadius: 28, fontSize: 16, paddingHorizontal: 24 },
+  xs: { height: 36, borderRadius: 10, fontSize: 14, paddingHorizontal: 12 },
+  sm: { height: 44, borderRadius: 12, fontSize: 14, paddingHorizontal: 12 },
+  md: { height: 48, borderRadius: 14, fontSize: 16, paddingHorizontal: 16 },
+  lg: { height: 56, borderRadius: 16, fontSize: 16, paddingHorizontal: 24 },
+  xl: { height: 64, borderRadius: 16, fontSize: 18, paddingHorizontal: 28 },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -33,6 +34,7 @@ export interface ButtonProps extends TouchableOpacityProps {
   /** Button label text. */
   title: string;
   variant?: "solid" | "outline" | "ghost" | "subtle" | "destructive";
+  shape?: "pill" | "rounded";
   size?: keyof typeof SIZE_TOKENS;
   isLoading?: boolean;
   leftIcon?: React.ReactNode | IconSymbolName;
@@ -52,6 +54,7 @@ export function Button({
   onPress,
   title,
   variant = "solid",
+  shape = "pill",
   size = "lg",
   isLoading = false,
   style,
@@ -102,6 +105,8 @@ export function Button({
       break;
   }
 
+  const borderRadius = shape === "pill" ? tokens.height / 2 : tokens.borderRadius;
+
   const handlePress = (e: any) => {
     if (haptic) impactMedium();
     onPress?.(e);
@@ -121,7 +126,7 @@ export function Button({
         style={[
           styles.button,
           {
-            borderRadius: tokens.borderRadius,
+            borderRadius,
             backgroundColor: useGlass ? "transparent" : bg,
             borderColor: useGlass ? "transparent" : borderColor,
             height: tokens.height,            
@@ -155,7 +160,7 @@ export function Button({
       <SafeGlassView
         tintColor={bg}
         isInteractive={!disabled}
-        style={[style, { borderRadius: tokens.borderRadius, height: tokens.height }]}
+        style={[style, { borderRadius, height: tokens.height }]}
       >
         {buttonContent}
       </SafeGlassView>

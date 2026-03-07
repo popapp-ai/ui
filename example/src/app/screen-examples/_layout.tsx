@@ -9,6 +9,8 @@ export default function ScreenExamplesLayout() {
       <Stack.Screen name="custom-header" />
       <Stack.Screen name="centered-content" />
       <Stack.Screen name="custom-footer" />
+      <Stack.Screen name="subheader" />
+      <Stack.Screen name="subfooter" />
       <Stack.Screen name="scrollable-content" />
     </Stack>
   );
