@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@popapp/theme/use-theme";
@@ -112,6 +112,42 @@ const SCREENSHOTS: Record<string, React.FC> = {
     );
   },
 
+  // TextInput: variants (filled vs outline)
+  "input-variants": () => (
+    <View style={styles.list}>
+      <TextInput label="Filled" placeholder="Native filled input..." variant="filled" value="Jane Cooper" />
+      <TextInput label="Outline" placeholder="Outline input..." variant="outline" value="jane@example.com" />
+    </View>
+  ),
+
+  // TextInput: with icons and sections
+  "input-with-icons": () => {
+    const { colors } = useTheme();
+    return (
+      <View style={styles.list}>
+        <TextInput
+          label="Search"
+          placeholder="Search products..."
+          leftSection={<IconSymbol name="magnifyingglass" size={18} color={colors.icon} />}
+        />
+        <TextInput
+          label="Website"
+          placeholder="example.com"
+          variant="outline"
+          leftSection={<Text style={{ fontSize: 15, color: colors.foregroundSecondary }}>https://</Text>}
+          value="popapp.dev"
+        />
+        <TextInput
+          label="Price"
+          placeholder="0.00"
+          leftSection={<Text style={{ fontSize: 15, color: colors.foregroundSecondary }}>$</Text>}
+          rightSection={<Text style={{ fontSize: 13, fontWeight: "500", color: colors.foregroundSecondary }}>USD</Text>}
+          value="29.99"
+        />
+      </View>
+    );
+  },
+
   // TextInput: sizes
   "input-sizes": () => (
     <View style={styles.list}>
@@ -121,11 +157,32 @@ const SCREENSHOTS: Record<string, React.FC> = {
     </View>
   ),
 
-  // TextArea: states
+  // TextArea: states (legacy combined)
   "textarea-states": () => (
     <View style={styles.list}>
       <TextArea label="Feedback" placeholder="Tell us what you think about the app..." />
       <TextArea label="Bug Report" placeholder="Describe the issue..." error="Please provide at least 20 characters" />
+    </View>
+  ),
+
+  // TextArea: variants (filled vs outline)
+  "textarea-variants": () => (
+    <View style={styles.list}>
+      <TextArea label="Feedback" placeholder="Tell us what you think..." variant="filled" value="The app is great! I love the new dark mode feature and the smooth animations." />
+      <TextArea label="Bug Report" placeholder="Describe the issue..." variant="outline" value="When I tap the settings icon, the app briefly flickers before showing the screen." />
+    </View>
+  ),
+
+  // TextArea: error state
+  "textarea-error": () => (
+    <View style={styles.list}>
+      <TextArea
+        label="Description"
+        placeholder="Min 20 characters"
+        variant="outline"
+        error="Please provide at least 20 characters"
+        value="Too short"
+      />
     </View>
   ),
 
@@ -172,7 +229,7 @@ const SCREENSHOTS: Record<string, React.FC> = {
     );
   },
 
-  // ActionIcon: variants and sizes
+  // ActionIcon: all variants and sizes together (legacy)
   "action-icons-variations": () => (
     <View style={styles.list}>
       <View style={styles.row}>
@@ -188,6 +245,27 @@ const SCREENSHOTS: Record<string, React.FC> = {
         <ActionIcon name="heart.fill" size="md" onPress={() => {}} />
         <ActionIcon name="heart.fill" size="lg" onPress={() => {}} />
       </View>
+    </View>
+  ),
+
+  // ActionIcon: variants only
+  "action-icon-variants": () => (
+    <View style={styles.row}>
+      <ActionIcon name="plus" variant="solid" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="subtle" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="outline" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="ghost" size="md" onPress={() => {}} />
+      <ActionIcon name="plus" variant="destructive" size="md" onPress={() => {}} />
+    </View>
+  ),
+
+  // ActionIcon: sizes only
+  "action-icon-sizes": () => (
+    <View style={styles.row}>
+      <ActionIcon name="heart.fill" size="xs" onPress={() => {}} />
+      <ActionIcon name="heart.fill" size="sm" onPress={() => {}} />
+      <ActionIcon name="heart.fill" size="md" onPress={() => {}} />
+      <ActionIcon name="heart.fill" size="lg" onPress={() => {}} />
     </View>
   ),
 
@@ -373,6 +451,87 @@ const SCREENSHOTS: Record<string, React.FC> = {
       unit="cm"
     />
   ),
+
+  // ── Animated entries (for video capture) ─────────────────────────
+
+  // ProgressRing: animates 0 → 73 on mount
+  "anim-progress-ring": () => {
+    const [value, setValue] = useState(0);
+    useEffect(() => {
+      const timer = setTimeout(() => setValue(73), 500);
+      return () => clearTimeout(timer);
+    }, []);
+    return (
+      <View style={styles.centered}>
+        <ProgressRing
+          value={value}
+          maxValue={100}
+          size={140}
+          strokeWidth={12}
+          centerLabel={<Ticker value={value} fontSize={28} decimals={0} unit="%" />}
+        />
+      </View>
+    );
+  },
+
+  // Ticker: cycles through values
+  "anim-ticker": () => {
+    const values = [
+      { temp: 42.5, price: 1299.99 },
+      { temp: 18.3, price: 849.50 },
+      { temp: 36.6, price: 2150.00 },
+      { temp: 42.5, price: 1299.99 },
+    ];
+    const [idx, setIdx] = useState(0);
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIdx((i) => (i + 1) % values.length);
+      }, 1500);
+      return () => clearInterval(interval);
+    }, []);
+    const { temp, price } = values[idx];
+    return (
+      <View style={styles.centered}>
+        <View style={{ flexDirection: "row", justifyContent: "space-around", width: "100%" }}>
+          <View style={{ alignItems: "center", gap: 4 }}>
+            <Ticker value={temp} decimals={1} fontSize={32} unit="°C" />
+          </View>
+          <View style={{ alignItems: "center", gap: 4 }}>
+            <Ticker value={price} decimals={2} fontSize={32} unit="$" />
+          </View>
+        </View>
+      </View>
+    );
+  },
+
+  // Skeleton: already animates shimmer, just render it
+  "anim-skeleton": () => {
+    const { colors } = useTheme();
+    return (
+      <View style={{ gap: 16 }}>
+        <Card>
+          <CardContent>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+              <Skeleton width={56} height={56} borderRadius={28} />
+              <View style={{ flex: 1, gap: 8 }}>
+                <Skeleton width="60%" height={18} borderRadius={4} />
+                <Skeleton width="40%" height={14} borderRadius={4} />
+              </View>
+            </View>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <View style={{ gap: 10 }}>
+              <Skeleton width="100%" height={16} borderRadius={4} />
+              <Skeleton width="100%" height={16} borderRadius={4} />
+              <Skeleton width="75%" height={16} borderRadius={4} />
+            </View>
+          </CardContent>
+        </Card>
+      </View>
+    );
+  },
 };
 
 // ─── Screen component ──────────────────────────────────────────────
@@ -407,6 +566,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
   },
   list: {
     gap: 12,
