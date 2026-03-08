@@ -1,8 +1,9 @@
 import { PreviewVideo } from '../components/preview-video'
 
-# PopApp UI [Native StyleSheet. Native gestures. Native haptics. No Tailwind required.]
+# PopApp UI [Made by hand. Consumed by agents.]
 
-PopApp UI is a **shadcn-style component registry** for React Native and Expo. Copy beautiful, production-ready components into your project with a single command.
+**shadcn-style component registry** for React Native and Expo.  
+One command. Production-ready. Agent-friendly.
 
 <PreviewVideo
   sources={[
@@ -11,18 +12,17 @@ PopApp UI is a **shadcn-style component registry** for React Native and Expo. Co
   ]}
 />
 
-## Why PopApp UI?
+## Built for how apps get built now
+
+Modern apps are increasingly built by agents — reasoning over specs, scaffolding screens, wiring up interactions. PopApp UI is the component layer that makes that work. Every component is:
+
+- **Predictable by design** — structured APIs and consistent patterns that LLMs read and reproduce correctly
+- **Human-crafted** — each component was designed and refined by hand, so the output feels considered, not generated
+- **Immediately shippable** — not a starting point. A finishing point.
 
 :::success[Own Your Code]
-PopApp follows the copy-and-own model — every component lives in your project, fully customizable. No opaque `node_modules`.
+PopApp follows the copy-and-own model — every component lives in your project, fully customizable. No opaque `node_modules`, no dependency on us staying online.
 :::
-
-- **StyleSheet-native** — no NativeWind, no Tailwind, no className resolution
-- **Gesture-first** — spring physics and UI-thread animations via Reanimated
-- **Haptic feedback** — built into every interactive component
-- **Liquid Glass** — iOS 26+ glass effects where supported
-- **TypeScript-first** — full type safety with exported interfaces
-- **Expo-optimized** — works out of the box with Expo, compatible with bare RN
 
 ## Quick Start
 
@@ -60,6 +60,17 @@ export function MyScreen() {
 ```
 
 ::::
+
+## Why it feels different
+
+Most component libraries feel like components. PopApp UI feels like a product.
+
+- **StyleSheet-native** — no NativeWind, no Tailwind, no className resolution overhead
+- **Gesture-first** — spring physics and UI-thread animations via Reanimated, not JS-thread hacks
+- **Haptic feedback** — built into every interactive component by default, not as an afterthought
+- **Liquid Glass** — iOS 26+ glass morphism where the platform supports it, graceful fallback everywhere else
+- **TypeScript-first** — full type safety with exported interfaces; agents can introspect and compose correctly
+- **Expo-optimized** — works out of the box; bare RN compatible
 
 ## Animation Tiers
 

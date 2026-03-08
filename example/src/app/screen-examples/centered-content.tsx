@@ -2,9 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useTheme } from "@popapp/theme/use-theme";
-import { Screen, ScreenHeader, ScreenContent } from "@popapp/components/screen";
+import { Screen, ScreenHeader, ScreenContent, ScreenFooter } from "@popapp/components/screen";
 import { ActionIcon } from "@popapp/components/action-icon";
 import { IconSymbol } from "@popapp/components/icon-symbol.ios";
+import { Button } from "@popapp/components/button";
 
 export default function CenteredContentExample() {
   const { colors } = useTheme();
@@ -21,10 +22,6 @@ export default function CenteredContentExample() {
       <ScreenContent
         scroll={false}
         centerContent
-        stickyButton={{
-          title: "View Order",
-          onPress: () => router.back(),
-        }}
       >
         <View style={styles.content}>
           <View style={[styles.iconCircle, { backgroundColor: colors.successLight }]}>
@@ -46,6 +43,9 @@ export default function CenteredContentExample() {
           </View>
         </View>
       </ScreenContent>
+      <ScreenFooter>
+        <Button title="View Order" onPress={() => router.back()} />
+      </ScreenFooter>
     </Screen>
   );
 }

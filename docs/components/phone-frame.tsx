@@ -8,7 +8,7 @@ export function PhoneFrame({
   alt?: string;
 }) {
   return (
-    <div className="custom_Preview">
+    <div className="custom_Preview" style={{ backgroundColor: "var(--vocs-color_codeTitleBackground)" }}>
       <div style={{ position: "relative", width: "100%", maxWidth: 300, aspectRatio: "0.4932" }}>
         <div
           style={{
