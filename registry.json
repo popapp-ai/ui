@@ -403,17 +403,17 @@
     },
     {
       "name": "auth-supabase",
-      "type": "registry:template",
+      "type": "registry:block",
       "title": "Supabase Auth + React Query",
       "description": "Starter template for Supabase auth with MMKV persistence, Zustand auth store, and React Query patterns.",
       "dependencies": ["@supabase/supabase-js", "react-native-mmkv", "zustand", "@tanstack/react-query"],
       "registryDependencies": [],
       "files": [
-        { "path": "registry/templates/auth-supabase/supabase.ts", "type": "registry:template", "target": "lib/auth/supabase.ts" },
-        { "path": "registry/templates/auth-supabase/auth-store.ts", "type": "registry:template", "target": "lib/auth/auth-store.ts" },
-        { "path": "registry/templates/auth-supabase/auth-provider.tsx", "type": "registry:template", "target": "lib/auth/auth-provider.tsx" },
-        { "path": "registry/templates/auth-supabase/query-provider.tsx", "type": "registry:template", "target": "lib/auth/query-provider.tsx" },
-        { "path": "registry/templates/auth-supabase/query-keys.ts", "type": "registry:template", "target": "lib/auth/query-keys.ts" }
+        { "path": "registry/templates/auth-supabase/supabase.ts", "type": "registry:block", "target": "lib/auth/supabase.ts" },
+        { "path": "registry/templates/auth-supabase/auth-store.ts", "type": "registry:block", "target": "lib/auth/auth-store.ts" },
+        { "path": "registry/templates/auth-supabase/auth-provider.tsx", "type": "registry:block", "target": "lib/auth/auth-provider.tsx" },
+        { "path": "registry/templates/auth-supabase/query-provider.tsx", "type": "registry:block", "target": "lib/auth/query-provider.tsx" },
+        { "path": "registry/templates/auth-supabase/query-keys.ts", "type": "registry:block", "target": "lib/auth/query-keys.ts" }
       ],
       "meta": { "platforms": ["ios", "android"], "tags": ["auth", "supabase", "react-query", "template"] },
       "docs": "After installation, update lib/auth/supabase.ts with your project URL and anon key. Wrap your root layout: <QueryProvider><AuthProvider>...</AuthProvider></QueryProvider>"
