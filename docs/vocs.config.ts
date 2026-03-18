@@ -43,6 +43,7 @@ export default defineConfig({
         { text: 'Installation', link: '/getting-started' },
         { text: 'Architecture', link: '/architecture' },
         { text: 'Project Structure', link: '/project-structure' },
+        { text: 'AI Skill', link: '/skill' },
       ],
     },
     {
