@@ -1,6 +1,6 @@
 # PopApp UI
 
-**Native StyleSheet. Native gestures. Native haptics. No Tailwind required.**
+**Native StyleSheet. Native gestures. Native haptics.**
 
 A shadcn-style component registry for React Native and Expo. Copy beautiful, production-ready components into your project with a single command.
 
@@ -8,11 +8,11 @@ A shadcn-style component registry for React Native and Expo. Copy beautiful, pro
 
 PopApp UI follows the **copy-and-own model** — every component lives in your project, fully customizable. No opaque `node_modules`.
 
-- **StyleSheet-native** — no NativeWind, no Tailwind, no className resolution
 - **Gesture-first** — spring physics and UI-thread animations via Reanimated
 - **Haptic feedback** — built into every interactive component
 - **Liquid Glass** — iOS 26+ glass effects where supported
 - **TypeScript-first** — full type safety with exported interfaces
+- **StyleSheet-native** — no NativeWind/Tailwind, no className resolution
 - **Expo-optimized** — works out of the box with Expo, compatible with bare RN
 
 ## Quick Start

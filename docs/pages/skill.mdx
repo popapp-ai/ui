@@ -1,0 +1,42 @@
+# AI Skill [Teach AI agents to use PopApp UI correctly]
+
+Your AI coding agent is probably great at React, but it likely hallucinates React Native dependencies, forgets about safe areas, and tries to use web CSS on mobile.
+
+The **PopApp UI Skill** fixes that. It injects our entire component registry, theme system, and React Native best practices directly into your AI's brain.
+
+## Installation
+
+Drop this into your terminal:
+
+```bash [Terminal]
+npx skills add popapp-ai/ui
+```
+
+That's it. Next time you use an AI agent in a PopApp project, it will actually know what it's doing.
+
+## What it teaches your AI
+
+Instead of generating generic boilerplate, your AI will now understand:
+
+- **The Registry:** It knows every component, its props, and its animation tier (no more accidental crashes because it imported `react-native-reanimated` without installing it).
+- **Theming:** It uses our exact color tokens (`colors.primary`, `colors.destructive`) instead of guessing hex codes.
+- **Safe Wrappers:** It knows to use our safe wrappers for haptics and blur effects so your app doesn't explode on unsupported Android devices.
+- **Composition:** It builds screens using `Screen`, `List`, and `Card` exactly how they were meant to be used.
+
+## Test Drive
+
+Try asking your newly-educated AI:
+
+- *"Build a settings screen with a list of toggleable options using PopApp components."*
+- *"Create a dashboard with a revenue ticker and a progress ring."*
+- *"Set up an onboarding flow with animated option cards."*
+
+## Compatibility
+
+Works everywhere. Supported by Cursor, Claude Code, Codex, Antigravity, Gemini CLI, OpenCode, and any other agent that reads standard context files. 
+
+[skills.sh](https://skills.sh) handles the underlying installation and setup for your specific editor or CLI.
+
+:::tip
+Under the hood, a "skill" is just a set of heavily optimized markdown files. You can read them yourself in the `skills/popapp` directory if you want to see exactly what we're feeding the machine.
+:::
